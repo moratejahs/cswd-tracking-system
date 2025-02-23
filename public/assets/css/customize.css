@@ -1,0 +1,33 @@
+.jelmaxx-form {
+    border: 1px solid #aaa;
+}
+.swal2-input.form-control,
+.swal2-textarea.form-control,
+.swal2-select.form-control {
+    width: initial;
+}
+
+/* pre-loader to submit form */
+.preloader {
+    display: none;
+    border: 2px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 3px solid #3498db;
+    width: 16px;
+    height: 16px;
+    animation: spin 2s linear infinite;
+}
+.save-loader {
+    display: none;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+

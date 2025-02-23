@@ -1,0 +1,29 @@
+<div class="text-left modal fade" id="restore-quick-sale-modal" tabindex="-1" aria-labelledby="myModalLabel4"
+    data-bs-backdrop="false" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable " role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h4 class="text-white modal-title">Restore Record?</h4>
+            </div>
+            <div class="modal-body">
+                <form id="quickSaleRestoreForm">
+                    @csrf
+                    <div class="row">
+                        <p>Are you sure do you want to restore?</p>
+                    </div>
+                    <div class="pb-2 col-12 d-flex justify-content-end">
+                        <button type="button" class="btn btn-light-secondary me-1" data-bs-dismiss="modal">
+                            <i class="bx bx-x d-block d-sm-none"></i>
+                            <span class="d-none d-sm-block">Close</span>
+                        </button>
+                        <button type="submit" class="btn btn-success qs-restore-button">
+                            <i class="bx bx-check d-block d-sm-none"></i>
+                            <span class="d-none d-sm-block">Confirm</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
