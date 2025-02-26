@@ -82,8 +82,7 @@ class ManageAccountController extends Controller
     public function show(string $id)
     {
         $user = User::where('id', $id)->first();
-
-
+        return response()->json($user);
     }
 
     /**

@@ -6,7 +6,7 @@
                 <h4 class="text-white modal-title" id="productNameTitle">Update Account</h4>
             </div>
             <div class="modal-body">
-                <form id="store-product-form" action="{{ route('admin.assistance.update') }}" method="POST">
+                <form id="store-product-form" action="{{ route('admin.manage_account.update') }}" method="POST">
                     @csrf
                     @method('put')
                     <div class="row">

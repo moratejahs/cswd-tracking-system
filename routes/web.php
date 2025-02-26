@@ -96,7 +96,6 @@ Route::middleware('auth')->group(function () {
     Route::get('product_details/{productId}', [AdminSaleController::class, 'details'])->name('product.details');
     Route::get('supplier/{supplierName}', [AdminSupplierController::class, 'index'])->name('index.supplier');
 
-
     //Manage Accounts
     Route::controller(ManageAccountController::class)->group(function () {
         Route::get('manage_accounts', 'index')->name('admin.manage_account.index');
