@@ -17,12 +17,12 @@ class AssitanceController extends Controller
             $data = Assistance::all();
             return DataTables::of($data)
                 ->addColumn('action', function ($assistance) {
-                    return '<a id="edit-user" href="' . route('admin.assistance.edit', $assistance->id) . '"
+                    return '<a id="edit-user" href="' . route('admin.service.edit', $assistance->id) . '"
                                 class="btn btn-light-secondary rounded-pill btn-sm">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
-                            <a id="removeAssistance" href="javascript:void(0)" data-user-id="' . $assistance->id . '"
-                                data-url="' . route('admin.assistance.show', $assistance->id) . '"
+                            <a id="removeService" href="javascript:void(0)" data-user-id="' . $assistance->id . '"
+                                data-url="' . route('admin.service.show', $assistance->id) . '"
                                 class="btn btn-danger rounded-pill btn-sm" data-toggle="tooltip" data-placement="top" title="Delete Product">
                                 <i class="bi bi-trash"></i>
                             </a>';
@@ -74,8 +74,8 @@ class AssitanceController extends Controller
             'user_id' => auth()->id(),
         ]);
 
-        return to_route('admin.assistance.index')
-            ->with('message', 'Assistance created successfully');
+        return to_route('admin.service.index')
+            ->with('message', 'Service created successfully');
     }
 
     /**
@@ -132,7 +132,8 @@ class AssitanceController extends Controller
             'person_of_responsible' => $validated['person_of_responsible'],
         ]);
 
-        return to_route('admin.assistance.index')->with('message', 'Assistance updated successfully');
+        return to_route('admin.service.index')
+            ->with('message', 'Service updated successfully');
     }
 
     /**
@@ -146,6 +147,6 @@ class AssitanceController extends Controller
         ]);
         $delete = Assistance::findOrFail($validated['id']);
         $delete->delete();
-        return redirect()->back()->with('message', 'Assistance deleted successfully');
+        return redirect()->back()->with('message', 'Service deleted successfully');
     }
 }

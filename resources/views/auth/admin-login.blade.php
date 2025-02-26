@@ -28,7 +28,8 @@
                         <div class="card-body">
                             @if (session('error'))
                                 <div class="alert alert-danger" role="alert">
-                                    <i class="bi bi-exclamation-triangle-fill me-3"></i><span>{{ session('error') }}</span>
+                                    <i
+                                        class="bi bi-exclamation-triangle-fill me-3"></i><span>{{ session('error') }}</span>
                                 </div>
                             @endif
                             <form id="loginForm" action="{{ route('admin-login.submit') }}" method="POST">

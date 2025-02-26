@@ -1,10 +1,12 @@
 <?php
 
-use App\Http\Controllers\CSWD\AssistanceController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AssitanceController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ManageAccountController;
 use App\Http\Controllers\Admin\AdminHomeController;
 use App\Http\Controllers\Admin\AdminSaleController;
+use App\Http\Controllers\CSWD\AssistanceController;
 use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminSupplierController;
 use App\Http\Controllers\Admin\AdminInventoryController;
@@ -14,7 +16,6 @@ use App\Http\Controllers\Admin\AdminSalesOverviewController;
 use App\Http\Controllers\Admin\AdminRevenueVsProfitController;
 use App\Http\Controllers\Admin\AdminQuickSaleRestoreController;
 use App\Http\Controllers\Admin\AdminProductInventoryStockInController;
-use App\Http\Controllers\ManageAccountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -106,16 +107,16 @@ Route::middleware('auth')->group(function () {
         Route::delete('manage_account/delete', 'destroy')->name('admin.manage_account.destroy');
     });
 
-    //Assistance Records
-    // Route::controller(AssitanceController::class)->group(function () {
-    //     Route::get('assistances', 'index')->name('admin.assistance.index');
-    //     Route::get('assistances/create', 'create')->name('admin.assistance.create');
-    //     Route::post('assistances/store', 'store')->name('admin.assistance.store');
-    //     Route::get('assistance/{id}', 'edit')->name('admin.assistance.edit');
-    //     Route::get('assistance/{id}/show', 'show')->name('admin.assistance.show');
-    //     Route::put('assistance', 'update')->name('admin.assistance.update');
-    //     Route::delete('assistance/delete', 'destroy')->name('admin.assistance.destroy');
-    // });
+    //Services Records
+    Route::controller(AssitanceController::class)->group(function () {
+        Route::get('services', 'index')->name('admin.service.index');
+        Route::get('services/create', 'create')->name('admin.service.create');
+        Route::post('services/store', 'store')->name('admin.service.store');
+        Route::get('service/{id}', 'edit')->name('admin.service.edit');
+        Route::get('service/{id}/show', 'show')->name('admin.service.show');
+        Route::put('service', 'update')->name('admin.service.update');
+        Route::delete('service/delete', 'destroy')->name('admin.service.destroy');
+    });
 
     Route::post('save/assistance', [AssistanceController::class, 'store'])->name('store.save.assistance');
 

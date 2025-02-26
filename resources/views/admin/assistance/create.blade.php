@@ -48,7 +48,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Add Assistance Form</h5>
                     <hr>
-                    <form action="{{ route('admin.assistance.store') }}" method="POST">
+                    <form action="{{ route('admin.service.store') }}" method="POST">
                         @csrf
                         <div class="row">
                             <div class="col-4">
