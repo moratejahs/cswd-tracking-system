@@ -6,11 +6,11 @@
                 <h4 class="text-white modal-title" id="myModalLabel4">Delete Assistance?</h4>
             </div>
             <div class="modal-body">
-                <form action="{{ route('admin.assistance.destroy') }}" method="POST">
+                <form action="{{ route('admin.service.destroy') }}" method="POST">
                     @csrf
                     @method('delete')
                     <div class="row">
-                        <input type="hidden" id="remove-id" name="id" required>
+                        <input type="text" id="remove-id" name="id" required>
                         <p>Are you sure do you want to delete?</p>
                     </div>
                     <div class="pb-2 col-12 d-flex justify-content-end">

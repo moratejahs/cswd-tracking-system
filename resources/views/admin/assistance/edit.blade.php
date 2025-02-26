@@ -48,7 +48,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Add Assistance Form</h5>
                     <hr>
-                    <form action="{{ route('admin.assistance.update') }}" method="POST">
+                    <form action="{{ route('admin.service.update') }}" method="POST">
                         @csrf
                         @method('put')
                         <input type="hidden" class="form-control" id="id" name="id" placeholder="First Name"

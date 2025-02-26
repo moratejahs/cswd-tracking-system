@@ -162,6 +162,12 @@
                                 </a>
                             </li>
 
+                            <li class="menu-item ">
+                                <a href="{{ route('admin.service.index') }}" class='menu-link'>
+                                    <span><i class="bi bi-box-fill"></i> Services</span>
+                                </a>
+                            </li>
+
                             {{-- <li class="menu-item has-sub">
                                 <a href="#" class='menu-link'>
                                     <span><i class="bi bi-box-fill"></i> Services</span>
