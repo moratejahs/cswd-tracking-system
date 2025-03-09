@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Barangay;
 use App\Models\Assistance;
-use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
+use App\Models\ClientCategory;
+use Yajra\DataTables\Facades\DataTables;
 
 class AssitanceController extends Controller
 {
@@ -38,7 +40,12 @@ class AssitanceController extends Controller
      */
     public function create()
     {
-        return view('admin.assistance.create');
+        $clientCategories = ClientCategory::all();
+        $barangays = Barangay::all();
+        return view('admin.assistance.create', [
+            'clientCategories' => $clientCategories,
+            'barangays' => $barangays
+        ]);
     }
 
     /**
@@ -93,8 +100,13 @@ class AssitanceController extends Controller
     public function edit(string $id)
     {
         $assistance = Assistance::where('id', $id)->first();
-
-        return view('admin.assistance.edit', ['assistance' => $assistance]);
+        $clientCategories = ClientCategory::all();
+        $barangays = Barangay::all();
+        return view('admin.assistance.edit', [
+            'assistance' => $assistance,
+            'clientCategories' => $clientCategories,
+            'barangays' => $barangays
+        ]);
     }
 
     /**

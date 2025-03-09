@@ -86,8 +86,16 @@
                             <div class="col-4">
                                 <div class="form-group">
                                     <label for="address">Address</label>
-                                    <input type="text" class="form-control" id="address" name="address"
-                                        placeholder="Address" value="{{ $assistance->address }}" required>
+                                    <select class="form-control select2" id="address" name="address" required>
+                                        <option value="" disabled selected>Select Barangay</option>
+                                        @foreach ($barangays as $barangay)
+                                            <option value="{{ $barangay->outlet_address }}"
+                                                {{ $barangay->outlet_address == $assistance->address ? 'selected' : '' }}>
+                                                {{ $barangay->outlet_address }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+
                                 </div>
                             </div>
                             <div class="col-4">
@@ -113,9 +121,16 @@
                             </div>
                             <div class="col-4">
                                 <div class="form-group">
-                                    <label for="assistance">Assistance</label>
-                                    <input type="text" class="form-control" id="assistance" name="assistance"
-                                        placeholder="Assistance" value="{{ $assistance->assistance }}" required>
+                                    <label for="assistance">Client Type</label>
+                                    <select class="form-control select2" id="assistance" name="assistance" required>
+                                        <option value="" disabled>Select Client Type</option>
+                                        @foreach ($clientCategories as $category)
+                                            <option value="{{ $category->description }}"
+                                                {{ $category->description == $assistance->assistance ? 'selected' : '' }}>
+                                                {{ $category->description }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-4">

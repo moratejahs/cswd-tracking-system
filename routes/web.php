@@ -16,6 +16,8 @@ use App\Http\Controllers\Admin\AdminSalesOverviewController;
 use App\Http\Controllers\Admin\AdminRevenueVsProfitController;
 use App\Http\Controllers\Admin\AdminQuickSaleRestoreController;
 use App\Http\Controllers\Admin\AdminProductInventoryStockInController;
+use App\Http\Controllers\CSWD\ClientCategoryController;
+use App\Models\ClientCategory;
 
 /*
 |--------------------------------------------------------------------------
@@ -130,6 +132,17 @@ Route::middleware('auth')->group(function () {
         Route::put('assistance', 'update')->name('admin.assistance.update');
         Route::put('assistance/approved', 'approvedBarangay')->name('admin.assistance.approvedBarangay');
         Route::delete('assistance/delete', 'destroy')->name('admin.assistance.destroy');
+    });
+
+    //Services Records
+    Route::controller(ClientCategoryController::class)->group(function () {
+        Route::get('client-categories', 'index')->name('admin.client-categorie.index');
+        Route::get('client-categories/create', 'create')->name('admin.client-categorie.create');
+        Route::post('client-categories/store', 'store')->name('admin.client-categorie.store');
+        Route::get('client-category/{id}', 'edit')->name('admin.client-category.edit');
+        Route::get('client-category/{id}/show', 'show')->name('admin.client-category.show');
+        Route::put('client-category', 'update')->name('admin.client-category.update');
+        Route::delete('client-category/delete', 'destroy')->name('admin.client-category.destroy');
     });
 
 });
