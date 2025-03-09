@@ -30,7 +30,9 @@ use App\Models\ClientCategory;
 |
 */
 
-
+Route::get('/home', function () {
+    return view('home');
+})->name('home');
 
 Route::middleware('guest')->group(function () {
     Route::get('/', function () {

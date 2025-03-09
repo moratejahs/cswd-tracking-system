@@ -11,7 +11,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        Assistants Progress Report
+                        Client Category Report
                     </div>
                     <div class="card-body">
                         <div id="lineChart"></div>
@@ -28,27 +28,69 @@
         document.addEventListener("DOMContentLoaded", function() {
             var options = {
                 chart: {
-                    type: 'line',
+                    type: 'bar',
                     height: 350
                 },
                 series: [{
-                        name: "Done",
-                        data: {!! json_encode($doneData) !!} // Inject dynamic values
-                    },
-                    {
-                        name: "Pending",
-                        data: {!! json_encode($pendingData) !!} // Inject dynamic values
-                    }
-                ],
-                colors: ['#198754', '#dc3545'], // Bootstrap success (green) and danger (red)
+                    name: "Total",
+                    data: [
+                        {{ $sanIsidro }},
+                        {{ $awasian }},
+                        {{ $bagongLungsod }},
+                        {{ $bioto }},
+                        {{ $bongtod }},
+                        {{ $buenavista }},
+                        {{ $dagocdoc }},
+                        {{ $mabua }},
+                        {{ $mabuhay }},
+                        {{ $maitum }},
+                        {{ $maticdum }},
+                        {{ $pandanon }},
+                        {{ $pangi }},
+                        {{ $quezon }},
+                        {{ $rosario }},
+                        {{ $salvacion }},
+                        {{ $sanAgustinNorte }},
+                        {{ $sanAgustinSur }},
+                        {{ $sanAntonio }},
+                        {{ $sanJose }},
+                        {{ $telaje }}
+                    ]
+                }],
+                colors: ['#3498db'], // Green for "Done"
                 xaxis: {
-                    categories: {!! json_encode($allMonths) !!} // Inject dynamic month labels
+                    categories: [
+                        'San Isidro',
+                        'Awasian',
+                        'Bagong Lungsod',
+                        'Bioto',
+                        'Bongtod',
+                        'Buenavista',
+                        'Dagocdoc',
+                        'Mabua',
+                        'Mabuhay',
+                        'Maitum',
+                        'Maticdum',
+                        'Pandanon',
+                        'Pangi',
+                        'Quezon',
+                        'Rosario',
+                        'Salvacion',
+                        'San Agustin Norte',
+                        'San Agustin Sur',
+                        'San Antonio',
+                        'San Jose',
+                        'Telaje'
+                    ]
                 },
-                stroke: {
-                    curve: 'smooth'
+                plotOptions: {
+                    bar: {
+                        horizontal: false, // Vertical bar
+                        columnWidth: '50%' // Adjust width for better visualization
+                    }
                 },
-                markers: {
-                    size: 4
+                dataLabels: {
+                    enabled: true
                 },
                 legend: {
                     position: 'top'
