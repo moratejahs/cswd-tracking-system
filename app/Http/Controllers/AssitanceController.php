@@ -82,7 +82,7 @@ class AssitanceController extends Controller
         ]);
 
         return to_route('admin.service.index')
-            ->with('message', 'Service created successfully');
+            ->with('message', 'Beneficiary created successfully');
     }
 
     /**
@@ -145,7 +145,7 @@ class AssitanceController extends Controller
         ]);
 
         return to_route('admin.service.index')
-            ->with('message', 'Service updated successfully');
+            ->with('message', 'Beneficiary updated successfully');
     }
 
     /**
@@ -159,6 +159,6 @@ class AssitanceController extends Controller
         ]);
         $delete = Assistance::findOrFail($validated['id']);
         $delete->delete();
-        return redirect()->back()->with('message', 'Service deleted successfully');
+        return redirect()->back()->with('message', 'Beneficiary deleted successfully');
     }
 }

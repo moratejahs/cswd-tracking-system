@@ -62,11 +62,13 @@
                                     <th class="text-center text-white" style="font-style: normal; font-weight: 200;">
                                         Occupation</th>
                                     <th class="text-center text-white" style="font-style: normal; font-weight: 200;">
-                                        Assistance</th>
+                                        Purpose </th>
                                     <th class="text-center text-white" style="font-style: normal; font-weight: 200;">
-                                        Quantity</th>
+                                        Amount</th>
                                     <th class="text-center text-white" style="font-style: normal; font-weight: 200;">Person
                                         of Responsible</th>
+                                    <th class="text-center text-white" style="font-style: normal; font-weight: 200;">
+                                        Created At</th>
                                     <th class="text-center text-white" style="font-style: normal; font-weight: 200;">Action
                                     </th>
                                 </tr>

@@ -95,9 +95,9 @@
                             </div>
                             <div class="col-4">
                                 <div class="form-group">
-                                    <label for="status">Status</label>
+                                    <label for="status">Purpose</label>
                                     <input type="text" class="form-control" id="status" name="status"
-                                        placeholder="Status" required>
+                                        placeholder="Enter purpose" required>
                                 </div>
                             </div>
                             <div class="col-4">
@@ -109,7 +109,7 @@
                             </div>
                             <div class="col-4">
                                 <div class="form-group">
-                                    <label for="assistance">Client Type</label>
+                                    <label for="assistance">Category</label>
                                     <select class="form-control select2" id="assistance" name="assistance" required>
                                         <option value="" disabled selected>Select Client Type</option>
                                         @foreach ($clientCategories as $category)
@@ -121,7 +121,7 @@
                             </div>
                             <div class="col-4">
                                 <div class="form-group">
-                                    <label for="quantity">Quantity</label>
+                                    <label for="quantity">Amount</label>
                                     <input type="number" class="form-control" id="quantity" name="quantity"
                                         placeholder="Quantity" required>
                                 </div>

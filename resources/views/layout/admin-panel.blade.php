@@ -169,7 +169,7 @@
 
                             <li class="menu-item ">
                                 <a href="{{ route('admin.service.index') }}" class='menu-link'>
-                                    <span><i class="bi bi-box-fill"></i> Services</span>
+                                    <span><i class="bi bi-box-fill"></i> Beneficiary</span>
                                 </a>
                             </li>
 

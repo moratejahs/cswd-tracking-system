@@ -3,8 +3,9 @@
 namespace App\Models;
 
 use DateTime;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Barangay;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Assistance extends Model
 {
@@ -23,4 +24,5 @@ class Assistance extends Model
         'quantity',
         'person_of_responsible',
     ];
+
 }

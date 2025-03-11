@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Carbon\Carbon;
 use App\Models\Sale;
 use App\Models\Product;
+use App\Models\Barangay;
 use App\Models\Assistance;
 use Illuminate\Http\Request;
 use App\Models\BarangayAssitance;
@@ -37,6 +38,8 @@ class AdminHomeController extends Controller
         $sanAntonio = Assistance::where('address', 'San Antonio Tandag, Surigao del Sur')->count();
         $sanJose = Assistance::where('address', 'San Jose Tandag, Surigao del Sur')->count();
         $telaje = Assistance::where('address', 'Telaje Tandag, Surigao del Sur')->count();
+        $barangays = Barangay::all();
+
         return view('admin.admin-dashboard', [
             'sanIsidro' => $sanIsidro,
             'awasian' => $awasian,
@@ -58,7 +61,16 @@ class AdminHomeController extends Controller
             'sanAgustinSur' => $sanAgustinSur,
             'sanAntonio' => $sanAntonio,
             'sanJose' => $sanJose,
-            'telaje' => $telaje
+            'telaje' => $telaje,
+            'barangays' => $barangays
         ]);
+    }
+
+    public function getBarangayAssistance(string $address)
+    {
+        $barangayAssistance = Assistance::select('assistance', DB::raw('COUNT(id) as total_quantity'))
+        ->groupBy('assistance')
+        ->get();
+        return response()->json($barangayAssistance);
     }
 }

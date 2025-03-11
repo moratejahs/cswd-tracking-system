@@ -67,6 +67,38 @@ $(function () {
                 className: 'text-center',
             },
             {
+                data: 'created_at',
+                name: 'created_at',
+                className: 'text-center',
+                render: function (data) {
+                    if (!data) return '';
+
+                    const date = new Date(data);
+                    const monthNames = [
+                        'Jan',
+                        'Feb',
+                        'Mar',
+                        'Apr',
+                        'May',
+                        'Jun',
+                        'Jul',
+                        'Aug',
+                        'Sep',
+                        'Oct',
+                        'Nov',
+                        'Dec',
+                    ];
+                    const formattedDate = `${
+                        monthNames[date.getMonth()]
+                    } ${String(date.getDate()).padStart(
+                        2,
+                        '0'
+                    )}, ${date.getFullYear()}`;
+
+                    return formattedDate;
+                },
+            },
+            {
                 data: 'action',
                 name: 'action',
                 orderable: false,
