@@ -65,7 +65,7 @@
                                                 id="password" name="password" required>
                                         </div>
                                         <button type="submit" class="btn btn-primary w-100"
-                                            style="font-family: 'Poppins', sans-serif;">Log In</button>
+                                            style="font-family: 'Poppins', sans-serif;">Login</button>
                                     </div>
                                 </div>
                             </form>
