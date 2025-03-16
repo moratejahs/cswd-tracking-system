@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\CSWD;
 
-use App\Http\Controllers\Controller;
-use App\Models\AssistanceFund;
 use App\Models\Barangay;
-use App\Models\BarangayAssitance;
 use Illuminate\Http\Request;
-use Yajra\DataTables\Facades\DataTables;
+use App\Models\AssistanceFund;
+use App\Models\ClientCategory;
+use App\Models\BarangayAssitance;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Yajra\DataTables\Facades\DataTables;
 
 class AssistanceController extends Controller
 {
@@ -39,7 +40,10 @@ class AssistanceController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-        return view('admin.assistancefund.index');
+        $categories = ClientCategory::all();
+        return view('admin.assistancefund.index',[
+            'categories' => $categories,
+        ]);
     }
 
     /**

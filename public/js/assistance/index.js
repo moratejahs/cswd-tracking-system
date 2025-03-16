@@ -12,10 +12,6 @@ $(function () {
             {
                 data: 'full_name',
                 name: 'full_name',
-
-                render: function (data, type, row) {
-                    return `${row.first_name} ${row.middle_name} ${row.last_name}`;
-                },
             },
             {
                 data: 'birth_date',

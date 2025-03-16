@@ -161,11 +161,11 @@
                                     <span><i class="bi bi-box-fill"></i> Assistances</span>
                                 </a>
                             </li> --}}
-                            <li class="menu-item ">
+                            {{-- <li class="menu-item ">
                                 <a href="{{ route('admin.client-categorie.index') }}" class='menu-link'>
                                     <span><i class="bi bi-box-fill"></i> Client Categories</span>
                                 </a>
-                            </li>
+                            </li> --}}
 
                             <li class="menu-item ">
                                 <a href="{{ route('admin.service.index') }}" class='menu-link'>

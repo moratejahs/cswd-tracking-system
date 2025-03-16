@@ -20,7 +20,7 @@
 @section('content')
     <!-- Modal -->
     <div class="modal fade" id="barangayModal" tabindex="-1" aria-labelledby="barangayModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="barangayModalLabel">Barangay Details</h5>
@@ -31,10 +31,14 @@
                     <p><strong>Status:</strong> <span id="modalBarangayStatus"></span></p>
                     <p><strong>Latitude:</strong> <span id="modalBarangayLat"></span></p>
                     <p><strong>Longitude:</strong> <span id="modalBarangayLong"></span></p>
+
+                    <h5 class="mt-3">Monthly Data Overview</h5>
+
                 </div>
             </div>
         </div>
     </div>
+
 
 
 
@@ -45,9 +49,17 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        Client Category Report
+                        <h5> Client Category Report</h5>
                     </div>
                     <div class="card-body">
+                        <div class="col-2">
+                            <select name="category" id="category" class="form-control">
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->description }}</option>
+                                @endforeach
+                            </select>
+
+                        </div>
                         <div id="lineChart"></div>
                     </div>
                 </div>
@@ -150,7 +162,6 @@
             chart.render();
         });
     </script>
-
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var map = L.map('map').setView([9.1011711, 126.1588771], 13);
@@ -199,7 +210,8 @@
                                 <thead>
                                     <tr>
 
-                                        <th>Assistance</th>
+                                        <th>Category</th>
+                                         <th>Full Name</th>
                                         <th>Total</th>
 
                                     </tr>
@@ -210,6 +222,7 @@
                                         table += `<tr>
 
                                 <td>${item.assistance}</td>
+                                <td>${item.first_names} ${ item.middle_names } ${ item.last_names }</td>
                                 <td>${item.total_quantity}</td>
 
                               </tr>`;

@@ -11,6 +11,9 @@
 @section('content')
     {{-- includes --}}
     @include('admin.assistance.includes.delete')
+    @include('admin.client-category.creat')
+    @include('admin.client-category.update')
+    @include('admin.client-category.delete')
 
     <nav class="pt-0" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" data-aos="fade-down">
         <ol class="pb-0 mb-0 breadcrumb">
@@ -45,6 +48,10 @@
                     <a type="button" class="btn-sm block btn btn-primary" href="{{ route('admin.service.create') }}">
                         Add Service
                     </a>
+                    <button type="button" class="btn-sm block btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#createAccountModal">
+                        Add Category
+                    </button>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover" id="serviceRecord">
                             <thead class="bg-primary">
@@ -57,12 +64,12 @@
                                     </th>
                                     <th class="text-center text-white" style="font-style: normal; font-weight: 200;">Contact
                                         No</th>
-                                    <th class="text-center text-white" style="font-style: normal; font-weight: 200;">Status
+                                    <th class="text-center text-white" style="font-style: normal; font-weight: 200;">Purpose
                                     </th>
                                     <th class="text-center text-white" style="font-style: normal; font-weight: 200;">
                                         Occupation</th>
                                     <th class="text-center text-white" style="font-style: normal; font-weight: 200;">
-                                        Purpose </th>
+                                        Status </th>
                                     <th class="text-center text-white" style="font-style: normal; font-weight: 200;">
                                         Amount</th>
                                     <th class="text-center text-white" style="font-style: normal; font-weight: 200;">Person
@@ -92,4 +99,8 @@
     <script src="{{ asset('js/assistance/index.js') }}"></script>
     <script src="{{ asset('js/assistance/remove.js') }}"></script>
     <script src="{{ asset('js/assistance/edit.js') }}"></script>
+    {{-- Custom Scripts --}}
+    <script src="{{ asset('js/client-category/index.js') }}"></script>
+    <script src="{{ asset('js/client-category/edit.js') }}"></script>
+    <script src="{{ asset('js/client-category/remove.js') }}"></script>
 @endsection

@@ -29,7 +29,7 @@
                                         <i class="bi bi-check2"></i>
                                     </div>
                                     <div class="preloader mx-2 mt-1" role="status"></div>
-                                    <span id="save" class="d-none d-sm-block">Submit</span>
+                                    <span id="save" class="d-none d-sm-block">Update</span>
                                 </div>
                             </button>
                         </div>

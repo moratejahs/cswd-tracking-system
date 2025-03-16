@@ -16,6 +16,39 @@
                                     placeholder="Enter client category" required>
                             </div>
                         </div>
+
+                        <div class="col-12">
+                            <table class="table">
+                                <thead class="bg-primary">
+                                    <tr>
+                                        <th scope="col" class="text-white">Category Name</th>
+                                        <th scope="col" class="text-white text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($getcategories as $category)
+                                        <tr>
+                                            <th scope="row">{{ $category->description }}</th>
+                                            <th scope="row" class="text-center">
+                                                <a id="editCategory" href="javascript:void(0)"
+                                                    data-user-id="{{ $category->id }}"
+                                                    data-url="{{ route('admin.client-category.show', $category->id) }}"
+                                                    class="btn btn-light-secondary rounded-pill btn-sm">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </a>
+                                                <a id="removeCategory" href="javascript:void(0)"
+                                                    data-user-id="{{ $category->id }}"
+                                                    data-url="{{ route('admin.client-category.show', $category->id) }}"
+                                                    class="btn btn-danger rounded-pill btn-sm">
+                                                    <i class="bi bi-trash"></i>
+                                                </a>
+                                            </th>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
                         <div class="pb-2 col-12 d-flex justify-content-end">
                             <button type="button" class="btn btn-light-secondary me-1" data-bs-dismiss="modal">
                                 <i class="bx bx-x d-block d-sm-none"></i>
@@ -31,6 +64,7 @@
                                 </div>
                             </button>
                         </div>
+
                     </div>
                 </form>
             </div>

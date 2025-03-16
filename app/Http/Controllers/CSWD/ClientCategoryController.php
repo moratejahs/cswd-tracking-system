@@ -5,6 +5,7 @@ namespace App\Http\Controllers\CSWD;
 use Illuminate\Http\Request;
 use App\Models\ClientCategory;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Yajra\DataTables\Facades\DataTables;
 class ClientCategoryController extends Controller
 {
@@ -33,7 +34,10 @@ class ClientCategoryController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-        return view('admin.client-category.index');
+        $getcategories = Category::all();
+        return view('admin.client-category.index', [
+            'getcategories' => $getcategories
+        ]);
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barangay;
+use App\Models\Category;
 use App\Models\Assistance;
 use Illuminate\Http\Request;
 use App\Models\ClientCategory;
@@ -30,9 +31,15 @@ class AssitanceController extends Controller
                             </a>';
                 })
                 ->rawColumns(['action'])
+                ->addColumn('full_name', function ($assistance) {
+                    return trim("{$assistance->first_name} {$assistance->middle_name} {$assistance->last_name}");
+                })
                 ->make(true);
         }
-        return view('admin.assistance.index');
+        $getcategories = ClientCategory::all();
+        return view('admin.assistance.index', [
+           'getcategories' => $getcategories
+        ]);
     }
 
     /**

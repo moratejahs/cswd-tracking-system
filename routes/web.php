@@ -55,8 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('admin')->group(function () {
 
         Route::get('dashboard', [AdminHomeController::class, 'index'])->name('index.home');
-        Route::get('barangay/{address}', [AdminHomeController::class, 'getBarangayAssistance'])->name('index.barangay');
-
+        Route::get('barangay/{address}', [AdminHomeController::class, 'getBarangayAssistance'])->name('barangay.show');
 
         Route::get('sales-overview', AdminSalesOverviewController::class)
             ->name('sales-overview.index');

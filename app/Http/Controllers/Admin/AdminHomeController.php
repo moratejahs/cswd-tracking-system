@@ -12,6 +12,7 @@ use App\Models\BarangayAssitance;
 use App\Services\AnalyticsService;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\ClientCategory;
 
 class AdminHomeController extends Controller
 {
@@ -40,7 +41,12 @@ class AdminHomeController extends Controller
         $telaje = Assistance::where('address', 'Telaje Tandag, Surigao del Sur')->count();
         $barangays = Barangay::all();
 
+
+        $categories = ClientCategory::all();
+
+        // dd($categories);
         return view('admin.admin-dashboard', [
+            'categories' => $categories,
             'sanIsidro' => $sanIsidro,
             'awasian' => $awasian,
             'bagongLungsod' => $bagongLungsod,
@@ -62,15 +68,26 @@ class AdminHomeController extends Controller
             'sanAntonio' => $sanAntonio,
             'sanJose' => $sanJose,
             'telaje' => $telaje,
-            'barangays' => $barangays
+            'barangays' => $barangays,
+
         ]);
     }
 
     public function getBarangayAssistance(string $address)
     {
-        $barangayAssistance = Assistance::select('assistance', DB::raw('COUNT(id) as total_quantity'))
-        ->groupBy('assistance')
-        ->get();
+        $barangayAssistance = Assistance::select(
+            'assistance',
+            DB::raw('GROUP_CONCAT(first_name SEPARATOR ", ") as first_names'),
+            DB::raw('GROUP_CONCAT(middle_name SEPARATOR ", ") as middle_names'),
+            DB::raw('GROUP_CONCAT(last_name SEPARATOR ", ") as last_names'),
+            DB::raw('GROUP_CONCAT(last_name SEPARATOR ", ") as last_names'),
+            DB::raw('SUM(quantity) as total_quantity'),
+            // DB::raw('SUM(total_quantity) as total_quantity')
+        )
+            ->where('address', $address)
+            ->groupBy('assistance', 'first_name', 'middle_name', 'last_name', 'quantity')
+            ->get();
         return response()->json($barangayAssistance);
+
     }
 }
