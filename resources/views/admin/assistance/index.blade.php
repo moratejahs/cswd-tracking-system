@@ -1,7 +1,9 @@
 @extends('layout.admin-panel')
 
 @section('links')
+    <link rel="stylesheet" href="{{ asset('vendor/DataTables/datatables.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.css') }}">
+
     {{-- <link rel="stylesheet" href="{{ asset('assets/extensions/choices.js/public/assets/styles/choices.css') }}"> --}}
     {{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> --}}
     <link rel="stylesheet" href="{{ asset('assets/extensions/select2/select2.min.css') }}">
@@ -35,7 +37,7 @@
                     <path fill-rule="evenodd"
                         d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z" />
                 </svg>
-                Services
+                Beneficiary Records
             </span>
         </div>
     </nav>
@@ -54,6 +56,7 @@
                     </button>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover" id="serviceRecord">
+
                             <thead class="bg-primary">
                                 <tr>
                                     <th class="text-center text-white" style="font-style: normal; font-weight: 200;">Full
@@ -90,8 +93,11 @@
 
 @section('scripts')
     {{-- Plugins Scripts --}}
+
+
     <script src="{{ asset('assets/extensions/jquery/jquery.js') }}"></script>
-    <script src="{{ asset('assets/extensions/datatables.net/js/jquery.dataTables.js') }}"></script>
+    <script src="{{ asset('vendor/DataTables/datatables.min.js') }}"></script>
+    {{-- <script src="{{ asset('assets/extensions/datatables.net/js/jquery.dataTables.js') }}"></script> --}}
     <script src="{{ asset('assets/extensions/datatables.net-bs5/js/dataTables.bootstrap5.js') }}"></script>
     <script src="{{ asset('assets/extensions/select2/select2.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>

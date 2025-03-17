@@ -55,6 +55,8 @@ Route::middleware('auth')->group(function () {
     Route::prefix('admin')->group(function () {
 
         Route::get('dashboard', [AdminHomeController::class, 'index'])->name('index.home');
+        Route::get('/category-data', [AdminHomeController::class, 'getCategoryData'])->name('getCategoryData.index');
+
         Route::get('barangay/{address}', [AdminHomeController::class, 'getBarangayAssistance'])->name('barangay.show');
 
         Route::get('sales-overview', AdminSalesOverviewController::class)

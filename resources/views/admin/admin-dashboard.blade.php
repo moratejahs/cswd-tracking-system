@@ -39,11 +39,6 @@
         </div>
     </div>
 
-
-
-
-
-
     <div class="page-content">
         <div class="row">
             <div class="col-12">
@@ -53,12 +48,21 @@
                     </div>
                     <div class="card-body">
                         <div class="col-2">
-                            <select name="category" id="category" class="form-control">
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->description }}</option>
-                                @endforeach
-                            </select>
-
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle btn-sm me-1" type="button"
+                                    id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">
+                                    Filter
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    @foreach ($categories as $category)
+                                        <a class="dropdown-item" href="#"
+                                            data-category="{{ $category->description }}">
+                                            {{ $category->description }}
+                                        </a>
+                                    @endforeach
+                                </div>
+                            </div>
                         </div>
                         <div id="lineChart"></div>
                     </div>
@@ -76,92 +80,102 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 @endsection
 
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('assets/vendors/apexcharts/apexcharts.min.js') }}"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            var options = {
-                chart: {
-                    type: 'bar',
-                    height: 350
-                },
-                series: [{
-                    name: "Total",
-                    data: [
-                        {{ $sanIsidro }},
-                        {{ $awasian }},
-                        {{ $bagongLungsod }},
-                        {{ $bioto }},
-                        {{ $bongtod }},
-                        {{ $buenavista }},
-                        {{ $dagocdoc }},
-                        {{ $mabua }},
-                        {{ $mabuhay }},
-                        {{ $maitum }},
-                        {{ $maticdum }},
-                        {{ $pandanon }},
-                        {{ $pangi }},
-                        {{ $quezon }},
-                        {{ $rosario }},
-                        {{ $salvacion }},
-                        {{ $sanAgustinNorte }},
-                        {{ $sanAgustinSur }},
-                        {{ $sanAntonio }},
-                        {{ $sanJose }},
-                        {{ $telaje }}
-                    ]
-                }],
-                colors: ['#3498db'], // Green for "Done"
-                xaxis: {
-                    categories: [
-                        'San Isidro',
-                        'Awasian',
-                        'Bagong Lungsod',
-                        'Bioto',
-                        'Bongtod',
-                        'Buenavista',
-                        'Dagocdoc',
-                        'Mabua',
-                        'Mabuhay',
-                        'Maitum',
-                        'Maticdum',
-                        'Pandanon',
-                        'Pangi',
-                        'Quezon',
-                        'Rosario',
-                        'Salvacion',
-                        'San Agustin Norte',
-                        'San Agustin Sur',
-                        'San Antonio',
-                        'San Jose',
-                        'Telaje'
-                    ]
-                },
-                plotOptions: {
-                    bar: {
-                        horizontal: false, // Vertical bar
-                        columnWidth: '50%' // Adjust width for better visualization
-                    }
-                },
-                dataLabels: {
-                    enabled: true
-                },
-                legend: {
-                    position: 'top'
-                }
-            };
+            var chart; // Declare the chart variable
 
-            var chart = new ApexCharts(document.querySelector("#lineChart"), options);
-            chart.render();
+            // This function will render or update the chart
+            function renderChart(data) {
+                var options = {
+                    chart: {
+                        type: 'bar',
+                        height: 350
+                    },
+                    series: [{
+                        name: "Total",
+                        data: data
+                    }],
+                    colors: ['#3498db'],
+                    xaxis: {
+                        categories: [
+                            'San Isidro', 'Awasian', 'Bagong Lungsod', 'Bioto', 'Bongtod', 'Buenavista',
+                            'Dagocdoc', 'Mabua', 'Mabuhay', 'Maitum', 'Maticdum', 'Pandanon', 'Pangi',
+                            'Quezon', 'Rosario', 'Salvacion', 'San Agustin Norte', 'San Agustin Sur',
+                            'San Antonio', 'San Jose', 'Telaje'
+                        ]
+                    },
+                    plotOptions: {
+                        bar: {
+                            horizontal: false,
+                            columnWidth: '50%'
+                        }
+                    },
+                    dataLabels: {
+                        enabled: true
+                    },
+                    legend: {
+                        position: 'top'
+                    }
+                };
+
+                if (chart) {
+                    chart.updateSeries([{
+                        data: data
+                    }]);
+                } else {
+                    chart = new ApexCharts(document.querySelector("#lineChart"), options);
+                    chart.render();
+                }
+            }
+
+            // Initial chart render with default data
+            renderChart([
+                {{ $sanIsidro }},
+                {{ $awasian }},
+                {{ $bagongLungsod }},
+                {{ $bioto }},
+                {{ $bongtod }},
+                {{ $buenavista }},
+                {{ $dagocdoc }},
+                {{ $mabua }},
+                {{ $mabuhay }},
+                {{ $maitum }},
+                {{ $maticdum }},
+                {{ $pandanon }},
+                {{ $pangi }},
+                {{ $quezon }},
+                {{ $rosario }},
+                {{ $salvacion }},
+                {{ $sanAgustinNorte }},
+                {{ $sanAgustinSur }},
+                {{ $sanAntonio }},
+                {{ $sanJose }},
+                {{ $telaje }}
+            ]);
+
+            // Event listener for filter dropdown
+            document.querySelectorAll('.dropdown-item').forEach(function(item) {
+                item.addEventListener('click', function() {
+                    var category = this.getAttribute('data-category');
+                    fetch(`/admin/category-data?category=${category}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            renderChart(data.values); // Update the chart with new data
+                        })
+                        .catch(error => console.error('Error fetching data:', error));
+                });
+            });
         });
     </script>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var map = L.map('map').setView([9.1011711, 126.1588771], 13);
@@ -203,29 +217,24 @@
 
                                 if (data.length > 0) {
                                     let table = `
-                                    <div><h6>
-                                            Barangay Name : ${barangay.outlet_name}
-                                    </h6></div>
+                                    <div><h6>Barangay Name : ${barangay.outlet_name}</h6></div>
                                     <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-
-                                        <th>Category</th>
-                                         <th>Full Name</th>
-                                        <th>Total</th>
-
-                                    </tr>
-                                </thead>
-                                <tbody>`;
+                                        <thead>
+                                            <tr>
+                                                <th>Category</th>
+                                                <th>Full Name</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>`;
 
                                     data.forEach(item => {
-                                        table += `<tr>
-
-                                <td>${item.assistance}</td>
-                                <td>${item.first_names} ${ item.middle_names } ${ item.last_names }</td>
-                                <td>${item.total_quantity}</td>
-
-                              </tr>`;
+                                        table += `
+                                            <tr>
+                                                <td>${item.assistance}</td>
+                                                <td>${item.first_names} ${item.middle_names} ${item.last_names}</td>
+                                                <td>${item.total_quantity}</td>
+                                            </tr>`;
                                     });
 
                                     table += `</tbody></table>`;
@@ -242,7 +251,6 @@
                             .catch(error => console.error("Error fetching barangay details:",
                                 error));
                     });
-
                 }
             });
         });

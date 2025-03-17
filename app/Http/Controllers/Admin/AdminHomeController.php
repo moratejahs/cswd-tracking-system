@@ -72,8 +72,46 @@ class AdminHomeController extends Controller
 
         ]);
     }
+    public function getCategoryData(Request $request)
+    {
+        $category = $request->query('category'); // Get the selected category
 
-    public function getBarangayAssistance(string $address)
+        // List of barangays
+        $barangays = [
+            'San Isidro Tandag, Surigao del Sur',
+            'Awasian Tandag, Surigao del Sur',
+            'Bagong Lungsod (Poblacion) Tandag, Surigao del Sur',
+            'Bioto Tandag, Surigao del Sur',
+            'Bongtod Poblacion (East West) Tandag, Surigao del Sur',
+            'Buenavista Tandag, Surigao del Sur',
+            'Dagocdoc (Poblacion) Tandag, Surigao del Sur',
+            'Mabua Tandag, Surigao del Sur',
+            'Mabuhay Tandag, Surigao del Sur',
+            'Maitum Tandag, Surigao del Sur',
+            'Maticdum Tandag, Surigao del Sur',
+            'Pandanon Tandag, Surigao del Sur',
+            'Pangi Tandag, Surigao del Sur',
+            'Quezon Tandag, Surigao del Sur',
+            'Rosario Tandag, Surigao del Sur',
+            'Salvacion Tandag, Surigao del Sur',
+            'San Agustin Norte Tandag, Surigao del Sur',
+            'San Agustin Sur Tandag, Surigao del Sur',
+            'San Antonio Tandag, Surigao del Sur',
+            'San Jose Tandag, Surigao del Sur',
+            'Telaje Tandag, Surigao del Sur',
+        ];
+
+        // Fetch counts dynamically based on category and barangay
+        $data = [];
+        foreach ($barangays as $barangay) {
+            $data[] = Assistance::where('address', $barangay)
+                ->when($category, fn($query) => $query->where('assistance', $category)) // Filter by category if set
+                ->count();
+        }
+
+        return response()->json(['values' => $data]);
+    }
+        public function getBarangayAssistance(string $address)
     {
         $barangayAssistance = Assistance::select(
             'assistance',
