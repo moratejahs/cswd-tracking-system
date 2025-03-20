@@ -150,11 +150,14 @@
                                 </a>
                             </li>
 
-                            <li class="menu-item ">
-                                <a href="{{ route('admin.manage_account.index') }}" class='menu-link'>
-                                    <span><i class="bi bi-person-lines-fill"></i> Manage Accounts</span>
-                                </a>
-                            </li>
+                            @if (auth()->user()->id === 1)
+                                <li class="menu-item">
+                                    <a href="{{ route('admin.manage_account.index') }}" class="menu-link">
+                                        <span><i class="bi bi-person-lines-fill"></i> Manage Accounts</span>
+                                    </a>
+                                </li>
+                            @endif
+
 
                             {{-- <li class="menu-item ">
                                 <a href="{{ route('admin.assistance.index') }}" class='menu-link'>
@@ -170,6 +173,12 @@
                             <li class="menu-item ">
                                 <a href="{{ route('admin.service.index') }}" class='menu-link'>
                                     <span><i class="bi bi-box-fill"></i> Beneficiary</span>
+                                </a>
+                            </li>
+
+                            <li class="menu-item ">
+                                <a href="{{ route('qualification.index') }}" class='menu-link'>
+                                    <span><i class="bi bi-box-fill"></i> Beneficiary Qualifications</span>
                                 </a>
                             </li>
 

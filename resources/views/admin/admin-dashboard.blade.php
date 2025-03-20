@@ -188,9 +188,16 @@
 
             barangays.forEach(function(barangay) {
                 if (barangay.latitude && barangay.longtitude) {
-                    var iconUrl = barangay.status === 'pending' ?
-                        "{{ asset('assets/images/failed.png') }}" :
-                        "{{ asset('assets/images/location.png') }}";
+                    var iconUrl;
+                    if (barangay.assistance_level === "Low Assistance (0-44%)") {
+                        iconUrl = "{{ asset('assets/images/failed.png') }}";
+                    } else if (barangay.assistance_level === "Medium Assistance (45-74%)") {
+                        iconUrl = "{{ asset('assets/images/location.png') }}";
+                    } else if (barangay.assistance_level === "High Assistance (75-100%)") {
+                        iconUrl = "{{ asset('assets/images/check.png') }}";
+                    } else {
+                        iconUrl = "{{ asset('assets/images/location.png') }}"; // Default icon if undefined
+                    }
 
                     var customIcon = L.icon({
                         iconUrl: iconUrl,
@@ -201,11 +208,13 @@
                             icon: customIcon
                         })
                         .addTo(map)
-                        .bindTooltip(barangay.outlet_name, {
-                            permanent: true,
-                            direction: "top",
-                            offset: [0, -10]
-                        });
+                        .bindTooltip(
+                            `${barangay.outlet_name} (${barangay.assistance_percentage}%)`, {
+                                permanent: true,
+                                direction: "top",
+                                offset: [0, -10]
+                            });
+
 
                     marker.on("click", function() {
                         fetch(`/admin/barangay/${barangay.outlet_address}`)
@@ -217,13 +226,13 @@
 
                                 if (data.length > 0) {
                                     let table = `
-                                    <div><h6>Barangay Name : ${barangay.outlet_name}</h6></div>
+                                    <div><h6 class="text-dark fw-medium">Barangay: ${barangay.outlet_name} has (${barangay.assistance_percentage}%) of its ${barangay.total_population.toLocaleString()} total population receiving assistance.</h6></div>
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>
                                                 <th>Category</th>
                                                 <th>Full Name</th>
-                                                <th>Total</th>
+                                                <th>Amount</th>
                                             </tr>
                                         </thead>
                                         <tbody>`;

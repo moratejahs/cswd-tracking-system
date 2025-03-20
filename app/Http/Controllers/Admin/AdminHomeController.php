@@ -39,12 +39,74 @@ class AdminHomeController extends Controller
         $sanAntonio = Assistance::where('address', 'San Antonio Tandag, Surigao del Sur')->count();
         $sanJose = Assistance::where('address', 'San Jose Tandag, Surigao del Sur')->count();
         $telaje = Assistance::where('address', 'Telaje Tandag, Surigao del Sur')->count();
-        $barangays = Barangay::all();
+        // $barangays = Barangay::all();
 
 
         $categories = ClientCategory::all();
+        $populationMapping = [
+            'Awasian Tandag, Surigao del Sur' => 2040,
+            'Bagong Lungsod (Poblacion) Tandag, Surigao del Sur' => 5419,
+            'Bioto Tandag, Surigao del Sur' => 1706,
+            'Bongtod Poblacion (East West) Tandag, Surigao del Sur' => 6059,
+            'Buenavista Tandag, Surigao del Sur' => 3265,
+            'Dagocdoc (Poblacion) Tandag, Surigao del Sur' => 3754,
+            'Mabua Tandag, Surigao del Sur' => 8475,
+            'Mabuhay Tandag, Surigao del Sur' => 813,
+            'Maitum Tandag, Surigao del Sur' => 1911,
+            'Maticdum Tandag, Surigao del Sur' => 844,
+            'Pandanon Tandag, Surigao del Sur' => 1030,
+            'Pangi Tandag, Surigao del Sur' => 1028,
+            'Quezon Tandag, Surigao del Sur' => 1985,
+            'Rosario Tandag, Surigao del Sur' => 4385,
+            'Salvacion Tandag, Surigao del Sur' => 896,
+            'San Agustin Norte Tandag, Surigao del Sur' => 2404,
+            'San Agustin Sur Tandag, Surigao del Sur' => 5921,
+            'San Antonio Tandag, Surigao del Sur' => 909,
+            'San Isidro Tandag, Surigao del Sur' => 1051,
+            'San Jose Tandag, Surigao del Sur' => 893,
+            'Telaje Tandag, Surigao del Sur' => 7881,
+        ];
 
-        // dd($categories);
+        $barangays = DB::table('barangays as b')
+            ->leftJoin('assistances as a', 'b.outlet_address', '=', 'a.address')
+            ->select(
+                'b.id as barangay_id',
+                'b.outlet_address',
+                'b.outlet_name',
+                'b.latitude',
+                'b.longtitude',
+                DB::raw('COUNT(a.id) as total_assistance_requests'),
+                DB::raw("CASE ".
+                    implode(" ", array_map(function ($population, $address) {
+                        return "WHEN b.outlet_address = '".$address."' THEN ".$population;
+                    }, $populationMapping, array_keys($populationMapping))).
+                    " ELSE 10 END as total_population"),
+                    DB::raw("ROUND((COUNT(a.id) / " .
+                    "CASE " .
+                    implode(" ", array_map(function ($population, $address) {
+                        return "WHEN b.outlet_address = '".$address."' THEN ".$population;
+                    }, $populationMapping, array_keys($populationMapping))) .
+                    " ELSE 10 END) * 100, 2) as assistance_percentage"),
+                DB::raw("CASE ".
+                    "WHEN (COUNT(a.id) / ".
+                    "CASE ".
+                    implode(" ", array_map(function ($population, $address) {
+                        return "WHEN b.outlet_address = '".$address."' THEN ".$population;
+                    }, $populationMapping, array_keys($populationMapping))).
+                    " ELSE 10 END) * 100 >= 75 THEN 'High Assistance (75-100%)' " .
+                    "WHEN (COUNT(a.id) / ".
+                    "CASE ".
+                    implode(" ", array_map(function ($population, $address) {
+                        return "WHEN b.outlet_address = '".$address."' THEN ".$population;
+                    }, $populationMapping, array_keys($populationMapping))).
+                    " ELSE 10 END) * 100 >= 45 THEN 'Medium Assistance (45-74%)' " .
+                    "ELSE 'Low Assistance (0-44%)' END as assistance_level"
+                )
+            )
+            ->groupBy('b.id', 'b.outlet_address', 'b.outlet_name', 'b.latitude', 'b.longtitude')
+            ->orderBy('b.outlet_address')
+            ->get();
+        // dd($query);
         return view('admin.admin-dashboard', [
             'categories' => $categories,
             'sanIsidro' => $sanIsidro,

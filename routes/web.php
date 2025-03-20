@@ -16,8 +16,10 @@ use App\Http\Controllers\Admin\AdminSalesOverviewController;
 use App\Http\Controllers\Admin\AdminRevenueVsProfitController;
 use App\Http\Controllers\Admin\AdminQuickSaleRestoreController;
 use App\Http\Controllers\Admin\AdminProductInventoryStockInController;
+use App\Http\Controllers\Admin\QualificationController;
 use App\Http\Controllers\CSWD\ClientCategoryController;
 use App\Models\ClientCategory;
+use App\Models\Qualification;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +33,10 @@ use App\Models\ClientCategory;
 */
 
 Route::get('/home', function () {
-    return view('home');
+    $datas = Qualification::all();
+    return view('home', [
+        'datas'=> $datas
+    ]);
 })->name('home');
 
 Route::middleware('guest')->group(function () {
@@ -149,6 +154,14 @@ Route::middleware('auth')->group(function () {
         Route::get('client-category/{id}/show', 'show')->name('admin.client-category.show');
         Route::put('client-category', 'update')->name('admin.client-category.update');
         Route::delete('client-category/delete', 'destroy')->name('admin.client-category.destroy');
+    });
+
+    Route::controller(QualificationController::class)->group(function() {
+        Route::get('/qualifications', 'index')->name('qualification.index');
+        Route::post('/qualification', 'store')->name('qualification.store');
+        Route::get('/qualification/{id}', 'show')->name('qualification.show');
+        Route::put('/qualification', 'update')->name('qualification.update');
+        Route::delete('/qualification', 'destroy')->name('qualification.destroy');
     });
 
 });

@@ -110,28 +110,6 @@
                             </div>
                             <div class="dropdown">
 
-                                {{-- <a href="#" id="topbarUserDropdown"
-                                    class="user-dropdown d-flex align-items-center dropend dropdown-toggle "
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    <div class="avatar avatar-md2">
-                                        <img src="{{ asset('assets/images/profile/profile-img.png') }}" alt="Avatar">
-                                    </div>
-                                    <div class="text">
-                                        <h6 class="user-dropdown-name">{{ auth()->user()->username }}</h6>
-                                        <p class="text-sm user-dropdown-status text-muted">Admin</p>
-                                    </div>
-                                </a>
-                                <ul class="shadow-lg dropdown-menu dropdown-menu-end"
-                                    aria-labelledby="topbarUserDropdown">
-                                    {{-- <li><a class="dropdown-item" href="#">My Account</a></li>
-                                    <li><a class="dropdown-item" href="#">Settings</a></li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li> --}}
-                                {{-- <li><a class="dropdown-item text-danger" style="cursor: pointer;" data-bs-toggle="modal"
-                                        data-bs-target="#logoutModal">Log
-                                        Out</a></li>
-                                </ul> --}}
                             </div>
 
                             <!-- Burger button responsive -->
@@ -155,83 +133,40 @@
             </header>
 
             <div class="container-fluid px-4">
-                <div class="ropw">
-                    <div class="col-12">
+                <span>
+                    <h4>Requirements for DSWD services vary depending on the type of assistance and
+                        program.</h4>
+                </span>
 
-                        <div class="card">
-                            <div class="card-body" style="background-color:  white;">
-                                <span>
-                                    <h4>Requirements for DSWD services vary depending on the type of assistance and
-                                        program.</h4>
-                                </span>
-                                <p>
-                                <div>
-                                    <h6>PS: Qualifications:</h6>
+                <div class="row">
+                    @foreach ($datas as $data)
+                        <div class="col-4">
+                            <div class="card">
+                                <div class=" card-header">
+                                    <div>
+                                        <h4>
+                                            Title: {{ $data->name }}
+                                        </h4>
+                                    </div>
                                 </div>
-                                <div>
-                                    <ul>
-                                        <li>Be at least 60 years old</li>
-                                        <li>Provide a proof of age</li>
-                                        <li>Certificate, Baptismal Certificate, or Goverment Id</li>
-                                        <li>Provide three</li>
-                                        <li>Must be a Filipino citizen</li>
-                                        <li>Must be a resident of the area where the service is requested</li>
-                                        <li>Must be in need of assistance</li>
-                                        <li>Must not be receiving similar assistance from other government agencies
-                                        </li>
-                                    </ul>
+                                <div class="card-body text-dark" style="background-color:  white;">
+                                    <div>
+                                        Qualifications:
+                                    </div>
+                                    @foreach (explode('-', $data->description) as $item)
+                                        @if (!empty(trim($item)))
+                                            <li>{{ trim($item) }}</li>
+                                        @endif
+                                    @endforeach
                                 </div>
-                                <div>
-                                    <h6>Requirements to avail with this program:</h6>
+                                <div class="card-footer">
+                                    <small class="text-dark">
+                                        {{ $data->created_at->format('M d, Y') }}
+                                    </small>
                                 </div>
-                                <div>
-                                    <ul>
-                                        <li>Birth certificate</li>
-                                        <li>Indigency</li>
-                                        <li>National Id</li>
-                                    </ul>
-                                </div>
-                                </p>
-                                <ol>
-
-                                    <li>Medical assistance
-                                        <ul>
-                                            <li>Medical certificate, clinical abstract, or certificate of confinement
-                                            </li>
-                                            <li>Hospital bill or statement of account</li>
-                                            <li>Certificate of balance</li>
-                                            <li>Promissory note</li>
-                                            <li>Social case study report</li>
-                                        </ul>
-                                    </li>
-                                    <li>Travel clearance for minors
-                                        <ul>
-                                            <li>Duly accomplished DSWD Travel Clearance application form</li>
-                                            <li>Photocopy of the minor's birth certificate</li>
-                                            <li>Written consent of both parents or the solo parent or the legal guardian
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li>Pantawid Pamilyang Pilipino Program (4Ps)
-                                        <ul>
-                                            <li>Children 3–18 years old must enroll in school</li>
-                                            <li>Children must have an 85% class attendance rate</li>
-                                            <li>Children must be dewormed twice a year</li>
-                                            <li>Children 0–5 years old must be fully immunized</li>
-                                        </ul>
-                                    </li>
-                                    <li>Travel clearance for Filipino minors
-                                        <ul>
-                                            <li>Application form is available at any DSWD Field Office or downloadable
-                                                from the DSWD website</li>
-                                            <li>Documentary requirements vary depending on whether the child is
-                                                traveling alone or with an adult</li>
-                                        </ul>
-                                    </li>
-                                </ol>
                             </div>
                         </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
 
