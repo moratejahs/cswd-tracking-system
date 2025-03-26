@@ -23,6 +23,7 @@ class AdminHomeController extends Controller
         $bagongLungsod = Assistance::where('address', 'Bagong Lungsod (Poblacion) Tandag, Surigao del Sur')->count();
         $bioto = Assistance::where('address', 'Bioto Tandag, Surigao del Sur')->count();
         $bongtod = Assistance::where('address', 'Bongtod Poblacion (East West) Tandag, Surigao del Sur')->count();
+        // dd($bongtod);
         $buenavista = Assistance::where('address', 'Buenavista Tandag, Surigao del Sur')->count();
         $dagocdoc = Assistance::where('address', 'Dagocdoc (Poblacion) Tandag, Surigao del Sur')->count();
         $mabua = Assistance::where('address', 'Mabua Tandag, Surigao del Sur')->count();
@@ -106,7 +107,13 @@ class AdminHomeController extends Controller
             ->groupBy('b.id', 'b.outlet_address', 'b.outlet_name', 'b.latitude', 'b.longtitude')
             ->orderBy('b.outlet_address')
             ->get();
-        // dd($query);
+            // foreach ($barangays as $barangay) {
+            //     if ($barangay->outlet_name === "Bongtod Poblacion (East West)") {
+            //         $barangay->outlet_name = "Bongtud Poblacion (East West)";
+            //     }
+            // }
+
+        // dd($barangays);
         return view('admin.admin-dashboard', [
             'categories' => $categories,
             'sanIsidro' => $sanIsidro,

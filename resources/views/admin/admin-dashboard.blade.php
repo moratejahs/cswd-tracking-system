@@ -226,7 +226,7 @@
 
                                 if (data.length > 0) {
                                     let table = `
-                                    <div><h6 class="text-dark fw-medium">Barangay: ${barangay.outlet_name} has (${barangay.assistance_percentage}%) of its ${barangay.total_population.toLocaleString()} total population receiving assistance.</h6></div>
+                                    <div><h6 class="text-dark fw-medium">Barangay: ${barangay.outlet_name} has (${barangay.assistance_percentage}%) of its ${barangay.total_population.toLocaleString()} total data poverty population received assistance.</h6></div>
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>

@@ -10,12 +10,14 @@ $(function () {
                 extend: 'print',
                 title: 'Beneficiary Records',
                 text: 'Print',
+                orientation: 'landscape',
                 className: 'btn btn-primary btn-sm',
             },
             {
                 extend: 'excelHtml5',
                 title: 'Beneficiary Records',
                 text: 'Excel',
+                // orientation: 'landscape',
                 className: 'btn btn-primary btn-sm',
             },
             {
@@ -23,7 +25,7 @@ $(function () {
                 title: 'Beneficiary Records',
                 text: 'PDF',
                 className: 'btn btn-primary btn-sm',
-                orientation: 'portrait',
+                orientation: 'landscape',
                 pageSize: 'A4',
             },
         ],
@@ -35,11 +37,13 @@ $(function () {
             {
                 data: 'full_name',
                 name: 'full_name',
+                className: 'text-left',
             },
             {
                 data: 'birth_date',
                 name: 'birth_date',
-                className: 'text-center',
+                className: 'text-left',
+
                 render: function (data, type, row) {
                     var date = new Date(data);
                     var options = {
@@ -53,42 +57,42 @@ $(function () {
             {
                 data: 'address',
                 name: 'address',
-                className: 'text-center',
+                className: 'text-left',
             },
             {
                 data: 'contact_no',
                 name: 'contact_no',
-                className: 'text-center',
+                className: 'text-left',
             },
             {
                 data: 'status',
                 name: 'status',
-                className: 'text-center',
+                className: 'text-left',
             },
             {
                 data: 'occupation',
                 name: 'occupation',
-                className: 'text-center',
+                className: 'text-left',
             },
             {
                 data: 'assistance',
                 name: 'assistance',
-                className: 'text-center',
+                className: 'text-left',
             },
             {
                 data: 'quantity',
                 name: 'quantity',
-                className: 'text-center',
+                className: 'text-left',
             },
             {
                 data: 'person_of_responsible',
                 name: 'person_of_responsible',
-                className: 'text-center',
+                className: 'text-left',
             },
             {
                 data: 'created_at',
                 name: 'created_at',
-                className: 'text-center',
+                className: 'text-left',
                 render: function (data) {
                     if (!data) return '';
 
