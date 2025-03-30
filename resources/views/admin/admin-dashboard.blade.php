@@ -106,7 +106,7 @@
                     colors: ['#3498db'],
                     xaxis: {
                         categories: [
-                            'San Isidro', 'Awasian', 'Bagong Lungsod', 'Bioto', 'Bongtod', 'Buenavista',
+                            'San Isidro', 'Awasian', 'Bagong Lungsod', 'Bioto', 'Bungtod', 'Buenavista',
                             'Dagocdoc', 'Mabua', 'Mabuhay', 'Maitum', 'Maticdum', 'Pandanon', 'Pangi',
                             'Quezon', 'Rosario', 'Salvacion', 'San Agustin Norte', 'San Agustin Sur',
                             'San Antonio', 'San Jose', 'Telaje'

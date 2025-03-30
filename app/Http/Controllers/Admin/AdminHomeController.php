@@ -22,7 +22,7 @@ class AdminHomeController extends Controller
         $awasian = Assistance::where('address', 'Awasian Tandag, Surigao del Sur')->count();
         $bagongLungsod = Assistance::where('address', 'Bagong Lungsod (Poblacion) Tandag, Surigao del Sur')->count();
         $bioto = Assistance::where('address', 'Bioto Tandag, Surigao del Sur')->count();
-        $bongtod = Assistance::where('address', 'Bongtod Poblacion (East West) Tandag, Surigao del Sur')->count();
+        $bongtod = Assistance::where('address', 'Bungtod Poblacion (East West) Tandag, Surigao del Sur')->count();
         // dd($bongtod);
         $buenavista = Assistance::where('address', 'Buenavista Tandag, Surigao del Sur')->count();
         $dagocdoc = Assistance::where('address', 'Dagocdoc (Poblacion) Tandag, Surigao del Sur')->count();
@@ -48,7 +48,7 @@ class AdminHomeController extends Controller
             'Awasian Tandag, Surigao del Sur' => 281,
             'Bagong Lungsod (Poblacion) Tandag, Surigao del Sur' => 746,
             'Bioto Tandag, Surigao del Sur' => 235,
-            'Bongtod Poblacion (East West) Tandag, Surigao del Sur' => 834,
+            'Bungtod Poblacion (East West) Tandag, Surigao del Sur' => 834,
             'Buenavista Tandag, Surigao del Sur' => 449,
             'Dagocdoc (Poblacion) Tandag, Surigao del Sur' => 517,
             'Mabua Tandag, Surigao del Sur' => 1166,
@@ -108,7 +108,7 @@ class AdminHomeController extends Controller
             ->orderBy('b.outlet_address')
             ->get();
             // foreach ($barangays as $barangay) {
-            //     if ($barangay->outlet_name === "Bongtod Poblacion (East West)") {
+            //     if ($barangay->outlet_name === "Bungtod Poblacion (East West)") {
             //         $barangay->outlet_name = "Bongtud Poblacion (East West)";
             //     }
             // }
@@ -151,7 +151,7 @@ class AdminHomeController extends Controller
             'Awasian Tandag, Surigao del Sur',
             'Bagong Lungsod (Poblacion) Tandag, Surigao del Sur',
             'Bioto Tandag, Surigao del Sur',
-            'Bongtod Poblacion (East West) Tandag, Surigao del Sur',
+            'Bungtod Poblacion (East West) Tandag, Surigao del Sur',
             'Buenavista Tandag, Surigao del Sur',
             'Dagocdoc (Poblacion) Tandag, Surigao del Sur',
             'Mabua Tandag, Surigao del Sur',
