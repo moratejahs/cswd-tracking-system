@@ -109,16 +109,15 @@ class ManageAccountController extends Controller
             'username' => 'required',
             'password' => 'nullable',
         ]);
-
+        // dd($validated);
         $user = User::findOrFail($validated['id']);
-
-        if (User::where('username', $request->username)->where('id', '!=', $validated['id'])->exists()) {
-            return response()->json(['message' => 'Username already exists'], 400);
-        }
-
+        // dd($user);
+        // if (User::where('username', $request->username)->where('id', '!=', $validated['id'])->exists()) {
+        //     return redirect()->back()->with('message', 'This account is already exist');
+        // }
         $user->update([
             'first_name' => $validated['first_name'],
-            'middle_name' => $validated[']middle_name'],
+            'middle_name' => $validated['middle_name'],
             'last_name' => $validated['last_name'],
             'position' => $validated['position'],
             'email' => $validated['email'],

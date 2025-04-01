@@ -11,8 +11,7 @@
                     @method('put')
                     <div class="row">
                         <small>Account complete name</small>
-                        <input id="accountId" type="hidden" name="first_name" class="form-control text-center"
-                            required>
+                        <input id="accountId" type="text" name="id" class="form-control text-center" required>
                         <div class="col-4 mb-2">
                             <div class="form-group">
                                 <label for="accountFirstname">First Name <span class="text-danger">*</span></label>
@@ -73,7 +72,7 @@
                                         <i class="bi bi-check2"></i>
                                     </div>
                                     <div class="preloader mx-2 mt-1" role="status"></div>
-                                    <span id="save" class="d-none d-sm-block">Submit</span>
+                                    <span id="save" class="d-none d-sm-block">Update</span>
                                 </div>
                             </button>
                         </div>
