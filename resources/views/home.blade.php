@@ -119,16 +119,7 @@
                         </div>
                     </div>
                 </div>
-                <nav class="main-navbar">
-                    <div class="container-fluid px-4">
-                        <ul>
-                            <li class="menu-item ">
-                                <a href="{{ route('index.home') }}" class='menu-link'>
-                                    <span><i class="bi bi-grid-fill"></i> Home</span>
-                                </a>
-                            </li>
-                    </div>
-                </nav>
+
 
             </header>
 
@@ -145,7 +136,7 @@
                                 <div class=" card-header">
                                     <div>
                                         <h4>
-                                            Title: {{ $data->name }}
+                                            {{ $data->name }}
                                         </h4>
                                     </div>
                                 </div>
