@@ -30,6 +30,6 @@ class LoginController extends Controller
     {
         Auth::logout();
 
-        return to_route('admin-login.form');
+        return to_route('home');
     }
 }

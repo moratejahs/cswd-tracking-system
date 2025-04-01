@@ -32,7 +32,7 @@ use App\Models\Qualification;
 |
 */
 
-Route::get('/home', function () {
+Route::get('/', function () {
     $datas = Qualification::all();
     return view('home', [
         'datas'=> $datas
@@ -40,9 +40,9 @@ Route::get('/home', function () {
 })->name('home');
 
 Route::middleware('guest')->group(function () {
-    Route::get('/', function () {
-        return to_route('admin-login.form');
-    });
+    // Route::get('/', function () {
+    //     return to_route('admin-login.form');
+    // });
 
     // Auth Routes
     Route::get('admin/login', [LoginController::class, 'showLoginForm'])->name('admin-login.form');
