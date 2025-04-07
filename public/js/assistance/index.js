@@ -12,12 +12,29 @@ $(function () {
                 text: 'Print',
                 orientation: 'landscape',
                 className: 'btn btn-primary btn-sm',
+                customize: function (win) {
+                    $(win.document.body)
+                        .css('font-size', '10pt')
+                        .prepend(
+                            '<div style="text-align: center; margin-bottom: 20px;"><img src="http://127.0.0.1:8000/cswd_header.png" style="width: 100%; max-width: 600px;" /></div>'
+                        ).append(`
+                            <div style="display: flex; justify-content: center; margin-top: 50px;">
+                                <div style="text-align: center; margin-right: 100px;">
+                                    <div style="border-top: 1px solid black; width: 200px; margin: 0 auto;"></div>
+                                    <p style="margin-top: 5px; font-weight: bold;">SOCIAL WELFARE OFFICER-III</p>
+                                </div>
+                                <div style="text-align: center; margin-left: 100px;">
+                                    <div style="border-top: 1px solid black; width: 200px; margin: 0 auto;"></div>
+                                    <p style="margin-top: 5px; font-weight: bold;">DEPARTMENT HEAD</p>
+                                </div>
+                            </div>
+                        `);
+                },
             },
             {
                 extend: 'excelHtml5',
                 title: 'Beneficiary Records',
                 text: 'Excel',
-                // orientation: 'landscape',
                 className: 'btn btn-primary btn-sm',
             },
             {
@@ -27,6 +44,24 @@ $(function () {
                 className: 'btn btn-primary btn-sm',
                 orientation: 'landscape',
                 pageSize: 'A4',
+                customize: function (win) {
+                    $(win.document.body)
+                        .css('font-size', '10pt')
+                        .prepend(
+                            '<div style="text-align: center; margin-bottom: 20px;"><img src="https://cswd-tandag.site/cswd_header.png" style="width: 100%; max-width: 600px;" /></div>'
+                        ).append(`
+                            <div style="display: flex; justify-content: center; margin-top: 50px; font-size: 14px;">
+                                <div style="text-align: center; margin-right: 100px;">
+                                    <div style="border-top: 1px solid black; width: 300px; margin: 0 auto;"></div>
+                                    <p style="margin-top: 5px; font-weight: bold;">SOCIAL WELFARE OFFICER-III</p>
+                                </div>
+                                <div style="text-align: center; margin-left: 100px;">
+                                    <div style="border-top: 1px solid black; width: 300px; margin: 0 auto;"></div>
+                                    <p style="margin-top: 5px; font-weight: bold;">DEPARTMENT HEAD</p>
+                                </div>
+                            </div>
+                        `);
+                },
             },
         ],
         processing: true,

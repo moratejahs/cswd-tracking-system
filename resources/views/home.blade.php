@@ -125,13 +125,13 @@
 
             <div class="container-fluid px-4">
                 <span>
-                    <h4>Requirements for DSWD services vary depending on the type of assistance and
+                    <h4>Requirements for CSWDO services vary depending on the type of assistance and
                         program.</h4>
                 </span>
 
                 <div class="row">
                     @foreach ($datas as $data)
-                        <div class="col-4">
+                        <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="card">
                                 <div class=" card-header">
                                     <div>
@@ -140,7 +140,7 @@
                                         </h4>
                                     </div>
                                 </div>
-                                <div class="card-body text-dark" style="background-color:  white;">
+                                <div class="card-body">
                                     <div>
                                         Qualifications:
                                     </div>
@@ -151,7 +151,7 @@
                                     @endforeach
                                 </div>
                                 <div class="card-footer">
-                                    <small class="text-dark">
+                                    <small>
                                         {{ $data->created_at->format('M d, Y') }}
                                     </small>
                                 </div>

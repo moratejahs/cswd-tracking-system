@@ -11,7 +11,8 @@
                     @method('put')
                     <div class="row">
                         <small>Account complete name</small>
-                        <input id="accountId" type="text" name="id" class="form-control text-center" required>
+                        <input id="accountId" hidden type="text" name="id" class="form-control text-center"
+                            required>
                         <div class="col-4 mb-2">
                             <div class="form-group">
                                 <label for="accountFirstname">First Name <span class="text-danger">*</span></label>

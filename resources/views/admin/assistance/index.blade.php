@@ -59,11 +59,14 @@
 
                             <thead class="bg-primary">
                                 <tr>
-                                    <th class=" text-white" style="font-style: normal; font-weight: 200;">Full
-                                        Name</th>
-                                    <th class=" text-white" style="font-style: normal; font-weight: 200;">Birth
-                                        Date</th>
-                                    <th class=" text-white" style="font-style: normal; font-weight: 200;">Address
+                                    <th class="text-white" style="font-style: normal; font-weight: 200;">
+                                        Full Name
+                                    </th>
+                                    <th class="text-white" style="font-style: normal; font-weight: 200;">
+                                        Birth Date
+                                    </th>
+                                    <th class=" text-white" style="font-style: normal; font-weight: 200;">
+                                        Address
                                     </th>
                                     <th class=" text-white" style="font-style: normal; font-weight: 200;">
                                         Contact No
@@ -72,16 +75,22 @@
                                         Purpose
                                     </th>
                                     <th class=" text-white" style="font-style: normal; font-weight: 200;">
-                                        Occupation</th>
+                                        Occupation
+                                    </th>
                                     <th class=" text-white" style="font-style: normal; font-weight: 200;">
-                                        Category </th>
+                                        Category
+                                    </th>
                                     <th class=" text-white" style="font-style: normal; font-weight: 200;">
-                                        Amount</th>
+                                        Amount
+                                    </th>
                                     <th class=" text-white" style="font-style: normal; font-weight: 200;">
-                                        Person of Responsible</th>
+                                        Person of Responsible
+                                    </th>
                                     <th class=" text-white" style="font-style: normal; font-weight: 200;">
-                                        Created At</th>
-                                    <th class="text-center text-white" style="font-style: normal; font-weight: 200;">Action
+                                        Created At
+                                    </th>
+                                    <th class="text-center text-white" style="font-style: normal; font-weight: 200;">
+                                        Action
                                     </th>
                                 </tr>
                             </thead>

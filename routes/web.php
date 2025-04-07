@@ -38,6 +38,9 @@ Route::get('/', function () {
         'datas'=> $datas
     ]);
 })->name('home');
+Route::get('/header', function () {
+    return view('header');
+});
 
 Route::middleware('guest')->group(function () {
     // Route::get('/', function () {
