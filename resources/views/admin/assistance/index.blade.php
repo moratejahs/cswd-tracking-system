@@ -84,7 +84,7 @@
                                         Amount
                                     </th>
                                     <th class=" text-white" style="font-style: normal; font-weight: 200;">
-                                        Person of Responsible
+                                        Responsible Person
                                     </th>
                                     <th class=" text-white" style="font-style: normal; font-weight: 200;">
                                         Created At
