@@ -128,9 +128,9 @@
                             </div>
                             <div class="col-4">
                                 <div class="form-group">
-                                    <label for="person_of_responsible">Person of Responsible</label>
+                                    <label for="person_of_responsible">Responsible Person</label>
                                     <input type="text" class="form-control" id="person_of_responsible"
-                                        name="person_of_responsible" placeholder="Person of Responsible" required>
+                                        name="person_of_responsible" placeholder="Enter Responsible Person" required>
                                 </div>
                             </div>
                             <div class="pb-2 col-12 d-flex justify-content-end align-items-center">
