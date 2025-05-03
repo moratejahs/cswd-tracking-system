@@ -55,7 +55,7 @@ class AdminHomeController extends Controller
             'Mabuhay Tandag, Surigao del Sur' => 20,
             'Maitum Tandag, Surigao del Sur' => 40,
             'Maticdum Tandag, Surigao del Sur' => 20,
-            'Pandanon Tandag, Surigao del Sur' => 2,
+            'Pandanon Tandag, Surigao del Sur' => 40,
             'Pangi Tandag, Surigao del Sur' => 20,
             'Quezon Tandag, Surigao del Sur' => 40,
             'Rosario Tandag, Surigao del Sur' => 90,
