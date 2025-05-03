@@ -48,7 +48,7 @@
             <div class="card" data-aos="fade-left">
                 <div class="card-body">
                     <a type="button" class="btn-sm block btn btn-primary" href="{{ route('admin.service.create') }}">
-                        Add Service
+                        Add Beneficiary
                     </a>
                     <button type="button" class="btn-sm block btn btn-primary" data-bs-toggle="modal"
                         data-bs-target="#createAccountModal">

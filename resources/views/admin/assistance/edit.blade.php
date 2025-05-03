@@ -46,7 +46,7 @@
         <div class="col1">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Add Assistance Form</h5>
+                    <h5 class="card-title">Edit Beneficiary</h5>
                     <hr>
                     <form action="{{ route('admin.service.update') }}" method="POST">
                         @csrf
