@@ -190,11 +190,11 @@
                 if (barangay.latitude && barangay.longtitude) {
                     var iconUrl;
                     if (barangay.assistance_level === "Low Assistance (0-44%)") {
-                        iconUrl = "{{ asset('assets/images/location.png') }}";
-                    } else if (barangay.assistance_level === "Medium Assistance (45-74%)") {
                         iconUrl = "{{ asset('assets/images/yellow.png') }}";
+                    } else if (barangay.assistance_level === "Medium Assistance (45-74%)") {
+                        iconUrl = "{{ asset('assets/images/green.png') }}";
                     } else if (barangay.assistance_level === "High Assistance (75-100%)") {
-                        iconUrl = "{{ asset('assets/images/blue.png') }}";
+                        iconUrl = "{{ asset('assets/images/location.png') }}";
                     } else {
                         iconUrl = "{{ asset('assets/images/location.png') }}"; // Default icon if undefined
                     }

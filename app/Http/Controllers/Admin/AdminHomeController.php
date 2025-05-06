@@ -23,7 +23,6 @@ class AdminHomeController extends Controller
         $bagongLungsod = Assistance::where('address', 'Bagong Lungsod (Poblacion) Tandag, Surigao del Sur')->count();
         $bioto = Assistance::where('address', 'Bioto Tandag, Surigao del Sur')->count();
         $bongtod = Assistance::where('address', 'Bongtud Poblacion (East West) Tandag, Surigao del Sur')->count();
-        // dd($bongtod);
         $buenavista = Assistance::where('address', 'Buenavista Tandag, Surigao del Sur')->count();
         $dagocdoc = Assistance::where('address', 'Dagocdoc (Poblacion) Tandag, Surigao del Sur')->count();
         $mabua = Assistance::where('address', 'Mabua Tandag, Surigao del Sur')->count();
@@ -41,6 +40,7 @@ class AdminHomeController extends Controller
         $sanJose = Assistance::where('address', 'San Jose Tandag, Surigao del Sur')->count();
         $telaje = Assistance::where('address', 'Telaje Tandag, Surigao del Sur')->count();
         // $barangays = Barangay::all();
+
 
 
         $categories = ClientCategory::all();

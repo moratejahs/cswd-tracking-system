@@ -72,19 +72,7 @@ Route::middleware('auth')->group(function () {
         Route::get('revenue-vs-profit', AdminRevenueVsProfitController::class)
             ->name('revenue-vs-profit.index');
 
-        Route::prefix('inventory')->group(function () {
-            Route::get('records', [AdminInventoryController::class, 'index'])->name('index.inventory');
-            Route::post('records/store', [AdminInventoryController::class, 'store'])->name('store.inventory');
-            Route::get('records/{productId}', [AdminInventoryController::class, 'show'])->name('get.inventory');
-            Route::put('records/update', [AdminInventoryController::class, 'update'])->name('update.inventory');
-            Route::delete('records/delete', [AdminInventoryController::class, 'destroy'])->name('delete.inventory');
-            Route::get('deleted_product', [AdminInventoryController::class, 'restoreIndex'])->name('index.deleted.inventory');
-            Route::post('restore', [AdminInventoryController::class, 'restore'])->name('restore.inventory');
-            // STOCK-IN ROUTES
-            Route::get('stock-in', [AdminProductInventoryStockInController::class, 'index'])->name('index.stock-in');
-            Route::post('stock-in/store', [AdminProductInventoryStockInController::class, 'store'])->name('store.stock-in');
-            Route::put('stock-in/update', [AdminProductInventoryStockInController::class, 'update'])->name('update.stock-in');
-        });
+
     });
 
     // CATEGORY ROUTES
@@ -94,23 +82,9 @@ Route::middleware('auth')->group(function () {
     Route::put('category/update', [AdminCategoryController::class, 'update'])->name('update.category');
     Route::delete('category/delete', [AdminCategoryController::class, 'destroy'])->name('destroy.category');
 
-    // SALES ROUTES
-    Route::get('sales', [AdminSaleController::class, 'index'])->name('sales.index');
-    Route::post('sales', [AdminSaleController::class, 'store'])->name('sales.store');
-    Route::get('sales/{sale}', [AdminSaleController::class, 'show'])->name('sales.show');
-    Route::get('sales/{sale}/edit', [AdminSaleController::class, 'edit'])->name('sales.edit');
-    Route::patch('sales/{sale}', [AdminSaleController::class, 'update'])->name('sales.update');
-    Route::delete('sales/{sale}', [AdminSaleController::class, 'destroy'])->name('sales.destroy');
-    Route::patch('sales/{sale}/restore', AdminSaleRestoreController::class)->name('sales.restore');
 
-    // QUICK SALES ROUTES
-    Route::post('quick-sales', [AdminQuickSaleController::class, 'store'])->name('quick-sales.store');
-    Route::delete('quick-sales/{quickSale}', [AdminQuickSaleController::class, 'destroy'])->name('quick-sales.destroy');
-    Route::patch('quick-sales/{quickSale}/restore', AdminQuickSaleRestoreController::class)->name('quick-sales.restore');
 
-    Route::get('deleted_sales', [AdminSaleController::class, 'restoreIndex'])->name('index.deleted.sales');
-    Route::get('product_details/{productId}', [AdminSaleController::class, 'details'])->name('product.details');
-    Route::get('supplier/{supplierName}', [AdminSupplierController::class, 'index'])->name('index.supplier');
+
 
     //Manage Accounts
     Route::controller(ManageAccountController::class)->group(function () {
