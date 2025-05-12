@@ -61,7 +61,7 @@ class ClientCategoryController extends Controller
             // 'code' => $validated['code'],
             'description' => $validated['description'],
         ]);
-        return redirect()->back()->with('message', 'Client category added successfully.');
+        return redirect()->back()->with('success', 'Client category added successfully.');
 
     }
 
@@ -96,7 +96,7 @@ class ClientCategoryController extends Controller
         $clientCategory->update([
             'description' => $validated['description'],
         ]);
-        return redirect()->back()->with('message', 'Client category updated successfully.');
+        return redirect()->back()->with('success', 'Client category updated successfully.');
     }
 
     /**
@@ -110,6 +110,6 @@ class ClientCategoryController extends Controller
         ]);
         $clientCategory = ClientCategory::find($validated['id']);
         $clientCategory->delete();
-        return redirect()->back()->with('message', 'Client category deleted successfully.');
+        return redirect()->back()->with('success', 'Client category deleted successfully.');
     }
 }

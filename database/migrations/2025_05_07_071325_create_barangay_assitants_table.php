@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('barangay_assitants', function (Blueprint $table) {
-            $table->unsignedBigInteger('asssitance_id');
-            $table->string('outlet_name');
-            $table->string('outlet_address');
-            $table->string('lat');
-            $table->string('long');
+            $table->id();
+            $table->longText(column: 'outlet_name')->nullable();
+            $table->longText('outlet_address')->nullable();
+            $table->string('lat')->nullable();
+            $table->string('long')->nullable();
             $table->timestamps();
         });
     }

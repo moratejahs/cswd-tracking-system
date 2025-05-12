@@ -44,7 +44,23 @@
     <br>
     <div class="row">
 
+        <div class="col-12">
+            {{-- @if (session('message'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle"></i>
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif --}}
 
+            @if (session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+        </div>
         <div class="col-12">
             <div class="card" data-aos="fade-left">
                 <div class="card-body">
@@ -66,27 +82,24 @@
                                     <th class="text-white" style="font-style: normal; font-weight: 200;">
                                         Birth Date
                                     </th>
-                                    <th class=" text-white" style="font-style: normal; font-weight: 200;">
-                                        Address
+                                    <th class="text-white" style="font-style: normal; font-weight: 200;">
+                                        Gender
+                                    </th>
+                                    <th class="text-white" style="font-style: normal; font-weight: 200;">
+                                        Age
+                                    </th>
+                                    <th class="text-white" style="font-style: normal; font-weight: 200;">
+                                        Barangay Address
                                     </th>
                                     <th class=" text-white" style="font-style: normal; font-weight: 200;">
                                         Contact No
                                     </th>
-                                    <th class=" text-white" style="font-style: normal; font-weight: 200;">
-                                        Purpose
-                                    </th>
+
                                     <th class=" text-white" style="font-style: normal; font-weight: 200;">
                                         Occupation
                                     </th>
-                                    <th class=" text-white" style="font-style: normal; font-weight: 200;">
-                                        Category
-                                    </th>
-                                    <th class=" text-white" style="font-style: normal; font-weight: 200;">
-                                        Amount
-                                    </th>
-                                    <th class=" text-white" style="font-style: normal; font-weight: 200;">
-                                        Responsible Person
-                                    </th>
+
+
                                     <th class=" text-white" style="font-style: normal; font-weight: 200;">
                                         Created At
                                     </th>

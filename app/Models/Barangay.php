@@ -9,10 +9,5 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Barangay extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'outlet_name',
-        'outlet_address',
-        'latitude',
-        'longtitude'
-    ];
+    protected $guarded = [];
 }

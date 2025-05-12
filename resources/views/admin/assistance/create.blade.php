@@ -35,6 +35,16 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             @endif
+            {{-- @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="list-disc list-inside text-red-600">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif --}}
+
         </div>
 
         <div class="col-12">
@@ -42,7 +52,6 @@
                 <div class="card-body">
                     <form action="{{ route('admin.service.store') }}" method="POST">
                         @csrf
-
                         <div class="row">
                             <div class="col-4">
                                 <label>First Name</label>
@@ -80,16 +89,17 @@
                                 <input type="text" class="form-control" name="contact_no" required>
                             </div>
 
-                            <input type="text" name="latitude" id="latitude">
-                            <input type="text" name="longitude" id="longitude">
+                            <input type="text" hidden name="latitude" id="latitude">
+                            <input type="text" hidden name="longitude" id="longitude">
 
                             <div class="col-6">
-                                <label>Location Name</label>
-                                <input type="text" class="form-control" id="outlet_name" name="outlet_name" readonly>
+                                {{-- <label>Location Name</label> --}}
+                                <input type="text" hidden class="form-control" id="outlet_name" name="outlet_name"
+                                    readonly>
                             </div>
                             <div class="col-6">
-                                <label>Complete Address</label>
-                                <input type="text" class="form-control" id="outlet_address" name="outlet_address"
+                                {{-- <label>Complete Address</label> --}}
+                                <input type="text" hidden class="form-control" id="outlet_address" name="outlet_address"
                                     readonly>
                             </div>
                         </div>

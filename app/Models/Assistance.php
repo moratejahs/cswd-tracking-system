@@ -10,19 +10,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Assistance extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'user_id',
-        'first_name',
-        'middle_name',
-        'last_name',
-        'birth_date',
-        'address',
-        'contact_no',
-        'status',
-        'occupation',
-        'assistance',
-        'quantity',
-        'person_of_responsible',
-    ];
+    protected $guarded = [];
+    // protected $fillable = [
+    //     'first_name', 'middle_name', 'last_name',
+    //     'birth_date', 'age', 'gender', 'address', 'contact_no',
+    //     'occupation', 'contact_no',
+    // ];
 
+    public function barangays()
+    {
+        return $this->belongsTo(BarangayAssitant::class, 'barangay_id');
+    }
 }

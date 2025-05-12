@@ -104,20 +104,20 @@ $(function () {
                 data: 'birth_date',
                 name: 'birth_date',
                 className: 'text-left',
-
-                render: function (data, type, row) {
-                    var date = new Date(data);
-                    var options = {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                    };
-                    return date.toLocaleDateString('en-US', options);
-                },
             },
             {
-                data: 'address',
-                name: 'address',
+                data: 'gender',
+                name: 'gender',
+                className: 'text-left',
+            },
+            {
+                data: 'age',
+                name: 'age',
+                className: 'text-left',
+            },
+            {
+                data: 'barangay_name',
+                name: 'barangay_name',
                 className: 'text-left',
             },
             {
@@ -126,30 +126,11 @@ $(function () {
                 className: 'text-left',
             },
             {
-                data: 'status',
-                name: 'status',
-                className: 'text-left',
-            },
-            {
                 data: 'occupation',
                 name: 'occupation',
                 className: 'text-left',
             },
-            {
-                data: 'assistance',
-                name: 'assistance',
-                className: 'text-left',
-            },
-            {
-                data: 'quantity',
-                name: 'quantity',
-                className: 'text-left',
-            },
-            {
-                data: 'person_of_responsible',
-                name: 'person_of_responsible',
-                className: 'text-left',
-            },
+
             {
                 data: 'created_at',
                 name: 'created_at',

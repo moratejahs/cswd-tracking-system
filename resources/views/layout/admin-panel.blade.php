@@ -267,7 +267,7 @@
     {{--
     <script src="{{ asset('assets/extensions/apexcharts/apexcharts.min.js') }}"></script> --}}
     {{--
-    <script src="{{ asset('assets/js/pages/dashboard.js') }}"></script> --}}
+    <script src="{{ asset('assets/js/pages/dashboard.js') }}"></script> --}}s
     @yield('scripts')
 </body>
 
