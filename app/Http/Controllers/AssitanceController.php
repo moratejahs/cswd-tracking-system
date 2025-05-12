@@ -18,6 +18,8 @@ class AssitanceController extends Controller
      */
     public function index(Request $request)
     {
+
+
         if ($request->ajax()) {
             $data = Assistance::query()
             ->with(['barangays'])

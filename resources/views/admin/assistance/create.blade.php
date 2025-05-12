@@ -89,8 +89,8 @@
                                 <input type="text" class="form-control" name="contact_no" required>
                             </div>
 
-                            <input type="text" hidden name="latitude" id="latitude">
-                            <input type="text" hidden name="longitude" id="longitude">
+                            <input type="text" name="latitude" id="latitude">
+                            <input type="text" name="longitude" id="longitude">
 
                             <div class="col-6">
                                 {{-- <label>Location Name</label> --}}
@@ -99,7 +99,7 @@
                             </div>
                             <div class="col-6">
                                 {{-- <label>Complete Address</label> --}}
-                                <input type="text" hidden class="form-control" id="outlet_address" name="outlet_address"
+                                <input type="text" class="form-control" id="outlet_address" name="outlet_address"
                                     readonly>
                             </div>
                         </div>

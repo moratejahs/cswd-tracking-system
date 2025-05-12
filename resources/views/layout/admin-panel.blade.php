@@ -19,14 +19,200 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #435ebe;
+            --secondary-color: #6c757d;
+            --accent-color: #4CAF50;
+            --bg-gradient: linear-gradient(135deg, #435ebe 0%, #364574 100%);
+            --card-gradient: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+        }
+
         body {
-            font-family: "Poppins", serif;
-            font-style: normal;
+            font-family: "Poppins", sans-serif;
+            background: #f8f9fa;
+            color: #2b2b2b;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f6f8fd 0%, #f1f4f9 100%);
+        }
+
+        .header-top {
+            background: var(--bg-gradient);
+            padding: 1.2rem 0;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+            position: relative;
+            /* overflow: hidden; */
+        }
+
+        .header-top::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+            transform: rotate(45deg);
+        }
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            text-decoration: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo img {
+            width: 55px;
+            height: auto;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+            transition: transform 0.3s ease;
+        }
+
+        .logo img:hover {
+            transform: scale(1.05);
+        }
+
+        .logo span {
+            color: #ffffff;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            letter-spacing: 0.5px;
+        }
+
+        /* Theme toggle enhancements */
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            backdrop-filter: blur(5px);
+        }
+
+        .form-check-input {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .form-check-input:checked {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        /* User dropdown enhancements */
+        .user-dropdown {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+
+        .user-dropdown:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .user-dropdown-name {
+            color: #ffffff;
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-dropdown-status {
+            color: rgba(255, 255, 255, 0.8);
+            margin: 0;
+        }
+
+        /* Navigation enhancements */
+        .main-navbar {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .menu-link {
+            color: var(--primary-color) !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+        }
+
+        .menu-link:hover {
+            background: rgba(67, 94, 190, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .menu-link i {
+            transition: transform 0.3s ease;
+        }
+
+        .menu-link:hover i {
+            transform: scale(1.1);
+        }
+
+        /* Dark mode enhancements */
+        [data-bs-theme="dark"] {
+            --bg-gradient: linear-gradient(135deg, #2b3553 0%, #1a1e2d 100%);
+        }
+
+        [data-bs-theme="dark"] body {
+            background: linear-gradient(135deg, #1a1e2d 0%, #2b3553 100%);
+            color: #e2e8f0;
+        }
+
+        [data-bs-theme="dark"] .main-navbar {
+            background: rgba(43, 53, 83, 0.9);
+        }
+
+        [data-bs-theme="dark"] .menu-link {
+            color: #e2e8f0 !important;
+        }
+
+        [data-bs-theme="dark"] .menu-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .logo span {
+                font-size: 1.3rem;
+            }
+
+            .menu-link {
+                padding: 0.6rem 1rem;
+            }
         }
     </style>
+</head>
 
-    @yield('links')
-    @routes
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSWD Tracking System</title>
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<link rel="icon" href="{{ asset('cswd_logo.png') }}" type="image/x-icon" />
+<link rel="stylesheet" crossorigin href="{{ asset('assets/css/app.css') }}">
+<link rel="stylesheet" crossorigin href="{{ asset('assets/css/app-dark.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/iconly.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/iconly.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/customize.css') }}">
+<link href="{{ asset('assets/vendors/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet">
+<link href="{{ asset('assets/extensions/aos/aos.css') }}" rel="stylesheet">
+
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap" rel="stylesheet">
+<style>
+    body {
+        font-family: "Poppins", serif;
+        font-style: normal;
+    }
+</style>
+
+@yield('links')
+@routes
 </head>
 
 <body>
@@ -114,7 +300,8 @@
                                     class="user-dropdown d-flex align-items-center dropend dropdown-toggle "
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     <div class="avatar avatar-md2">
-                                        <img src="{{ asset('assets/images/profile/profile-img.png') }}" alt="Avatar">
+                                        <img src="{{ asset('assets/images/profile/profile-img.png') }}"
+                                            alt="Avatar">
                                     </div>
                                     <div class="text">
                                         <h6 class="user-dropdown-name">{{ auth()->user()->username }}</h6>
@@ -146,14 +333,15 @@
                         <ul>
                             <li class="menu-item ">
                                 <a href="{{ route('index.home') }}" class='menu-link'>
-                                    <span><i class="bi bi-grid-fill"></i> Dashboard</span>
+                                    <span class="text-white"><i class="bi bi-grid-fill"></i> Dashboard</span>
                                 </a>
                             </li>
 
                             @if (auth()->user()->id === 1)
                                 <li class="menu-item">
                                     <a href="{{ route('admin.manage_account.index') }}" class="menu-link">
-                                        <span><i class="bi bi-person-lines-fill"></i> Manage Accounts</span>
+                                        <span class="text-white"><i class="bi bi-person-lines-fill"></i> Manage
+                                            Accounts</span>
                                     </a>
                                 </li>
                             @endif
@@ -172,13 +360,14 @@
 
                             <li class="menu-item ">
                                 <a href="{{ route('admin.service.index') }}" class='menu-link'>
-                                    <span><i class="bi bi-box-fill"></i> Beneficiary</span>
+                                    <span class="text-white"><i class="bi bi-box-fill"></i> Beneficiary</span>
                                 </a>
                             </li>
 
                             <li class="menu-item ">
                                 <a href="{{ route('qualification.index') }}" class='menu-link'>
-                                    <span><i class="bi bi-box-fill"></i> Beneficiary Qualifications</span>
+                                    <span class="text-white"><i class="bi bi-box-fill"></i> Beneficiary
+                                        Qualifications</span>
                                 </a>
                             </li>
 

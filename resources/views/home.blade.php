@@ -19,14 +19,311 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #435ebe;
+            --secondary-color: #6c757d;
+            --accent-color: #4CAF50;
+            --bg-gradient: linear-gradient(135deg, #435ebe 0%, #364574 100%);
+            --card-gradient: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+        }
+
         body {
-            font-family: "Poppins", serif;
-            font-style: normal;
+            font-family: "Poppins", sans-serif;
+            background: #f8f9fa;
+            color: #2b2b2b;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f6f8fd 0%, #f1f4f9 100%);
+        }
+
+        .header-top {
+            background: var(--bg-gradient);
+            padding: 1.2rem 0;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-top::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+            transform: rotate(45deg);
+        }
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            text-decoration: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo img {
+            width: 55px;
+            height: auto;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+            transition: transform 0.3s ease;
+        }
+
+        .logo img:hover {
+            transform: scale(1.05);
+        }
+
+        .logo span {
+            color: #ffffff;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            letter-spacing: 0.5px;
+        }
+
+        .container-fluid {
+            padding: 3rem 4rem;
+        }
+
+        .main-title {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            margin-bottom: 3rem;
+            position: relative;
+            padding-bottom: 1rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .main-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            border-radius: 2px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 20px;
+            background: #ffffff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--card-gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(67, 94, 190, 0.15);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-header {
+            background: var(--bg-gradient);
+            padding: 2rem;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+        }
+
+        .card-header h4 {
+            color: #ffffff;
+            font-size: 1.3rem;
+            margin: 0;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-body {
+            padding: 2rem;
+            background: #ffffff;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-body div {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+        }
+
+        .card-body li {
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+            list-style-type: none;
+            position: relative;
+            padding-left: 1.8rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+
+        .card-body li:hover {
+            color: var(--primary-color);
+            transform: translateX(5px);
+        }
+
+        .card-body li::before {
+            content: '→';
+            color: var(--accent-color);
+            font-size: 1.2rem;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.3s ease;
+        }
+
+        .card-body li:hover::before {
+            transform: translateY(-50%) translateX(3px);
+        }
+
+        .card-footer {
+            background: rgba(248, 249, 250, 0.7);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 1.2rem 2rem;
+            backdrop-filter: blur(5px);
+        }
+
+        .card-footer small {
+            color: var(--secondary-color);
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        footer {
+            background: var(--bg-gradient);
+            padding: 2rem 0;
+            margin-top: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        }
+
+        footer p {
+            color: #ffffff;
+            margin: 0;
+            font-size: 0.95rem;
+            opacity: 0.9;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            letter-spacing: 0.5px;
+        }
+
+        /* Theme toggle enhancements */
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            backdrop-filter: blur(5px);
+        }
+
+        .form-check-input {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .form-check-input:checked {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        /* Dark mode enhancements */
+        [data-bs-theme="dark"] {
+            --bg-gradient: linear-gradient(135deg, #2b3553 0%, #1a1e2d 100%);
+        }
+
+        [data-bs-theme="dark"] body {
+            background: linear-gradient(135deg, #1a1e2d 0%, #2b3553 100%);
+            color: #e2e8f0;
+        }
+
+        [data-bs-theme="dark"] .card {
+            background: rgba(43, 53, 83, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        [data-bs-theme="dark"] .card-body {
+            background: transparent;
+        }
+
+        [data-bs-theme="dark"] .card-footer {
+            background: rgba(26, 30, 45, 0.8);
+            border-color: rgba(54, 69, 116, 0.2);
+        }
+
+        /* Animation enhancements */
+        [data-aos] {
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Responsive enhancements */
+        @media (max-width: 768px) {
+            .container-fluid {
+                padding: 2rem 1rem;
+            }
+
+            .main-title {
+                font-size: 1.8rem;
+            }
+
+            .card-header h4 {
+                font-size: 1.2rem;
+            }
+
+            .logo span {
+                font-size: 1.3rem;
+            }
         }
     </style>
-
-    @yield('links')
-    @routes
 </head>
 
 <body>
@@ -124,26 +421,19 @@
             </header>
 
             <div class="container-fluid px-4">
-                <span>
-                    <h4>Requirements for CSWDO services vary depending on the type of assistance and
-                        program.</h4>
-                </span>
+                <h4 class="main-title">Requirements for CSWDO services vary depending on the type of assistance and
+                    program.</h4>
 
-                <div class="row">
+                <div class="row" data-aos="fade-up" data-aos-duration="1000">
                     @foreach ($datas as $data)
-                        <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="col-lg-4 col-md-6 col-sm-12" data-aos="fade-up"
+                            data-aos-delay="{{ $loop->index * 100 }}">
                             <div class="card">
-                                <div class=" card-header">
-                                    <div>
-                                        <h4>
-                                            {{ $data->name }}
-                                        </h4>
-                                    </div>
+                                <div class="card-header">
+                                    <h4>{{ $data->name }}</h4>
                                 </div>
                                 <div class="card-body">
-                                    <div>
-                                        Qualifications:
-                                    </div>
+                                    <div>Qualifications:</div>
                                     @foreach (explode('-', $data->description) as $item)
                                         @if (!empty(trim($item)))
                                             <li>{{ trim($item) }}</li>
@@ -151,9 +441,7 @@
                                     @endforeach
                                 </div>
                                 <div class="card-footer">
-                                    <small>
-                                        {{ $data->created_at->format('M d, Y') }}
-                                    </small>
+                                    <small>{{ $data->created_at->format('M d, Y') }}</small>
                                 </div>
                             </div>
                         </div>
