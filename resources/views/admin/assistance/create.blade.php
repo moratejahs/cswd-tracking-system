@@ -1,150 +1,107 @@
 @extends('layout.admin-panel')
 
 @section('links')
+    <!-- DataTables CSS (if needed) -->
     <link rel="stylesheet" href="{{ asset('assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.css') }}">
-    {{-- <link rel="stylesheet" href="{{ asset('assets/extensions/choices.js/public/assets/styles/choices.css') }}"> --}}
-    {{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> --}}
+
+    <!-- Select2 CSS -->
     <link rel="stylesheet" href="{{ asset('assets/extensions/select2/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/extensions/choices.js/select2-customize.css') }}">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 @endsection
 
 @section('content')
-    {{-- includes --}}
-    {{-- @include('admin.assistance.includes.store') --}}
-
-    <nav class="pt-0" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" data-aos="fade-down">
-        <ol class="pb-0 mb-0 breadcrumb">
-            <li class="breadcrumb-item active text-secondary"><a href="{{ route('index.home') }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-house" viewBox="0 0 16 16">
-                        <path
-                            d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z" />
-                    </svg>
-                    Home</a></li>
-            <li class="breadcrumb-item active text-secondary" aria-current="page">
-                Service Records
-            </li>
+    <nav class="pt-0" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0 pb-0">
+            <li class="breadcrumb-item"><a href="{{ route('index.home') }}">Home</a></li>
+            <li class="breadcrumb-item active">Service Records</li>
         </ol>
         <div>
-            <span
-                style="font-weight: 500; font-size: 25px; border-radius: 5px; border-bottom: 4px solid #435ebe; width: fit-content;"
-                class="pt-0 mt-0">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                    class="bi bi-arrow-return-right" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd"
-                        d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z" />
-                </svg>
+            <span style="font-weight: 500; font-size: 25px; border-radius: 5px; border-bottom: 4px solid #435ebe;">
                 Add Beneficiary
             </span>
         </div>
     </nav>
+
     <br>
+
     <div class="row">
-        <div class="col1">
+        <div class="col-12">
+            @if ($errors->has('duplicate'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ $errors->first('duplicate') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+        </div>
+
+        <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <hr>
                     <form action="{{ route('admin.service.store') }}" method="POST">
                         @csrf
+
                         <div class="row">
                             <div class="col-4">
-                                <div class="form-group">
-                                    <label for="first_name">First Name</label>
-                                    <input type="text" class="form-control" id="first_name" name="first_name"
-                                        placeholder="First Name" required>
-                                </div>
+                                <label>First Name</label>
+                                <input type="text" class="form-control" name="first_name" required>
                             </div>
                             <div class="col-4">
-                                <div class="form-group">
-                                    <label for="middle_name">Middle Name</label>
-                                    <input type="text" class="form-control" id="middle_name" name="middle_name"
-                                        placeholder="Middle Name" required>
-                                </div>
+                                <label>Middle Name</label>
+                                <input type="text" class="form-control" name="middle_name" required>
                             </div>
                             <div class="col-4">
-                                <div class="form-group">
-                                    <label for="last_name">Last Name</label>
-                                    <input type="text" class="form-control" id="last_name" name="last_name"
-                                        placeholder="Last Name" required>
-                                </div>
+                                <label>Last Name</label>
+                                <input type="text" class="form-control" name="last_name" required>
                             </div>
                             <div class="col-4">
-                                <div class="form-group">
-                                    <label for="birth_date">Birth Date</label>
-                                    <input type="date" class="form-control" id="birth_date" name="birth_date" required>
-                                </div>
+                                <label>Birth Date</label>
+                                <input type="date" class="form-control" name="birth_date" required>
                             </div>
                             <div class="col-4">
-                                <div class="form-group">
-                                    <label for="address">Address</label>
-                                    <select class="form-control select2" id="address" name="address" required>
-                                        <option value="" disabled selected>Select Barangay</option>
-                                        @foreach ($barangays as $barangay)
-                                            <option value="{{ $barangay->outlet_address }}">{{ $barangay->outlet_address }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                <label>Age</label>
+                                <input type="number" class="form-control" name="age" required>
                             </div>
                             <div class="col-4">
-                                <div class="form-group">
-                                    <label for="contact_no">Contact No</label>
-                                    <input type="text" class="form-control" id="contact_no" name="contact_no"
-                                        placeholder="Contact No" required>
-                                </div>
+                                <label>Gender</label>
+                                <select name="gender" class="form-select">
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
                             </div>
                             <div class="col-4">
-                                <div class="form-group">
-                                    <label for="status">Purpose</label>
-                                    <input type="text" class="form-control" id="status" name="status"
-                                        placeholder="Enter purpose" required>
-                                </div>
+                                <label>Occupation</label>
+                                <input type="text" class="form-control" name="occupation" required>
                             </div>
                             <div class="col-4">
-                                <div class="form-group">
-                                    <label for="occupation">Occupation</label>
-                                    <input type="text" class="form-control" id="occupation" name="occupation"
-                                        placeholder="Occupation" required>
-                                </div>
+                                <label>Contact No</label>
+                                <input type="text" class="form-control" name="contact_no" required>
                             </div>
-                            <div class="col-4">
-                                <div class="form-group">
-                                    <label for="assistance">Category</label>
-                                    <select class="form-control select2" id="assistance" name="assistance" required>
-                                        <option value="" disabled selected>Select Client Type</option>
-                                        @foreach ($clientCategories as $category)
-                                            <option value="{{ $category->description }}">{{ $category->description }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+
+                            <input type="text" name="latitude" id="latitude">
+                            <input type="text" name="longitude" id="longitude">
+
+                            <div class="col-6">
+                                <label>Location Name</label>
+                                <input type="text" class="form-control" id="outlet_name" name="outlet_name" readonly>
                             </div>
-                            <div class="col-4">
-                                <div class="form-group">
-                                    <label for="quantity">Amount</label>
-                                    <input type="number" class="form-control" id="quantity" name="quantity"
-                                        placeholder="Quantity" required>
-                                </div>
+                            <div class="col-6">
+                                <label>Complete Address</label>
+                                <input type="text" class="form-control" id="outlet_address" name="outlet_address"
+                                    readonly>
                             </div>
-                            <div class="col-4">
-                                <div class="form-group">
-                                    <label for="person_of_responsible">Responsible Person</label>
-                                    <input type="text" class="form-control" id="person_of_responsible"
-                                        name="person_of_responsible" placeholder="Enter Responsible Person" required>
-                                </div>
-                            </div>
-                            <div class="pb-2 col-12 d-flex justify-content-end align-items-center">
-                                <div>
-                                    <a href="{{ route('admin.assistance.index') }}"
-                                        class="btn btn-light-secondary me-1 close-button">
-                                        <span class="d-none d-sm-block">Close</span>
-                                    </a>
-                                    <button type="submit" class="btn btn-primary save-button">
-                                        <i class="bx bx-check d-block d-sm-none"></i>
-                                        <span class="d-none d-sm-block">Submit</span>
-                                    </button>
-                                </div>
-                            </div>
+                        </div>
+
+                        <div class="my-4">
+                            <label>Click or drag marker on the map to set location</label>
+                            <div id="map" style="height: 500px; width: 100%;"></div>
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <a href="{{ route('admin.assistance.index') }}" class="btn btn-light-secondary me-2">Close</a>
+                            <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
                     </form>
                 </div>
@@ -154,4 +111,66 @@
 @endsection
 
 @section('scripts')
+    <!-- jQuery (must come before Select2) -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Select2 JS -->
+    <script src="{{ asset('assets/extensions/select2/select2.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2();
+
+            // Initialize map centered on Surigao City
+            var map = L.map('map').setView([9.1011711, 126.1588771], 13);
+            let marker = null;
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: ''
+            }).addTo(map);
+
+            // Function to get address details from coordinates
+            async function getLocationDetails(lat, lng) {
+                try {
+                    const response = await fetch(
+                        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
+                    const data = await response.json();
+
+                    // Update form fields
+                    $('#latitude').val(lat);
+                    $('#longitude').val(lng);
+                    $('#outlet_name').val(data.name || data.address.amenity || data.address.road ||
+                        'Unnamed Location');
+                    $('#outlet_address').val(data.display_name);
+                } catch (error) {
+                    console.error('Error fetching location details:', error);
+                }
+            }
+
+            // Create draggable marker
+            marker = L.marker([9.1011711, 126.1588771], {
+                draggable: true
+            }).addTo(map);
+
+            // Handle marker drag end
+            marker.on('dragend', function(event) {
+                const position = marker.getLatLng();
+                getLocationDetails(position.lat, position.lng);
+            });
+
+            // Handle map click
+            map.on('click', function(e) {
+                const position = e.latlng;
+                marker.setLatLng(position);
+                getLocationDetails(position.lat, position.lng);
+            });
+
+            // Initial location details fetch
+            getLocationDetails(9.1011711, 126.1588771);
+        });
+    </script>
 @endsection

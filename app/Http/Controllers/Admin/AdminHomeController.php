@@ -39,10 +39,8 @@ class AdminHomeController extends Controller
         $sanAntonio = Assistance::where('address', 'San Antonio Tandag, Surigao del Sur')->count();
         $sanJose = Assistance::where('address', 'San Jose Tandag, Surigao del Sur')->count();
         $telaje = Assistance::where('address', 'Telaje Tandag, Surigao del Sur')->count();
+
         // $barangays = Barangay::all();
-
-
-
         $categories = ClientCategory::all();
         $populationMapping = [
             'Awasian Tandag, Surigao del Sur' => 50,

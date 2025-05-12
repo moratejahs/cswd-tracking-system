@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Assistance;
 use Illuminate\Http\Request;
 use App\Models\ClientCategory;
+use App\Models\BarangayAssitant;
 use Yajra\DataTables\Facades\DataTables;
 
 class AssitanceController extends Controller
@@ -58,39 +59,63 @@ class AssitanceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'first_name' => 'required',
-            'middle_name' => 'required',
-            'last_name' => 'required',
-            'birth_date' => 'required|date',
-            'address' => 'required',
-            'contact_no' => 'required',
-            'status' => 'required',
-            'occupation' => 'required',
-            'assistance' => 'required',
-            'quantity' => 'required|integer',
-            'person_of_responsible' => 'required',
-        ]);
-        Assistance::create([
-            'first_name' => $validated['first_name'],
-            'middle_name' => $validated['middle_name'],
-            'last_name' => $validated['last_name'],
-            'birth_date' => $validated['birth_date'],
-            'address' => $validated['address'],
-            'contact_no' => $validated['contact_no'],
-            'status' => $validated['status'],
-            'occupation' => $validated['occupation'],
-            'assistance' => $validated['assistance'],
-            'quantity' => $validated['quantity'],
-            'person_of_responsible' => $validated['person_of_responsible'],
-            'user_id' => auth()->id(),
-        ]);
+   public function store(Request $request)
+{
+    $validated = $request->validate([
+        'first_name' => 'required',
+        'middle_name' => 'required',
+        'last_name' => 'required',
+        'birth_date' => 'required|date',
+        'address' => 'required',
+        'contact_no' => 'required',
+        'status' => 'required',
+        'occupation' => 'required',
+        'assistance' => 'required',
+        'quantity' => 'required|integer',
+        'person_of_responsible' => 'required',
+        'latitude'=> 'required',
+        'longitude'=>'required',
+        'outlet_name'=> 'required',
+        'outlet_address'=> 'required',
+    ]);
+    dd($validated);
+    // Check if the combination already exists
+    $exists = Assistance::where('first_name', $validated['first_name'])
+        ->where('middle_name', $validated['middle_name'])
+        ->where('last_name', $validated['last_name'])
+        ->exists();
 
-        return to_route('admin.service.index')
-            ->with('message', 'Beneficiary created successfully');
+    if ($exists) {
+        return back()->withErrors(['duplicate' => 'A beneficiary with the same name already exists.'])->withInput();
     }
+
+    // Store the record
+    $assistant = Assistance::create([
+        'first_name' => $validated['first_name'],
+        'middle_name' => $validated['middle_name'],
+        'last_name' => $validated['last_name'],
+        'birth_date' => $validated['birth_date'],
+        'address' => $validated['address'],
+        'contact_no' => $validated['contact_no'],
+        'status' => $validated['status'],
+        'occupation' => $validated['occupation'],
+        'assistance' => $validated['assistance'],
+        'quantity' => $validated['quantity'],
+        'person_of_responsible' => $validated['person_of_responsible'],
+        'user_id' => auth()->id(),
+    ]);
+
+    BarangayAssitant::create([
+        'assistance_id' => $assistant->id,
+        'outlet_name' => $validated['outlet_name'],
+        'outlet_address' => $validated['outlet_address'],
+        'latitude' => $validated['latitude'],
+        'longtitude' => $validated['longitude'],
+    ]);
+
+    return to_route('admin.service.index')
+        ->with('message', 'Beneficiary created successfully');
+}
 
     /**
      * Display the specified resource.

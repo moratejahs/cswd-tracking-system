@@ -1,14 +1,19 @@
 <?php
 
+use App\Models\Qualification;
+use App\Models\ClientCategory;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AssitanceController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ManageAccountController;
+use App\Http\Controllers\Admin\AdminFundController;
 use App\Http\Controllers\Admin\AdminHomeController;
 use App\Http\Controllers\Admin\AdminSaleController;
 use App\Http\Controllers\CSWD\AssistanceController;
 use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminSupplierController;
+use App\Http\Controllers\Admin\QualificationController;
+use App\Http\Controllers\CSWD\ClientCategoryController;
 use App\Http\Controllers\Admin\AdminInventoryController;
 use App\Http\Controllers\Admin\AdminQuickSaleController;
 use App\Http\Controllers\Admin\AdminSaleRestoreController;
@@ -16,10 +21,6 @@ use App\Http\Controllers\Admin\AdminSalesOverviewController;
 use App\Http\Controllers\Admin\AdminRevenueVsProfitController;
 use App\Http\Controllers\Admin\AdminQuickSaleRestoreController;
 use App\Http\Controllers\Admin\AdminProductInventoryStockInController;
-use App\Http\Controllers\Admin\QualificationController;
-use App\Http\Controllers\CSWD\ClientCategoryController;
-use App\Models\ClientCategory;
-use App\Models\Qualification;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,7 +58,6 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     // Auth Routes
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
-
 
     //Admin Routes
     Route::prefix('admin')->group(function () {
@@ -113,9 +113,6 @@ Route::middleware('auth')->group(function () {
     Route::get('product_details/{productId}', [AdminSaleController::class, 'details'])->name('product.details');
     Route::get('supplier/{supplierName}', [AdminSupplierController::class, 'index'])->name('index.supplier');
 
-
-
-
     //Manage Accounts
     Route::controller(ManageAccountController::class)->group(function () {
         Route::get('manage_accounts', 'index')->name('admin.manage_account.index');
@@ -151,6 +148,11 @@ Route::middleware('auth')->group(function () {
         Route::put('assistance/approved', 'approvedBarangay')->name('admin.assistance.approvedBarangay');
         Route::delete('assistance/delete', 'destroy')->name('admin.assistance.destroy');
     });
+
+    Route::post('/fund', [AdminFundController::class, 'store'])->name('fund.store');
+    Route::get('/fund/{id}', [AdminFundController::class, 'show'])->name('fund.show');
+    Route::put('/fund', [AdminFundController::class, 'update'])->name('fund.update');
+    Route::delete('/fund', [AdminFundController::class, 'delete'])->name('fund.delete');
 
     //Services Records
     Route::controller(ClientCategoryController::class)->group(function () {

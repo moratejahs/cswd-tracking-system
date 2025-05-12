@@ -18,13 +18,12 @@ return new class extends Migration
             $table->string('middle_name');
             $table->string('last_name');
             $table->dateTime('birth_date');
+            $table->integer('age');
+            $table->string('gender');
             $table->string('address');
             $table->string('contact_no');
             $table->string('status');
             $table->string('occupation');
-            $table->string('assistance');
-            $table->integer('quantity');
-            $table->string('person_of_responsible');
             $table->timestamps();
         });
     }
