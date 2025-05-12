@@ -124,6 +124,174 @@
         $(document).ready(function() {
             $('.select2').select2();
 
+            // PHP Barangays array to JavaScript
+            const barangays = [
+                "Awasian", "Bagong Lungsod (Poblacion)", "Bioto", "Bongtud Poblacion (East West)",
+                "Buenavista",
+                "Dagocdoc (Poblacion)", "Mabua", "Mabuhay", "Maitum", "Maticdum", "Pandanon", "Pangi", "Quezon",
+                "Rosario", "Salvacion", "San Agustin", "San Antonio", "San Isidro",
+                "San Jose", "Telaje"
+            ];
+
+            // Define barangay boundaries
+            const barangayBoundaries = {
+                "Awasian": {
+                    minLat: 9.0833,
+                    maxLat: 9.1000,
+                    minLng: 126.1500,
+                    maxLng: 126.1667
+                },
+                "Bagong Lungsod (Poblacion)": {
+                    minLat: 9.0833,
+                    maxLat: 9.1000,
+                    minLng: 126.2167,
+                    maxLng: 126.2333
+                },
+                "Bioto": {
+                    minLat: 9.0667,
+                    maxLat: 9.0833,
+                    minLng: 126.2000,
+                    maxLng: 126.2167
+                },
+                "Bongtud Poblacion (East West)": {
+                    minLat: 9.0833,
+                    maxLat: 9.1000,
+                    minLng: 126.2000,
+                    maxLng: 126.2167
+                },
+                "Buenavista": {
+                    minLat: 9.0667,
+                    maxLat: 9.0833,
+                    minLng: 126.1833,
+                    maxLng: 126.2000
+                },
+                "Dagocdoc (Poblacion)": {
+                    minLat: 9.0833,
+                    maxLat: 9.1000,
+                    minLng: 126.1833,
+                    maxLng: 126.2000
+                },
+                "Mabua": {
+                    minLat: 9.1000,
+                    maxLat: 9.1167,
+                    minLng: 126.1667,
+                    maxLng: 126.1833
+                },
+                "Mabuhay": {
+                    minLat: 9.0667,
+                    maxLat: 9.0833,
+                    minLng: 126.1667,
+                    maxLng: 126.1833
+                },
+                "Maitum": {
+                    minLat: 9.0500,
+                    maxLat: 9.0667,
+                    minLng: 126.1833,
+                    maxLng: 126.2000
+                },
+                "Maticdum": {
+                    minLat: 9.0500,
+                    maxLat: 9.0667,
+                    minLng: 126.2000,
+                    maxLng: 126.2167
+                },
+                "Pandanon": {
+                    minLat: 9.0667,
+                    maxLat: 9.0833,
+                    minLng: 126.2167,
+                    maxLng: 126.2333
+                },
+                "Pangi": {
+                    minLat: 9.1000,
+                    maxLat: 9.1167,
+                    minLng: 126.1833,
+                    maxLng: 126.2000
+                },
+                "Quezon": {
+                    minLat: 9.0500,
+                    maxLat: 9.0667,
+                    minLng: 126.1667,
+                    maxLng: 126.1833
+                },
+                "Rosario": {
+                    minLat: 9.1000,
+                    maxLat: 9.1167,
+                    minLng: 126.2000,
+                    maxLng: 126.2167
+                },
+                "Salvacion": {
+                    minLat: 9.0500,
+                    maxLat: 9.0667,
+                    minLng: 126.2167,
+                    maxLng: 126.2333
+                },
+                "San Agustin": {
+                    minLat: 9.1000,
+                    maxLat: 9.1167,
+                    minLng: 126.2167,
+                    maxLng: 126.2333
+                },
+                "San Antonio": {
+                    minLat: 9.0833,
+                    maxLat: 9.1000,
+                    minLng: 126.1667,
+                    maxLng: 126.1833
+                },
+                "San Isidro": {
+                    minLat: 9.1167,
+                    maxLat: 9.1333,
+                    minLng: 126.1833,
+                    maxLng: 126.2000
+                },
+                "San Jose": {
+                    minLat: 9.1167,
+                    maxLat: 9.1333,
+                    minLng: 126.2000,
+                    maxLng: 126.2167
+                },
+                "Telaje": {
+                    minLat: 9.1167,
+                    maxLat: 9.1333,
+                    minLng: 126.2167,
+                    maxLng: 126.2333
+                }
+            };
+
+            // Function to check if coordinates are within barangay boundaries
+            function findBarangayFromCoordinates(lat, lng) {
+                for (const [barangay, bounds] of Object.entries(barangayBoundaries)) {
+                    if (lat >= bounds.minLat && lat <= bounds.maxLat &&
+                        lng >= bounds.minLng && lng <= bounds.maxLng) {
+                        return barangay;
+                    }
+                }
+                return null;
+            }
+
+            // Modify getLocationDetails function
+            async function getLocationDetails(lat, lng) {
+                try {
+                    const response = await fetch(
+                        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
+                    const data = await response.json();
+
+                    $('#latitude').val(lat);
+                    $('#longitude').val(lng);
+
+                    const fullAddress = data.display_name || '';
+
+                    // Find barangay based on coordinates
+                    const matchedBarangay = findBarangayFromCoordinates(lat, lng);
+
+                    // Set outlet name and address
+                    $('#outlet_name').val(matchedBarangay || 'Outside Barangay Boundaries');
+                    $('#outlet_address').val(fullAddress);
+
+                } catch (error) {
+                    console.error('Error fetching location details:', error);
+                }
+            }
+
             // Initialize map centered on Surigao City
             var map = L.map('map').setView([9.1011711, 126.1588771], 13);
             let marker = null;
@@ -140,12 +308,26 @@
                         `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
                     const data = await response.json();
 
-                    // Update form fields
                     $('#latitude').val(lat);
                     $('#longitude').val(lng);
-                    $('#outlet_name').val(data.name || data.address.amenity || data.address.road ||
-                        'Unnamed Location');
-                    $('#outlet_address').val(data.display_name);
+
+                    const fullAddress = data.display_name || '';
+
+                    // Find matching barangay in the address
+                    let matchedBarangay = null;
+                    for (const barangay of barangays) {
+                        // Remove "(Poblacion)" for matching
+                        const searchTerm = barangay.replace(" (Poblacion)", "").toLowerCase();
+                        if (fullAddress.toLowerCase().includes(searchTerm)) {
+                            matchedBarangay = barangay;
+                            break;
+                        }
+                    }
+
+                    // Only set outlet_name if there's a match from barangays array
+                    $('#outlet_name').val(matchedBarangay || '');
+                    $('#outlet_address').val(fullAddress);
+
                 } catch (error) {
                     console.error('Error fetching location details:', error);
                 }
@@ -156,20 +338,20 @@
                 draggable: true
             }).addTo(map);
 
-            // Handle marker drag end
+            // Marker drag event
             marker.on('dragend', function(event) {
                 const position = marker.getLatLng();
                 getLocationDetails(position.lat, position.lng);
             });
 
-            // Handle map click
+            // Map click event
             map.on('click', function(e) {
                 const position = e.latlng;
                 marker.setLatLng(position);
                 getLocationDetails(position.lat, position.lng);
             });
 
-            // Initial location details fetch
+            // Initial call
             getLocationDetails(9.1011711, 126.1588771);
         });
     </script>

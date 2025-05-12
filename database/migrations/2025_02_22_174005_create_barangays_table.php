@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('barangays', function (Blueprint $table) {
             $table->id();
-            $table->string('outlet_name');
-            $table->string('outlet_address');
-            $table->string('latitude');
-            $table->string('longtitude');
+            $table->string('outlet_name')->nullable();
+            $table->string('outlet_address')->nullable();
+            $table->string('latitude')->nullable();
+            $table->string('longtitude')->nullable();
             $table->timestamps();
         });
     }
