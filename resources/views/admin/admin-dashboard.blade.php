@@ -8,11 +8,30 @@
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <style>
         #map {
             height: 500px;
             width: 100%;
             border-radius: 10px;
+        }
+
+        .map-controls {
+            z-index: 1000;
+            position: relative;
+        }
+
+        .map-controls .btn-group {
+            background: white;
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .map-controls .btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
     </style>
 @endsection
@@ -76,6 +95,25 @@
                         <h4>Tandag Map Statistics</h4>
                     </div>
                     <div class="card-body">
+                        <div class="map-controls mb-3">
+                            <div class="btn-group" role="group" aria-label="Map Controls">
+                                <button type="button" class="btn btn-outline-primary btn-sm" id="satelliteView">
+                                    <i class="bi bi-globe"></i> Satellite
+                                </button>
+                                <button type="button" class="btn btn-outline-primary btn-sm" id="terrainView">
+                                    <i class="bi bi-mountains"></i> Terrain
+                                </button>
+                                <button type="button" class="btn btn-outline-primary btn-sm" id="trafficView">
+                                    <i class="bi bi-sign-intersection-y"></i> Traffic
+                                </button>
+                                <button type="button" class="btn btn-outline-primary btn-sm" id="transitView">
+                                    <i class="bi bi-train-front"></i> Transit
+                                </button>
+                                <button type="button" class="btn btn-outline-primary btn-sm" id="bikingView">
+                                    <i class="bi bi-bicycle"></i> Biking
+                                </button>
+                            </div>
+                        </div>
                         <div id="map"></div>
                     </div>
                 </div>
@@ -178,11 +216,87 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            var map = L.map('map').setView([9.1011711, 126.1588771], 13);
-
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            // Base map layers
+            var streets = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; CSWD: AI Driven Assistant Tracking System'
-            }).addTo(map);
+            });
+
+            var satellite = L.tileLayer(
+                'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                    attribution: '&copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+                });
+
+            var terrain = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{r}.png', {
+                attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>'
+            });
+
+            var traffic = L.tileLayer('https://tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors, Tiles style by Humanitarian OpenStreetMap Team'
+            });
+
+            var transit = L.tileLayer('https://tileserver.memomaps.de/tilegen/{z}/{x}/{y}.png', {
+                attribution: 'Map <a href="https://memomaps.de/">memomaps.de</a> <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+            });
+
+            var cycling = L.tileLayer('https://tile.waymarkedtrails.org/cycling/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            });
+
+            // Initialize map with streets layer
+            var map = L.map('map', {
+                layers: [streets],
+                center: [9.1011711, 126.1588771],
+                zoom: 13
+            });
+
+            // Create a layer control object
+            var baseLayers = {
+                "Streets": streets,
+                "Satellite": satellite,
+                "Terrain": terrain,
+                "Traffic": traffic,
+                "Transit": transit,
+                "Cycling": cycling
+            };
+
+            // Add layer control to map
+            L.control.layers(baseLayers).addTo(map);
+
+            // Layer control buttons
+            document.getElementById('satelliteView').addEventListener('click', function() {
+                removeAllLayers();
+                map.addLayer(satellite);
+            });
+
+            document.getElementById('terrainView').addEventListener('click', function() {
+                removeAllLayers();
+                map.addLayer(terrain);
+            });
+
+            document.getElementById('trafficView').addEventListener('click', function() {
+                removeAllLayers();
+                map.addLayer(traffic);
+            });
+
+            document.getElementById('transitView').addEventListener('click', function() {
+                removeAllLayers();
+                map.addLayer(transit);
+            });
+
+            document.getElementById('bikingView').addEventListener('click', function() {
+                removeAllLayers();
+                map.addLayer(cycling);
+            });
+
+            // Helper function to remove all layers
+            function removeAllLayers() {
+                map.removeLayer(streets);
+                map.removeLayer(satellite);
+                map.removeLayer(terrain);
+                map.removeLayer(traffic);
+                map.removeLayer(transit);
+                map.removeLayer(cycling);
+            }
 
             var barangays = @json($barangays);
 

@@ -18,56 +18,56 @@ class AdminHomeController extends Controller
 {
     public function index()
     {
-        $sanIsidro = Assistance::where('address', 'San Isidro Tandag, Surigao del Sur')->count();
-        $awasian = Assistance::where('address', 'Awasian Tandag, Surigao del Sur')->count();
-        $bagongLungsod = Assistance::where('address', 'Bagong Lungsod (Poblacion) Tandag, Surigao del Sur')->count();
-        $bioto = Assistance::where('address', 'Bioto Tandag, Surigao del Sur')->count();
-        $bongtod = Assistance::where('address', 'Bongtud Poblacion (East West) Tandag, Surigao del Sur')->count();
-        $buenavista = Assistance::where('address', 'Buenavista Tandag, Surigao del Sur')->count();
-        $dagocdoc = Assistance::where('address', 'Dagocdoc (Poblacion) Tandag, Surigao del Sur')->count();
-        $mabua = Assistance::where('address', 'Mabua Tandag, Surigao del Sur')->count();
-        $mabuhay = Assistance::where('address', 'Mabuhay Tandag, Surigao del Sur')->count();
-        $maitum = Assistance::where('address', 'Maitum Tandag, Surigao del Sur')->count();
-        $maticdum = Assistance::where('address', 'Maticdum Tandag, Surigao del Sur')->count();
-        $pandanon = Assistance::where('address', 'Pandanon Tandag, Surigao del Sur')->count();
-        $pangi = Assistance::where('address', 'Pangi Tandag, Surigao del Sur')->count();
-        $quezon = Assistance::where('address', 'Quezon Tandag, Surigao del Sur')->count();
-        $rosario = Assistance::where('address', 'Rosario Tandag, Surigao del Sur')->count();
-        $salvacion = Assistance::where('address', 'Salvacion Tandag, Surigao del Sur')->count();
-        $sanAgustinNorte = Assistance::where('address', 'San Agustin Norte Tandag, Surigao del Sur')->count();
-        $sanAgustinSur = Assistance::where('address', 'San Agustin Sur Tandag, Surigao del Sur')->count();
-        $sanAntonio = Assistance::where('address', 'San Antonio Tandag, Surigao del Sur')->count();
-        $sanJose = Assistance::where('address', 'San Jose Tandag, Surigao del Sur')->count();
-        $telaje = Assistance::where('address', 'Telaje Tandag, Surigao del Sur')->count();
+        $sanIsidro = Assistance::where('address', 'like', '%San Isidro%')->count();
+        $awasian = Assistance::where('address', 'like','%Awasian%')->count();
+        $bagongLungsod = Assistance::where('address', 'like','%Bagong Lungsod%')->count();
+        $bioto = Assistance::where('address', 'like','%Bioto%')->count();
+        $bongtod = Assistance::where('address', 'like','%Bongtud%')->count();
+        $buenavista = Assistance::where('address','like', '%Buenavista%')->count();
+        $dagocdoc = Assistance::where('address','like', '%Dagocdoc (Poblacion)%')->count();
+        $mabua = Assistance::where('address','like', '%Mabua%')->count();
+        $mabuhay = Assistance::where('address','like', '%Mabuhay%')->count();
+        $maitum = Assistance::where('address','like', '%Maitum%')->count();
+        $maticdum = Assistance::where('address','like', '%Maticdum%')->count();
+        $pandanon = Assistance::where('address','like', '%Pandanon%')->count();
+        $pangi = Assistance::where('address','like', '%Pangi%')->count();
+        $quezon = Assistance::where('address','like', '%Quezon%')->count();
+        $rosario = Assistance::where('address','like', '%Rosario%')->count();
+        $salvacion = Assistance::where('address','like', '%Salvacion%')->count();
+        $sanAgustinNorte = Assistance::where('address','like', '%San Agustin Norte%')->count();
+        $sanAgustinSur = Assistance::where('address','like', '%San Agustin%')->count();
+        $sanAntonio = Assistance::where('address','like', '%San Antonio%')->count();
+        $sanJose = Assistance::where('address','like', '%San Jose%')->count();
+        $telaje = Assistance::where('address','like', '%Telaje%')->count();
 
         // $barangays = Barangay::all();
         $categories = ClientCategory::all();
         $populationMapping = [
-            'Awasian Tandag, Surigao del Sur' => 50,
-            'Bagong Lungsod (Poblacion) Tandag, Surigao del Sur' => 100,
-            'Bioto Tandag, Surigao del Sur' => 40,
-            'Bongtud Poblacion (East West) Tandag, Surigao del Sur' => 120,
-            'Buenavista Tandag, Surigao del Sur' => 70,
-            'Dagocdoc (Poblacion) Tandag, Surigao del Sur' => 80,
-            'Mabua Tandag, Surigao del Sur' => 170,
-            'Mabuhay Tandag, Surigao del Sur' => 20,
-            'Maitum Tandag, Surigao del Sur' => 40,
-            'Maticdum Tandag, Surigao del Sur' => 20,
-            'Pandanon Tandag, Surigao del Sur' => 40,
-            'Pangi Tandag, Surigao del Sur' => 20,
-            'Quezon Tandag, Surigao del Sur' => 40,
-            'Rosario Tandag, Surigao del Sur' => 90,
-            'Salvacion Tandag, Surigao del Sur' => 20,
-            'San Agustin Norte Tandag, Surigao del Sur' => 50,
-            'San Agustin Sur Tandag, Surigao del Sur' => 120,
-            'San Antonio Tandag, Surigao del Sur' => 20,
-            'San Isidro Tandag, Surigao del Sur' => 20,
-            'San Jose Tandag, Surigao del Sur' => 20,
-            'Telaje Tandag, Surigao del Sur' => 160,
+            'Awasian' => 50,
+            'Bagong Lungsod (Poblacion)' => 100,
+            'Bioto' => 40,
+            'Bongtud Poblacion (East West)' => 120,
+            'Buenavista' => 70,
+            'Dagocdoc (Poblacion)' => 80,
+            'Mabua' => 170,
+            'Mabuhay' => 20,
+            'Maitum' => 40,
+            'Maticdum' => 20,
+            'Pandanon' => 40,
+            'Pangi' => 20,
+            'Quezon' => 40,
+            'Rosario' => 90,
+            'Salvacion' => 20,
+            'San Agustin Norte' => 50,
+            'San Agustin' => 120,
+            'San Antonio' => 20,
+            'San Isidro' => 20,
+            'San Jose' => 20,
+            'Telaje' => 160,
         ];
 
         $barangays = DB::table('barangays as b')
-            ->leftJoin('assistances as a', 'b.outlet_address', '=', 'a.address')
+            ->leftJoin('assistances as a', 'b.outlet_name', '=', 'a.outlet_name')
             ->select(
                 'b.id as barangay_id',
                 'b.outlet_address',
@@ -110,6 +110,7 @@ class AdminHomeController extends Controller
             //         $barangay->outlet_name = "Bongtud Poblacion (East West)";
             //     }
             // }
+        // dd($barangays);
 
         // dd($barangays);
         return view('admin.admin-dashboard', [
