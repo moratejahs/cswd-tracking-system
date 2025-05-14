@@ -72,6 +72,16 @@
                         Add Category
                     </button>
                     <div class="table-responsive">
+                        <div class="row">
+                            <div class="col-12">
+                                <form action="{{ route('admin.import.store') }}" method="POST"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    <input type="file" name="import" required>
+                                    <button type="submit" class="btn btn-secondary">Import</button>
+                                </form>
+                            </div>
+                        </div>
                         <table class="table table-bordered table-hover" id="serviceRecord">
 
                             <thead class="bg-primary">

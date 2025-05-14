@@ -10,12 +10,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Assistance extends Model
 {
     use HasFactory;
-    protected $guarded = [];
-    // protected $fillable = [
-    //     'first_name', 'middle_name', 'last_name',
-    //     'birth_date', 'age', 'gender', 'address', 'contact_no',
-    //     'occupation', 'contact_no',
-    // ];
+
+    protected $fillable = [
+        'first_name',
+        'middle_name',
+        'last_name',
+        'birth_date',
+        'age',
+        'gender',
+        'address',
+        'contact_no',
+        'occupation',
+        'purpose',
+        'category',
+        'amount',
+        'responsible_person'
+    ];
 
     public function barangays()
     {

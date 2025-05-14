@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\AdminFundController;
 use App\Http\Controllers\Admin\AdminHomeController;
 use App\Http\Controllers\Admin\AdminSaleController;
 use App\Http\Controllers\CSWD\AssistanceController;
+use App\Http\Controllers\Admin\AdminImportController;
 use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminSupplierController;
 use App\Http\Controllers\Admin\QualificationController;
@@ -20,6 +21,7 @@ use App\Http\Controllers\Admin\AdminSaleRestoreController;
 use App\Http\Controllers\Admin\AdminSalesOverviewController;
 use App\Http\Controllers\Admin\AdminRevenueVsProfitController;
 use App\Http\Controllers\Admin\AdminQuickSaleRestoreController;
+use App\Http\Controllers\Admin\AdminImportFileAssistanceController;
 use App\Http\Controllers\Admin\AdminProductInventoryStockInController;
 
 /*
@@ -133,6 +135,7 @@ Route::middleware('auth')->group(function () {
         Route::put('service', 'update')->name('admin.service.update');
         Route::delete('service/delete', 'destroy')->name('admin.service.destroy');
     });
+    Route::post('/import', [AdminImportController::class, 'store'])->name('admin.import.store');
 
     Route::post('save/assistance', [AssistanceController::class, 'store'])->name('store.save.assistance');
 
@@ -148,6 +151,7 @@ Route::middleware('auth')->group(function () {
         Route::put('assistance/approved', 'approvedBarangay')->name('admin.assistance.approvedBarangay');
         Route::delete('assistance/delete', 'destroy')->name('admin.assistance.destroy');
     });
+    Route::post('import/file', AdminImportFileAssistanceController::class)->name('import.file');
 
     Route::post('/fund', [AdminFundController::class, 'store'])->name('fund.store');
     Route::get('/fund/{id}', [AdminFundController::class, 'show'])->name('fund.show');

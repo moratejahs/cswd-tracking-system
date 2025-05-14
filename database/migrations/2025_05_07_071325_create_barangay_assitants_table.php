@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('barangay_assitants', function (Blueprint $table) {
             $table->id();
-            $table->longText(column: 'outlet_name')->nullable();
+            $table->longText( 'outlet_name')->nullable();
             $table->longText('outlet_address')->nullable();
             $table->string('lat')->nullable();
             $table->string('long')->nullable();
+            $table->foreignId('assistance_id')->constrained('assistances')->cascadeOnDelete();
             $table->timestamps();
         });
     }
