@@ -179,21 +179,48 @@ class AdminHomeController extends Controller
 
         return response()->json(['values' => $data]);
     }
-        public function getBarangayAssistance(string $address)
-    {
-        $barangayAssistance = Assistance::select(
-            'assistance',
-            DB::raw('GROUP_CONCAT(first_name SEPARATOR ", ") as first_names'),
-            DB::raw('GROUP_CONCAT(middle_name SEPARATOR ", ") as middle_names'),
-            DB::raw('GROUP_CONCAT(last_name SEPARATOR ", ") as last_names'),
-            DB::raw('GROUP_CONCAT(last_name SEPARATOR ", ") as last_names'),
-            DB::raw('SUM(quantity) as total_quantity'),
-            // DB::raw('SUM(total_quantity) as total_quantity')
-        )
-            ->where('address', $address)
-            ->groupBy('assistance', 'first_name', 'middle_name', 'last_name', 'quantity')
-            ->get();
-        return response()->json($barangayAssistance);
 
+
+    /**
+     * Get assistance details for a specific barangay
+     *
+     * @param string $outlet_name
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getBarangayAssistance($outlet_name)
+    {
+        try {
+            // Decode URL-encoded outlet name
+            $outlet_name = urldecode($outlet_name);
+
+            // Query to get assistance details for the barangay
+            // Group by client to count visits and sum amounts
+            $assistanceDetails = DB::table('assistances')
+                ->select(
+                    'first_name',
+                    'middle_name',
+                    'last_name',
+                    'category as assistance',
+                    DB::raw('COUNT(*) as visit_count'),
+                    DB::raw('SUM(CAST(amount as DECIMAL(10,2))) as total_amount')
+                )
+                ->where('outlet_name', $outlet_name)
+                ->groupBy('first_name', 'middle_name', 'last_name', 'category')
+                ->orderBy('total_amount', 'desc')
+                ->get();
+
+            return response()->json($assistanceDetails);
+        } catch (\Exception $e) {
+            // Log the error
+            \Log::error('Error fetching barangay details: ' . $e->getMessage());
+
+            // Return a proper JSON error response
+            return response()->json([
+                'error' => 'Failed to fetch barangay details',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
+
+
 }

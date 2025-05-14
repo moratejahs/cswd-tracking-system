@@ -43,6 +43,9 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="barangayModalLabel">Barangay Details</h5>
+                    <button type="button" class="btn btn-primary btn-sm me-2" onclick="printModalContent()">
+                        <i class="bi bi-printer"></i> Print
+                    </button>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -93,8 +96,32 @@
                 <div class="card">
                     <div class="card-header">
                         <h4>Tandag Map Statistics</h4>
+                        <div class="time-filters mt-2">
+                            <div class="btn-group" role="group" aria-label="Time Period Filters">
+                                <button type="button" class="btn btn-outline-primary btn-sm" id="filterWeek">
+                                    <i class="bi bi-calendar-week"></i> This Week
+                                </button>
+                                <button type="button" class="btn btn-outline-primary btn-sm" id="filterMonth">
+                                    <i class="bi bi-calendar-month"></i> This Month
+                                </button>
+                                <button type="button" class="btn btn-outline-primary btn-sm" id="filterYear">
+                                    <i class="bi bi-calendar"></i> This Year
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm" id="filterAll">
+                                    <i class="bi bi-calendar-x"></i> All Time
+                                </button>
+                            </div>
+                        </div>
                     </div>
+
                     <div class="card-body">
+                        <div class="row">
+                            <center>
+                                <span class="badge bg-danger">High Assistance (75-100%)</span>
+                                <span class="badge bg-success">Medium Assistance (45-74%)</span>
+                                <span class="badge bg-warning">Low Assistance (0-44%)</span>
+                            </center>
+                        </div>
                         <div class="map-controls mb-3">
                             <div class="btn-group" role="group" aria-label="Map Controls">
                                 <button type="button" class="btn btn-outline-primary btn-sm" id="satelliteView">
@@ -331,8 +358,13 @@
 
 
                     marker.on("click", function() {
-                        fetch(`/admin/barangay/${barangay.outlet_address}`)
-                            .then(response => response.json())
+                        fetch(`/admin/barangay/${encodeURIComponent(barangay.outlet_name)}`)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error(`HTTP error! Status: ${response.status}`);
+                                }
+                                return response.json();
+                            })
                             .then(data => {
                                 let modalBody = document.querySelector(
                                     "#barangayModal .modal-body");
@@ -344,9 +376,9 @@
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>
-                                                <th>Category</th>
                                                 <th>Full Name</th>
-                                                <th>Amount</th>
+                                                <th>Visit Count</th>
+                                                <th>Total Amount</th>
                                             </tr>
                                         </thead>
                                         <tbody>`;
@@ -354,9 +386,9 @@
                                     data.forEach(item => {
                                         table += `
                                             <tr>
-                                                <td>${item.assistance}</td>
-                                                <td>${item.first_names} ${item.middle_names} ${item.last_names}</td>
-                                                <td>${item.total_quantity}</td>
+                                                <td>${item.first_name} ${item.middle_name} ${item.last_name}</td>
+                                                <td>${item.visit_count}</td>
+                                                <td>₱${parseFloat(item.total_amount).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
                                             </tr>`;
                                     });
 
@@ -367,15 +399,136 @@
                                         `<p class="text-danger">No assistance records found for this barangay.</p>`;
                                 }
 
+                                // Create and show the modal
                                 var modal = new bootstrap.Modal(document.getElementById(
                                     'barangayModal'));
                                 modal.show();
                             })
-                            .catch(error => console.error("Error fetching barangay details:",
-                                error));
+                            .catch(error => {
+                                console.error("Error fetching barangay details:", error);
+                                alert(`Error loading barangay details: ${error.message}`);
+                            });
                     });
                 }
             });
         });
+    </script>
+    <script>
+        // Time period filter functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Filter buttons
+            const filterWeekBtn = document.getElementById('filterWeek');
+            const filterMonthBtn = document.getElementById('filterMonth');
+            const filterYearBtn = document.getElementById('filterYear');
+            const filterAllBtn = document.getElementById('filterAll');
+
+            // Add click event listeners
+            filterWeekBtn.addEventListener('click', function() {
+                applyTimeFilter('week');
+            });
+
+            filterMonthBtn.addEventListener('click', function() {
+                applyTimeFilter('month');
+            });
+
+            filterYearBtn.addEventListener('click', function() {
+                applyTimeFilter('year');
+            });
+
+            filterAllBtn.addEventListener('click', function() {
+                applyTimeFilter('all');
+            });
+
+            // Function to apply time filter
+            function applyTimeFilter(period) {
+                // Highlight active button
+                [filterWeekBtn, filterMonthBtn, filterYearBtn, filterAllBtn].forEach(btn => {
+                    btn.classList.remove('active');
+                });
+
+                // Set active button
+                if (period === 'week') {
+                    filterWeekBtn.classList.add('active');
+                } else if (period === 'month') {
+                    filterMonthBtn.classList.add('active');
+                } else if (period === 'year') {
+                    filterYearBtn.classList.add('active');
+                } else {
+                    filterAllBtn.classList.add('active');
+                }
+
+                // Here you would implement the actual filtering logic
+                console.log(`Filtering by ${period}`);
+            }
+        });
+    </script>
+    <script>
+        function printModalContent() {
+            const modalContent = document.querySelector("#barangayModal .modal-body").innerHTML;
+            const printWindow = window.open('', '_blank');
+
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Barangay Assistance Report</title>
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                    <style>
+                        body {
+                            padding: 20px;
+                            font-family: Arial, sans-serif;
+                        }
+                        .header {
+                            text-align: center;
+                            margin-bottom: 20px;
+                        }
+                        .report-title {
+                            font-size: 18px;
+                            font-weight: bold;
+                            margin: 10px 0;
+                        }
+                        .report-subtitle {
+                            font-size: 14px;
+                            margin-bottom: 20px;
+                        }
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                        }
+                        th, td {
+                            border: 1px solid #ddd;
+                            padding: 8px;
+                            text-align: left;
+                        }
+                        th {
+                            background-color: #f2f2f2;
+                        }
+                        @media print {
+                            .btn {
+                                display: none !important;
+                            }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <div class="report-title">City Social Welfare and Development</div>
+                        <div class="report-subtitle">Barangay Assistance Report</div>
+                    </div>
+                    ${modalContent}
+                    <div class="mt-4">
+                        <p>Generated on: ${new Date().toLocaleString()}</p>
+                    </div>
+                    <script>
+                        window.onload = function() {
+                            window.print();
+                        };
+                    <\/script>
+                </body>
+                </html>
+            `);
+
+            printWindow.document.close();
+        }
     </script>
 @endsection
