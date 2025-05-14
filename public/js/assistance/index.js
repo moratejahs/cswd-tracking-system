@@ -96,8 +96,18 @@ $(function () {
         ajax: route('admin.service.index'),
         columns: [
             {
-                data: 'full_name',
-                name: 'full_name',
+                data: 'first_name',
+                name: 'first_name',
+                className: 'text-left',
+            },
+            {
+                data: 'middle_name',
+                name: 'middle_name',
+                className: 'text-left',
+            },
+            {
+                data: 'last_name',
+                name: 'last_name',
                 className: 'text-left',
             },
             {
@@ -106,18 +116,23 @@ $(function () {
                 className: 'text-left',
             },
             {
-                data: 'gender',
-                name: 'gender',
-                className: 'text-left',
-            },
-            {
                 data: 'age',
                 name: 'age',
                 className: 'text-left',
             },
             {
-                data: 'barangay_name',
-                name: 'barangay_name',
+                data: 'gender',
+                name: 'gender',
+                className: 'text-left',
+            },
+            {
+                data: 'age', // This seems duplicated in the header; keep only once if unnecessary
+                name: 'age',
+                className: 'text-left',
+            },
+            {
+                data: 'address',
+                name: 'address',
                 className: 'text-left',
             },
             {
@@ -130,7 +145,26 @@ $(function () {
                 name: 'occupation',
                 className: 'text-left',
             },
-
+            {
+                data: 'purpose',
+                name: 'purpose',
+                className: 'text-left',
+            },
+            {
+                data: 'category',
+                name: 'category',
+                className: 'text-left',
+            },
+            {
+                data: 'amount',
+                name: 'amount',
+                className: 'text-left',
+            },
+            {
+                data: 'responsible_person',
+                name: 'responsible_person',
+                className: 'text-left',
+            },
             {
                 data: 'created_at',
                 name: 'created_at',
@@ -171,6 +205,7 @@ $(function () {
                 className: 'text-center',
             },
         ],
+
         createdRow: function (row, data, dataIndex) {
             $(row).css({
                 'font-size': '13px',

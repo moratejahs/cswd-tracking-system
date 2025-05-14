@@ -10,7 +10,7 @@ use App\Models\ClientCategory;
 use App\Models\BarangayAssitant;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
-
+use Illuminate\Support\Facades\Log;
 class AssitanceController extends Controller
 {
     /**
@@ -19,31 +19,24 @@ class AssitanceController extends Controller
     public function index(Request $request)
     {
 
-
         if ($request->ajax()) {
-            $data = Assistance::query()
-            ->with(['barangays'])
-            ->get();
+            $data = DB::table('assistances as a')
+                ->join(DB::raw('
+                    (SELECT MIN(id) as id
+                    FROM assistances
+                    GROUP BY first_name, middle_name, last_name) as grouped
+                '), 'a.id', '=', 'grouped.id')
+                ->select('a.*')
+                ->get();
+
             return DataTables::of($data)
-                ->addColumn('full_name', function ($assistance) {
-                    return trim("{$assistance->first_name} {$assistance->middle_name} {$assistance->last_name}");
-                })
-                ->editColumn('barangay_name', function ($assistance) {
-                    return $assistance->barangays->outlet_address ?? '';
-                })
-                ->editColumn('birth_date', function ($assistance) {
-                    return $assistance->birth_date ? date('F d, Y', strtotime($assistance->birth_date)) : '';
-                })
-                 ->editColumn('contact_no', function ($assistance) {
-                    return $assistance->contact_no ?? '';
-                })
                 ->addColumn('action', function ($assistance) {
-                    return '<a id="edit-user" href="' . route('admin.service.edit', $assistance->id) . '"
+                    return '<a id="edit-user" href="' . route('admin.service.edit', $assistance->first_name) . '"
                                 class="btn btn-light-secondary rounded-pill btn-sm">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
-                            <a id="removeService" href="javascript:void(0)" data-user-id="' . $assistance->id . '"
-                                data-url="' . route('admin.service.show', $assistance->id) . '"
+                            <a id="removeService" href="javascript:void(0)" data-user-id="' . $assistance->first_name . '"
+                                data-url="' . route('admin.service.show', $assistance->first_name) . '"
                                 class="btn btn-danger rounded-pill btn-sm" data-toggle="tooltip" data-placement="top" title="Delete Product">
                                 <i class="bi bi-trash"></i>
                             </a>';
@@ -83,38 +76,33 @@ class AssitanceController extends Controller
                 'middle_name' => 'required',
                 'last_name' => 'required',
                 'birth_date' => 'required',
-                'age' => 'required|integer',
+                'age' => 'required',
                 'gender' => 'required',
                 'occupation' => 'required',
                 'contact_no' => 'required',
                 'latitude' => 'required',
                 'longitude' => 'required',
-                'outlet_name' => 'required',
+                'outlet_name' => 'nullable',
                 'outlet_address' => 'required',
+                'purpose' => 'required',
+                'category_name' => 'required',
+                'amount' => 'required',
+                'responsible_person' => 'required',
             ]);
-            // dd($validated);
-            // Check if the combination already exists
-            $exists = Assistance::where('first_name', $validated['first_name'])
-                ->where('middle_name', $validated['middle_name'])
-                ->where('last_name', $validated['last_name'])
-                ->exists();
 
-            if ($exists) {
-                return back()->withErrors(['duplicate' => 'A beneficiary with the same name already exists.'])->withInput();
-            }
+            // Logging validated data for debugging
+            Log::info('Validated Data:', $validated);
 
             DB::beginTransaction();
-            try {
 
-                $barnagays = BarangayAssitant::create([
+            try {
+                BarangayAssitant::create([
                     'outlet_name' => $validated['outlet_name'],
                     'outlet_address' => $validated['outlet_address'],
                     'lat' => $validated['latitude'],
                     'long' => $validated['longitude'],
                 ]);
-                // dd($barnagays);
-                // // Store the record
-                // dd($barnagays->id);
+
                 Assistance::create([
                     'first_name' => $validated['first_name'],
                     'middle_name' => $validated['middle_name'],
@@ -124,20 +112,31 @@ class AssitanceController extends Controller
                     'gender' => $validated['gender'],
                     'contact_no' => $validated['contact_no'],
                     'occupation' => $validated['occupation'],
-                    'barangay_id' => $barnagays->id,
+                    'lat' => $validated['latitude'],
+                    'long' => $validated['longitude'],
+                    'outlet_name' => $validated['outlet_name'],
+                    'address' => $validated['outlet_address'],
+                    'purpose' => $validated['purpose'],
+                    'category' => $validated['category_name'],
+                    'amount' => $validated['amount'],
+                    'responsible_person' => $validated['responsible_person'],
                 ]);
-               //  dd($assistant);
-
 
                 DB::commit();
+
                 return to_route('admin.service.index')
                     ->with('message', 'Beneficiary created successfully');
-
             } catch (\Exception $e) {
                 DB::rollback();
+
+                // Log the exception for further debugging
+                Log::error('Error creating beneficiary:', ['error' => $e->getMessage()]);
+
                 throw $e;
             }
         } catch (\Exception $e) {
+            // Log general error and show message
+            Log::error('An error occurred while saving the beneficiary:', ['error' => $e->getMessage()]);
             return back()->withErrors(['error' => 'An error occurred while saving the beneficiary. Please try again.'])->withInput();
         }
     }

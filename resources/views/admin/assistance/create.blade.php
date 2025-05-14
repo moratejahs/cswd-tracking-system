@@ -35,7 +35,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             @endif
-            {{-- @if ($errors->any())
+            @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul class="list-disc list-inside text-red-600">
                         @foreach ($errors->all() as $error)
@@ -43,7 +43,7 @@
                         @endforeach
                     </ul>
                 </div>
-            @endif --}}
+            @endif
 
         </div>
 
@@ -53,6 +53,10 @@
                     <form action="{{ route('admin.service.store') }}" method="POST">
                         @csrf
                         <div class="row">
+                            <div class="my-4">
+                                <label>Click or drag marker on the map to set location</label>
+                                <div id="map" style="height: 500px; width: 100%;"></div>
+                            </div>
                             <div class="col-4">
                                 <label>First Name</label>
                                 <input type="text" class="form-control" name="first_name" required>
@@ -88,9 +92,30 @@
                                 <label>Contact No</label>
                                 <input type="text" class="form-control" name="contact_no" required>
                             </div>
-
-                            <input type="text" name="latitude" id="latitude">
-                            <input type="text" name="longitude" id="longitude">
+                            <div class="col-4">
+                                <label>Purpose</label>
+                                <input type="text" class="form-control" name="purpose" required>
+                            </div>
+                            <div class="col-4">
+                                <label>Category</label>
+                                <select name="category_name" id="" class="form-select" required>
+                                    @foreach ($clientCategories as $category)
+                                        <option value="{{ $category->description }}">
+                                            {{ $category->description }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                <label>Amount</label>
+                                <input type="text" class="form-control" name="amount" required>
+                            </div>
+                            <div class="col-4">
+                                <label>Responsible Person</label>
+                                <input type="text" class="form-control" name="responsible_person" required>
+                            </div>
+                            <input type="text" hidden name="latitude" id="latitude">
+                            <input type="text" hidden name="longitude" id="longitude">
 
                             <div class="col-6">
                                 {{-- <label>Location Name</label> --}}
@@ -99,15 +124,12 @@
                             </div>
                             <div class="col-6">
                                 {{-- <label>Complete Address</label> --}}
-                                <input type="text" class="form-control" id="outlet_address" name="outlet_address"
+                                <input type="text" hidden class="form-control" id="outlet_address" name="outlet_address"
                                     readonly>
                             </div>
                         </div>
 
-                        <div class="my-4">
-                            <label>Click or drag marker on the map to set location</label>
-                            <div id="map" style="height: 500px; width: 100%;"></div>
-                        </div>
+
 
                         <div class="d-flex justify-content-end">
                             <a href="{{ route('admin.assistance.index') }}" class="btn btn-light-secondary me-2">Close</a>

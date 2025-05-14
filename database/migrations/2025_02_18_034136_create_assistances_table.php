@@ -20,6 +20,9 @@ return new class extends Migration
             $table->string('age')->nullable();
             $table->string('gender')->nullable();
             $table->string('address')->nullable();
+            $table->string('outlet_name')->nullable();
+            $table->string('lat')->nullable();
+            $table->string('long')->nullable();
             $table->string('contact_no')->nullable();
             $table->string('occupation')->nullable();
             $table->string('purpose')->nullable();

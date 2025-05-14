@@ -17,7 +17,6 @@ return new class extends Migration
             $table->longText('outlet_address')->nullable();
             $table->string('lat')->nullable();
             $table->string('long')->nullable();
-            $table->foreignId('assistance_id')->constrained('assistances')->cascadeOnDelete();
             $table->timestamps();
         });
     }

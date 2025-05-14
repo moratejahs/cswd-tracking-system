@@ -1,19 +1,20 @@
 <?php
 
-namespace Database\Seeders\CSWD;
+namespace App\Imports;
 
-use App\Models\Barangay;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
+use App\Models\BarangayAssitant;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class BarangaySeeder extends Seeder
+class BarangayAssitanceImport implements ToModel, WithHeadingRow
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    private $assistance;
+    private $barangayData;
+
+    public function __construct($assistance)
     {
-        $barangays = [
+        $this->assistance = $assistance;
+        $this->barangayData = [
             ['name' => 'Awasian', 'latitude' => '9.071651312307543', 'longitude' => '126.162487818678'],
             ['name' => 'Bagong Lungsod (Poblacion)', 'latitude' => '9.07840811322997', 'longitude' => '126.1992890639329'],
             ['name' => 'Bioto', 'latitude' => '9.066121085386317', 'longitude' => '126.1789407724455'],
@@ -36,15 +37,38 @@ class BarangaySeeder extends Seeder
             ['name' => 'San Jose', 'latitude' => '9.046759', 'longitude' => '126.184373'],
             ['name' => 'Telaje', 'latitude' => '9.062234', 'longitude' => '126.192604'],
         ];
+    }
 
-        foreach ($barangays as $barangay) {
-            ([
-                'outlet_name' => $barangay['name'],
-                'outlet_address' => "{$barangay['name']} Tandag, Surigao del Sur",
-                'latitude' => $barangay['latitude'],
-                'longtitude' => $barangay['longitude'],
+    public function model(array $row)
+    {
+        try {
+            $barangayInfo = $this->findBarangayData($row['Address']);
+
+            if (!$barangayInfo) {
+                return null;
+            }
+
+            return new BarangayAssitant([
+                'assistance_id' => $this->assistance->id,
+                'outlet_name' => $barangayInfo['name'],
+                'outlet_address' => $row['Address'] . " Tandag, Surigao del Sur",
+                'lat' => $barangayInfo['latitude'],
+                'long' => $barangayInfo['longitude'],
             ]);
+        } catch (\Exception $e) {
+            \Log::error('Barangay Import Error: ' . $e->getMessage());
+            \Log::error('Row Data: ' . json_encode($row));
+            throw $e;
         }
+    }
 
+    private function findBarangayData($address)
+    {
+        foreach ($this->barangayData as $barangay) {
+            if (stripos($address, $barangay['name']) !== false) {
+                return $barangay;
+            }
+        }
+        return null;
     }
 }

@@ -64,52 +64,94 @@
         <div class="col-12">
             <div class="card" data-aos="fade-left">
                 <div class="card-body">
-                    <a type="button" class="btn-sm block btn btn-primary" href="{{ route('admin.service.create') }}">
-                        Add Beneficiary
-                    </a>
-                    <button type="button" class="btn-sm block btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#createAccountModal">
-                        Add Category
-                    </button>
-                    <div class="table-responsive">
-                        <div class="row">
-                            <div class="col-12">
+                    <div class="row align-items-center mb-4">
+                        <div class="col-md-6">
+                            <div class="d-flex gap-2">
+                                <a type="button" class="btn btn-primary" href="{{ route('admin.service.create') }}">
+                                    <i class="bi bi-person-plus-fill"></i> Add Beneficiary
+                                </a>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#createAccountModal">
+                                    <i class="bi bi-tag-fill"></i> Add Category
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="import-container">
                                 <form action="{{ route('admin.import.store') }}" method="POST"
-                                    enctype="multipart/form-data">
+                                    enctype="multipart/form-data" class="d-flex">
                                     @csrf
-                                    <input type="file" name="import" required>
-                                    <button type="submit" class="btn btn-secondary">Import</button>
+                                    <input type="file" class="form-control" name="import" required
+                                        accept=".xlsx,.xls,.csv">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-cloud-upload-fill"></i>
+                                    </button>
                                 </form>
                             </div>
                         </div>
+                    </div>
+                    <div class="table-responsive">
+
                         <table class="table table-bordered table-hover" id="serviceRecord">
 
                             <thead class="bg-primary">
                                 <tr>
-                                    <th class="text-white" style="font-style: normal; font-weight: 200;">
-                                        Full Name
+                                    <th class="text-white"
+                                        style="font-style: normal; font-weight: 200; width: 160px; max-width: 160px; min-width: 160px;">
+                                        First Name
                                     </th>
-                                    <th class="text-white" style="font-style: normal; font-weight: 200;">
+                                    <th class="text-white"
+                                        style="font-style: normal; font-weight: 200; width: 160px; max-width: 160px; min-width: 160px;">
+                                        Middle Name
+                                    </th>
+                                    <th class="text-white"
+                                        style="font-style: normal; font-weight: 200; width: 160px; max-width: 160px; min-width: 160px;">
+                                        Last Name
+                                    </th>
+                                    <th class="text-white"
+                                        style="font-style: normal; font-weight: 200; width: 160px; max-width: 160px; min-width: 160px;">
                                         Birth Date
                                     </th>
-                                    <th class="text-white" style="font-style: normal; font-weight: 200;">
+                                    <th class="text-white"
+                                        style="font-style: normal; font-weight: 200; width: 160px; max-width: 160px; min-width: 160px;">
+                                        Age
+                                    </th>
+                                    <th class="text-white"
+                                        style="font-style: normal; font-weight: 200; width: 160px; max-width: 160px; min-width: 160px;">
                                         Gender
                                     </th>
                                     <th class="text-white" style="font-style: normal; font-weight: 200;">
                                         Age
                                     </th>
-                                    <th class="text-white" style="font-style: normal; font-weight: 200;">
+                                    <th class="text-white"
+                                        style="font-style: normal; font-weight: 200; width: 200px; max-width: 200px; min-width: 200px;">
                                         Barangay Address
                                     </th>
-                                    <th class=" text-white" style="font-style: normal; font-weight: 200;">
+                                    <th class=" text-white"
+                                        style="font-style: normal; font-weight: 200; width: 160px; max-width: 160px; min-width: 160px;">
                                         Contact No
                                     </th>
 
-                                    <th class=" text-white" style="font-style: normal; font-weight: 200;">
+                                    <th class=" text-white"
+                                        style="font-style: normal; font-weight: 200; width: 160px; max-width: 160px; min-width: 160px;">
                                         Occupation
                                     </th>
-
-
+                                    <th class=" text-white"
+                                        style="font-style: normal; font-weight: 200; width: 160px; max-width: 160px; min-width: 160px;">
+                                        Purpose
+                                    </th>
+                                    <th class=" text-white"
+                                        style="font-style: normal; font-weight: 200; width: 160px; max-width: 160px; min-width: 160px;">
+                                        Category
+                                    </th>
+                                    <th class=" text-white"
+                                        style="font-style: normal; font-weight: 200; width: 160px; max-width: 160px; min-width: 160px;">
+                                        Amount
+                                    </th>
+                                    <th class=" text-white"
+                                        style="font-style: normal; font-weight: 200; width: 160px; max-width: 160px; min-width: 160px;">
+                                        Responsible Person
+                                    </th>
                                     <th class=" text-white" style="font-style: normal; font-weight: 200;">
                                         Created At
                                     </th>
