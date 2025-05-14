@@ -16,6 +16,7 @@
     @include('admin.client-category.creat')
     @include('admin.client-category.update')
     @include('admin.client-category.delete')
+    @include('admin.assistance.filter')
 
     <nav class="pt-0" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" data-aos="fade-down">
         <ol class="pb-0 mb-0 breadcrumb">
@@ -74,6 +75,10 @@
                                     data-bs-target="#createAccountModal">
                                     <i class="bi bi-tag-fill"></i> Add Category
                                 </button>
+                                {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#createFilter">
+                                    <i class="bi bi-funnel-fill"></i> Filter
+                                </button> --}}
                             </div>
                         </div>
                         <div class="col-md-6">

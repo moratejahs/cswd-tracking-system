@@ -128,6 +128,7 @@ Route::middleware('auth')->group(function () {
     //Services Records
     Route::controller(AssitanceController::class)->group(function () {
         Route::get('services', 'index')->name('admin.service.index');
+        // Route::get('filter', 'filter')->name('admin.service.filter');
         Route::get('services/create', 'create')->name('admin.service.create');
         Route::post('services/store', 'store')->name('admin.service.store');
         Route::get('service/{id}', 'edit')->name('admin.service.edit');
@@ -135,6 +136,8 @@ Route::middleware('auth')->group(function () {
         Route::put('service', 'update')->name('admin.service.update');
         Route::delete('service/delete', 'destroy')->name('admin.service.destroy');
     });
+
+    Route::get('/filter', [AssitanceController::class, 'filter'])->name('filter.assistance');
     Route::post('/import', [AdminImportController::class, 'store'])->name('admin.import.store');
 
     Route::post('save/assistance', [AssistanceController::class, 'store'])->name('store.save.assistance');

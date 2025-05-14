@@ -18,18 +18,28 @@ class AssitanceController extends Controller
      */
     public function index(Request $request)
     {
-
+        // $validated = $request->validate([
+        //     'start_date' =>'required',
+        //     'end_date' =>'required',
+        // ]);
         if ($request->ajax()) {
-            $data = DB::table('assistances as a')
+            $query = DB::table('assistances as a')
                 ->join(DB::raw('
                     (SELECT MIN(id) as id
                     FROM assistances
                     GROUP BY first_name, middle_name, last_name) as grouped
                 '), 'a.id', '=', 'grouped.id')
-                ->select('a.*')
-                ->get();
+                ->select('a.*');
 
-            return DataTables::of($data)
+            // Apply date range filter only if both dates are provided
+            if ($request->has('start_date') && $request->has('end_date')) {
+                $query->where(function($q) use ($request) {
+                    $q->whereBetween('a.created_at', [$request->start_date, $request->end_date])
+                      ->orWhere('a.created_at', $request->start_date)
+                      ->orWhere('a.created_at', $request->end_date);
+                });
+            }
+            return DataTables::of($query)
                 ->addColumn('action', function ($assistance) {
                     return '<a id="edit-user" href="' . route('admin.service.edit', $assistance->first_name) . '"
                                 class="btn btn-light-secondary rounded-pill btn-sm">
@@ -51,7 +61,18 @@ class AssitanceController extends Controller
         ]);
     }
 
+    public function filter(Request $request)
+    {
+        $validated = $request->validate([
+           'start_date' => 'required',
+          'end_date' => 'required',
+        ]);
+        // dd($validated);
+        $assitance = Assistance::whereBetween('created_at', [$validated['start_date'], $validated['end_date']])->get();
+        // dd($assitance);
 
+       return redirect()->back();
+    }
     /**
      * Show the form for creating a new resource.
      */
