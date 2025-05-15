@@ -146,11 +146,6 @@ $(function () {
                 className: 'text-left',
             },
             {
-                data: 'age', // This seems duplicated in the header; keep only once if unnecessary
-                name: 'age',
-                className: 'text-left',
-            },
-            {
                 data: 'address',
                 name: 'address',
                 className: 'text-left',

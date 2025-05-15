@@ -125,9 +125,6 @@
                                         style="font-style: normal; font-weight: 200; width: 160px; max-width: 160px; min-width: 160px;">
                                         Gender
                                     </th>
-                                    <th class="text-white" style="font-style: normal; font-weight: 200;">
-                                        Age
-                                    </th>
                                     <th class="text-white"
                                         style="font-style: normal; font-weight: 200; width: 200px; max-width: 200px; min-width: 200px;">
                                         Barangay Address
