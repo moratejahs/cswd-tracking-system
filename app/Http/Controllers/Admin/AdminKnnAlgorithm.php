@@ -65,7 +65,7 @@ class AdminKnnAlgorithm extends Controller
             ]);
         }
 
-        return view('admin.knn.index', [
+        return view('admin.home.index', [
             'clusters' => $clusters
         ]);
     }

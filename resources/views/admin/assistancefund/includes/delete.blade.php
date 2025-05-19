@@ -10,7 +10,7 @@
                     @csrf
                     @method('delete')
                     <div class="row">
-                        <input type="hidden" id="assistantDeleteId" name="id" required>
+                        <input type="text" id="assistantDeleteId" name="id" required>
                         <p>Are you sure do you want to delete?</p>
                     </div>
                     <div class="pb-2 col-12 d-flex justify-content-end">

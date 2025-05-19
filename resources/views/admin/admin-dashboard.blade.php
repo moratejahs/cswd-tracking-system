@@ -356,59 +356,20 @@
                                 offset: [0, -10]
                             });
 
-
-                    marker.on("click", function() {
-                        fetch(`/admin/barangay/${encodeURIComponent(barangay.outlet_name)}`)
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error(`HTTP error! Status: ${response.status}`);
-                                }
-                                return response.json();
-                            })
-                            .then(data => {
-                                let modalBody = document.querySelector(
-                                    "#barangayModal .modal-body");
-                                modalBody.innerHTML = ""; // Clear previous data
-
-                                if (data.length > 0) {
-                                    let table = `
-                                    <div><h6>Barangay: ${barangay.outlet_name} has (${barangay.assistance_percentage}%) of its ${barangay.total_population.toLocaleString()} total data poverty population received assistance.</h6></div>
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Full Name</th>
-                                                <th>Visit Count</th>
-                                                <th>Total Amount</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>`;
-
-                                    data.forEach(item => {
-                                        table += `
-                                            <tr>
-                                                <td>${item.first_name} ${item.middle_name} ${item.last_name}</td>
-                                                <td>${item.visit_count}</td>
-                                                <td>₱${parseFloat(item.total_amount).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-                                            </tr>`;
-                                    });
-
-                                    table += `</tbody></table>`;
-                                    modalBody.innerHTML = table;
-                                } else {
-                                    modalBody.innerHTML =
-                                        `<p class="text-danger">No assistance records found for this barangay.</p>`;
-                                }
-
-                                // Create and show the modal
-                                var modal = new bootstrap.Modal(document.getElementById(
-                                    'barangayModal'));
-                                modal.show();
-                            })
-                            .catch(error => {
-                                console.error("Error fetching barangay details:", error);
-                                alert(`Error loading barangay details: ${error.message}`);
-                            });
+                    // Hide tooltips when zoomed out, show when zoomed in
+                    map.on('zoomend', function() {
+                        var currentZoom = map.getZoom();
+                        if (currentZoom < 12) {
+                            marker.closeTooltip();
+                        } else {
+                            marker.openTooltip();
+                        }
                     });
+
+                    // Initial tooltip visibility based on current zoom
+                    if (map.getZoom() < 12) {
+                        marker.closeTooltip();
+                    }
                 }
             });
         });

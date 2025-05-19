@@ -31,8 +31,20 @@ class AdminImportController extends Controller
      */
     public function store(Request $request)
     {
+        try {
         Excel::import(new AssistanceImport(), $request->file('import'));
-        return redirect()->back()->with('message','Data Imported Successfully');
+
+        return redirect()->back()->with('message', 'Data Imported Successfully');
+    } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+        $failures = $e->failures();
+
+        return redirect()->back()->withErrors(['import' => 'Validation failed in some rows. Check your data.']);
+    } catch (\Throwable $e) {
+        // General error (e.g., from your `findBarangayData` logic)
+        \Log::error('Import error: ' . $e->getMessage());
+
+        return redirect()->back()->withErrors(['import' => 'Import failed: ' . $e->getMessage()]);
+    }
     }
 
     /**

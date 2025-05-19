@@ -27,7 +27,8 @@ class Assistance extends Model
         'purpose',
         'category',
         'amount',
-        'responsible_person'
+        'responsible_person',
+        'created_at',
     ];
 
     public function barangays()

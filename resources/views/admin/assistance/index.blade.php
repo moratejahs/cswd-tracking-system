@@ -81,6 +81,7 @@
                                 </button> --}}
                             </div>
                         </div>
+
                         <div class="col-md-6">
                             <div class="import-container">
                                 <form action="{{ route('admin.import.store') }}" method="POST"
@@ -95,6 +96,17 @@
                             </div>
                         </div>
                     </div>
+                    @if ($errors->has('import'))
+                        <div class="alert alert-danger mt-2">
+                            {{ $errors->first('import') }}
+                        </div>
+                    @endif
+
+                    @if (session('message'))
+                        <div class="alert alert-success mt-2">
+                            {{ session('message') }}
+                        </div>
+                    @endif
                     <div class="table-responsive">
 
                         <table class="table table-bordered table-hover" id="serviceRecord">

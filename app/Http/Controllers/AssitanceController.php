@@ -45,8 +45,8 @@ class AssitanceController extends Controller
                                 class="btn btn-light-secondary rounded-pill btn-sm">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
-                            <a id="removeService" href="javascript:void(0)" data-user-id="' . $assistance->first_name . '"
-                                data-url="' . route('admin.service.show', $assistance->first_name) . '"
+                            <a id="removeService" href="javascript:void(0)" data-user-id="' . $assistance->id . '"
+                                data-url="' . route('admin.service.show', $assistance->id) . '"
                                 class="btn btn-danger rounded-pill btn-sm" data-toggle="tooltip" data-placement="top" title="Delete Product">
                                 <i class="bi bi-trash"></i>
                             </a>';
