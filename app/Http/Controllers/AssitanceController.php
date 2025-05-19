@@ -111,6 +111,18 @@ class AssitanceController extends Controller
                 'responsible_person' => 'required',
             ]);
 
+            // Check if beneficiary with same name already exists
+            $existingBeneficiary = Assistance::where('first_name', $validated['first_name'])
+                ->where('middle_name', $validated['middle_name'])
+                ->where('last_name', $validated['last_name'])
+                ->first();
+
+            if ($existingBeneficiary) {
+                return back()->withErrors([
+                    'error' => 'A beneficiary with this name already exists in the system.'
+                ])->withInput();
+            }
+
             // Logging validated data for debugging
             Log::info('Validated Data:', $validated);
 

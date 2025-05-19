@@ -328,10 +328,20 @@
             var map = L.map('map').setView([9.1011711, 126.1588771], 13);
             let marker = null;
 
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            // Define tile layers
+            var streets = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 18,
                 attribution: ''
-            }).addTo(map);
+            });
+
+            var satellite = L.tileLayer(
+                'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                    maxZoom: 18,
+                    attribution: ''
+                });
+
+            // Add satellite layer to map by default
+            satellite.addTo(map);
 
             // Function to get address details from coordinates
             async function getLocationDetails(lat, lng) {
