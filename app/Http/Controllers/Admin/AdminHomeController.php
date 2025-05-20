@@ -59,7 +59,7 @@ class AdminHomeController extends Controller
             'Rosario' => 4385,
             'Salvacion' => 896,
             'San Agustin Norte' => 2404,
-            'San Agustin' => 5921,
+            'San Agustin Sur' => 5921,
             'San Antonio' => 909,
             'San Isidro' => 1051,
             'San Jose' => 893,
@@ -77,33 +77,33 @@ class AdminHomeController extends Controller
                 DB::raw('COUNT(a.id) as total_assistance_requests'),
                 DB::raw("CASE ".
                     implode(" ", array_map(function ($population, $address) {
-                        return "WHEN b.outlet_address = '".$address."' THEN ".$population;
+                        return "WHEN b.outlet_name = \"{$address}\" THEN {$population}";
                     }, $populationMapping, array_keys($populationMapping))).
                     " ELSE 10 END as total_population"),
                     DB::raw("ROUND((COUNT(a.id) / " .
                     "CASE " .
                     implode(" ", array_map(function ($population, $address) {
-                        return "WHEN b.outlet_address = '".$address."' THEN ".$population;
+                        return "WHEN b.outlet_name = \"{$address}\" THEN {$population}";
                     }, $populationMapping, array_keys($populationMapping))) .
                     " ELSE 10 END) * 100, 2) as assistance_percentage"),
                 DB::raw("CASE ".
                     "WHEN (COUNT(a.id) / ".
                     "CASE ".
                     implode(" ", array_map(function ($population, $address) {
-                        return "WHEN b.outlet_address = '".$address."' THEN ".$population;
+                        return "WHEN b.outlet_name = '".$address."' THEN ".$population;
                     }, $populationMapping, array_keys($populationMapping))).
                     " ELSE 10 END) * 100 >= 75 THEN 'High Assistance (75-100%)' " .
                     "WHEN (COUNT(a.id) / ".
                     "CASE ".
                     implode(" ", array_map(function ($population, $address) {
-                        return "WHEN b.outlet_address = '".$address."' THEN ".$population;
+                        return "WHEN b.outlet_name = '".$address."' THEN ".$population;
                     }, $populationMapping, array_keys($populationMapping))).
                     " ELSE 10 END) * 100 >= 45 THEN 'Medium Assistance (45-74%)' " .
                     "ELSE 'Low Assistance (0-44%)' END as assistance_level"
                 )
             )
-            ->groupBy('b.id', 'b.outlet_address', 'b.outlet_name', 'b.latitude', 'b.longtitude')
-            ->orderBy('b.outlet_address')
+            ->groupBy('b.id', 'b.outlet_name', 'b.outlet_name', 'b.latitude', 'b.longtitude')
+            ->orderBy('b.outlet_name')
             ->get();
             // foreach ($barangays as $barangay) {
             //     if ($barangay->outlet_name === "Bongtud Poblacion (East West)") {
