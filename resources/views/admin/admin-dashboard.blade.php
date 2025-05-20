@@ -51,8 +51,8 @@
                 <div class="modal-body">
                     <p><strong>Name:</strong> <span id="modalBarangayName"></span></p>
                     <p><strong>Status:</strong> <span id="modalBarangayStatus"></span></p>
-                    <p style="display: none;"><strong>Latitude:</strong> <span id="modalBarangayLat"></span></p>
-                    <p style="display: none;"><strong>Longitude:</strong> <span id="modalBarangayLong"></span></p>
+                    <p><strong>Latitude:</strong> <span id="modalBarangayLat"></span></p>
+                    <p><strong>Longitude:</strong> <span id="modalBarangayLong"></span></p>
 
                     <h5 class="mt-3">Monthly Data Overview</h5>
 
@@ -123,23 +123,28 @@
                             </center>
                         </div>
                         <div class="map-controls mb-3">
-                            {{-- <div class="btn-group" role="group" aria-label="Map Controls">
-                                <button type="button" class="btn btn-outline-primary btn-sm" id="satelliteView">
+                            <div class="btn-group" role="group" aria-label="Map Controls">
+                                <button type="button" class="btn btn-outline-primary btn-sm" id="satelliteView"
+                                    style="display: none;">
                                     <i class="bi bi-globe"></i> Satellite
                                 </button>
-                                <button type="button" class="btn btn-outline-primary btn-sm" id="terrainView">
+                                <button type="button" class="btn btn-outline-primary btn-sm" id="terrainView"
+                                    style="display: none;">
                                     <i class="bi bi-mountains"></i> Terrain
                                 </button>
-                                <button type="button" class="btn btn-outline-primary btn-sm" id="trafficView">
+                                <button type="button" class="btn btn-outline-primary btn-sm" id="trafficView"
+                                    style="display: none;">
                                     <i class="bi bi-sign-intersection-y"></i> Traffic
                                 </button>
-                                <button type="button" class="btn btn-outline-primary btn-sm" id="transitView">
+                                <button type="button" class="btn btn-outline-primary btn-sm" id="transitView"
+                                    style="display: none;">
                                     <i class="bi bi-train-front"></i> Transit
                                 </button>
-                                <button type="button" class="btn btn-outline-primary btn-sm" id="bikingView">
+                                <button type="button" class="btn btn-outline-primary btn-sm" id="bikingView"
+                                    style="display: none;">
                                     <i class="bi bi-bicycle"></i> Biking
                                 </button>
-                            </div> --}}
+                            </div>
                         </div>
                         <div id="map"></div>
                     </div>

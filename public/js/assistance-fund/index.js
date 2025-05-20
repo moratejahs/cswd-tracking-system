@@ -46,3 +46,35 @@ $('#assistanceFundRecords').DataTable({
         });
     },
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    document
+        .getElementById('showAssistanceData')
+        .addEventListener('click', function () {
+            fetch('/admin/get-assistance-data')
+                .then((response) => response.json())
+                .then((data) => {
+                    const tbody = document.getElementById('assistanceDataBody');
+                    tbody.innerHTML = ''; // Clear existing data
+
+                    data.forEach((item) => {
+                        const row = `<tr>
+                        <td>${item.first_name}</td>
+                        <td>${item.last_name}</td>
+                        <td>${item.total_visited}</td>
+                        <td>${item.total_amount}</td>
+                    </tr>`;
+                        tbody.innerHTML += row;
+                    });
+
+                    // Show the modal
+                    const modal = new bootstrap.Modal(
+                        document.getElementById('assistanceDataModal')
+                    );
+                    modal.show();
+                })
+                .catch((error) =>
+                    console.error('Error fetching assistance data:', error)
+                );
+        });
+});
