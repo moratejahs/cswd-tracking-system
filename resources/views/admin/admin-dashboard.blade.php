@@ -541,44 +541,61 @@
             const filterYearBtn = document.getElementById('filterYear');
             const filterAllBtn = document.getElementById('filterAll');
 
-            // Add click event listeners
-            filterWeekBtn.addEventListener('click', function() {
-                applyTimeFilter('week');
-            });
+            // Helper to fetch and update map data
+            function fetchAndUpdateMap(period) {
+                fetch(`/admin/barangay-map-data?period=${period}`)
+                    .then(response => response.json())
+                    .then(barangays => {
+                        // Remove all existing markers from the map
+                        if (window.barangayMarkers) {
+                            window.barangayMarkers.forEach(marker => marker.remove());
+                        }
+                        window.barangayMarkers = [];
 
-            filterMonthBtn.addEventListener('click', function() {
-                applyTimeFilter('month');
-            });
-
-            filterYearBtn.addEventListener('click', function() {
-                applyTimeFilter('year');
-            });
-
-            filterAllBtn.addEventListener('click', function() {
-                applyTimeFilter('all');
-            });
-
-            // Function to apply time filter
-            function applyTimeFilter(period) {
-                // Highlight active button
-                [filterWeekBtn, filterMonthBtn, filterYearBtn, filterAllBtn].forEach(btn => {
-                    btn.classList.remove('active');
-                });
-
-                // Set active button
-                if (period === 'week') {
-                    filterWeekBtn.classList.add('active');
-                } else if (period === 'month') {
-                    filterMonthBtn.classList.add('active');
-                } else if (period === 'year') {
-                    filterYearBtn.classList.add('active');
-                } else {
-                    filterAllBtn.classList.add('active');
-                }
-
-                // Here you would implement the actual filtering logic
-                console.log(`Filtering by ${period}`);
+                        barangays.forEach(function(barangay) {
+                            if (barangay.latitude && barangay.longtitude) {
+                                var iconUrl;
+                                if (barangay.assistance_level === "Low Assistance (0-44%)") {
+                                    iconUrl = "{{ asset('assets/images/yellow.png') }}";
+                                } else if (barangay.assistance_level === "Medium Assistance (45-74%)") {
+                                    iconUrl = "{{ asset('assets/images/green.png') }}";
+                                } else if (barangay.assistance_level === "High Assistance (75-100%)") {
+                                    iconUrl = "{{ asset('assets/images/location.png') }}";
+                                } else {
+                                    iconUrl = "{{ asset('assets/images/location.png') }}";
+                                }
+                                var customIcon = L.icon({
+                                    iconUrl: iconUrl,
+                                    iconSize: [20, 20]
+                                });
+                                var marker = L.marker([barangay.latitude, barangay.longtitude], {
+                                        icon: customIcon
+                                    }).addTo(map)
+                                    .bindTooltip(
+                                        `${barangay.outlet_name} (${barangay.assistance_percentage}%)`, {
+                                            permanent: true,
+                                            direction: "top",
+                                            offset: [0, -10]
+                                        });
+                                // ...add marker click event as before...
+                                window.barangayMarkers.push(marker);
+                            }
+                        });
+                    });
             }
+
+            filterWeekBtn.addEventListener('click', function() {
+                fetchAndUpdateMap('week');
+            });
+            filterMonthBtn.addEventListener('click', function() {
+                fetchAndUpdateMap('month');
+            });
+            filterYearBtn.addEventListener('click', function() {
+                fetchAndUpdateMap('year');
+            });
+            filterAllBtn.addEventListener('click', function() {
+                fetchAndUpdateMap('all');
+            });
         });
     </script>
     <script>

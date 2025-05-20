@@ -12,6 +12,7 @@
     {{-- includes --}}
     {{-- @include('admin.assistancefund.includes.create') --}}
     @include('admin.assistancefund.includes.delete')
+    @include('admin.assistance.subfund')
 
     <nav class="pt-0" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" data-aos="fade-down">
         <ol class="pb-0 mb-0 breadcrumb">
@@ -85,6 +86,7 @@
     <script src="{{ asset('js/assistance-fund/index.js') }}"></script>
     <script src="{{ asset('js/assistance-fund/delete.js') }}"></script>
     <script src="{{ asset('js/assistance-fund/edit.js') }}"></script>
+    <script src="{{ asset('js/assistance/subfund.js') }}"></script>
 
     {{-- <script>
         $('.barangays-select-2').select2({

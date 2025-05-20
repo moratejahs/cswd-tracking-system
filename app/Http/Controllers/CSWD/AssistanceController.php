@@ -31,6 +31,11 @@ class AssistanceController extends Controller
                                 class="btn btn-warning rounded-pill btn-sm">
                                 <i class="bi bi-map"></i>
                             </a>
+                            <a id="subAssistance" href="javascript:void(0)" data-user-id="' . $assistance->id . '"
+                                data-url="' . route('sub-fund.show', $assistance->id) . '"
+                                class="btn btn-info rounded-pill btn-sm" data-toggle="tooltip" data-placement="top" title="Sub Assistance">
+                                <i class="bi bi-diagram-3"></i>
+                            </a>
                             <a id="deleteAssistanceFund" href="javascript:void(0)" data-user-id="' . $assistance->id . '"
                                 data-url="' . route('admin.assistance.getAssistantId', $assistance->id) . '"
                                 class="btn btn-danger rounded-pill btn-sm" data-toggle="tooltip" data-placement="top" title="Delete Assistant">

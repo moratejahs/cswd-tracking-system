@@ -200,5 +200,83 @@ class AdminHomeController extends Controller
         return response()->json($barangayAssistance);
     }
 
+    public function getBarangayMapData(Request $request)
+    {
+        $period = $request->query('period', 'all');
+        $populationMapping = [
+            'Awasian' => 2040,
+            'Bagong Lungsod (Poblacion)' => 5419,
+            'Bioto' => 1706,
+            'Bongtud' => 6059,
+            'Buenavista' => 3256,
+            'Dagocdoc (Poblacion)' => 3754,
+            'Mabua' => 8475,
+            'Mabuhay' => 813,
+            'Maitum' => 1911,
+            'Maticdum' => 844,
+            'Pandanon' => 1030,
+            'Pangi' => 1028,
+            'Quezon' => 1985,
+            'Rosario' => 4385,
+            'Salvacion' => 896,
+            'San Agustin Norte' => 2404,
+            'San Agustin' => 5921,
+            'San Antonio' => 909,
+            'San Isidro' => 1051,
+            'San Jose' => 893,
+            'Telaje' => 7881,
+        ];
+        $assistances = DB::table('assistances');
+        if ($period === 'week') {
+            $assistances->where('a.created_at', '>=', now()->startOfWeek());
+        } elseif ($period === 'month') {
+            $assistances->where('a.created_at', '>=', now()->startOfMonth());
+        } elseif ($period === 'year') {
+            $assistances->where('a.created_at', '>=', now()->startOfYear());
+        }
+        $barangays = DB::table('barangays as b')
+            ->leftJoinSub($assistances, 'a', function($join) {
+                $join->on('b.outlet_name', '=', 'a.outlet_name');
+            })
+            ->select(
+                'b.id as barangay_id',
+                'b.outlet_address',
+                'b.outlet_name',
+                'b.latitude',
+                'b.longtitude',
+                DB::raw('COUNT(a.id) as total_assistance_requests'),
+                DB::raw("CASE ".
+                    implode(" ", array_map(function ($population, $address) {
+                        return "WHEN b.outlet_address = '".$address."' THEN ".$population;
+                    }, $populationMapping, array_keys($populationMapping))).
+                    " ELSE 10 END as total_population"),
+                DB::raw("ROUND((COUNT(a.id) / " .
+                    "CASE " .
+                    implode(" ", array_map(function ($population, $address) {
+                        return "WHEN b.outlet_address = '".$address."' THEN ".$population;
+                    }, $populationMapping, array_keys($populationMapping))) .
+                    " ELSE 10 END) * 100, 2) as assistance_percentage"),
+                DB::raw("CASE ".
+                    "WHEN (COUNT(a.id) / ".
+                    "CASE ".
+                    implode(" ", array_map(function ($population, $address) {
+                        return "WHEN b.outlet_address = '".$address."' THEN ".$population;
+                    }, $populationMapping, array_keys($populationMapping))).
+                    " ELSE 10 END) * 100 >= 75 THEN 'High Assistance (75-100%)' " .
+                    "WHEN (COUNT(a.id) / ".
+                    "CASE ".
+                    implode(" ", array_map(function ($population, $address) {
+                        return "WHEN b.outlet_address = '".$address."' THEN ".$population;
+                    }, $populationMapping, array_keys($populationMapping))).
+                    " ELSE 10 END) * 100 >= 45 THEN 'Medium Assistance (45-74%)' " .
+                    "ELSE 'Low Assistance (0-44%)' END as assistance_level"
+                )
+            )
+            ->groupBy('b.id', 'b.outlet_address', 'b.outlet_name', 'b.latitude', 'b.longtitude')
+            ->orderBy('b.outlet_address')
+            ->get();
+        return response()->json($barangays);
+    }
+
 
 }

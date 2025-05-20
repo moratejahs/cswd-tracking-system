@@ -41,7 +41,11 @@ class AssitanceController extends Controller
             }
             return DataTables::of($query)
                 ->addColumn('action', function ($assistance) {
-                    return '<a id="edit-user" href="' . route('admin.service.edit', $assistance->first_name) . '"
+                    return ' <a id="addSubfund" href="javascript:void(0)" data-url="' . route('admin.service.show', $assistance->id) . '"
+                                class="btn btn-success rounded-pill btn-sm" data-toggle="tooltip" data-placement="top" title="Add Subfund">
+                                <i class="bi bi-plus-circle"></i>
+                            </a>
+                            <a id="edit-user" href="javascript:void(0)" data-url="' . route('admin.service.edit', $assistance->id) . '"
                                 class="btn btn-light-secondary rounded-pill btn-sm">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
@@ -49,7 +53,8 @@ class AssitanceController extends Controller
                                 data-url="' . route('admin.service.show', $assistance->id) . '"
                                 class="btn btn-danger rounded-pill btn-sm" data-toggle="tooltip" data-placement="top" title="Delete Product">
                                 <i class="bi bi-trash"></i>
-                            </a>';
+                            </a>
+                           ';
                 })
                 ->rawColumns(['action'])
 

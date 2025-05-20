@@ -5,6 +5,7 @@ use App\Models\ClientCategory;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AssitanceController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\CSWD\SubFundController;
 use App\Http\Controllers\ManageAccountController;
 use App\Http\Controllers\Admin\AdminFundController;
 use App\Http\Controllers\Admin\AdminHomeController;
@@ -58,6 +59,11 @@ Route::middleware('guest')->group(function () {
 
 
 Route::middleware('auth')->group(function () {
+
+
+    Route::post('sub-fund', [SubFundController::class, 'store'])->name('sub-fund.store');
+    Route::get('sub-fund/{id}', [SubFundController::class, 'show'])->name('sub-fund.show');
+
     // Auth Routes
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 

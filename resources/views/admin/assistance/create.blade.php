@@ -133,7 +133,7 @@
 
 
                         <div class="d-flex justify-content-end">
-                            <a href="{{ route('admin.assistance.index') }}" class="btn btn-light-secondary me-2">Close</a>
+                            <a href="{{ route('admin.service.index') }}" class="btn btn-light-secondary me-2">Close</a>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
                     </form>

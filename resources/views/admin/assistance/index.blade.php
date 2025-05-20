@@ -17,6 +17,7 @@
     @include('admin.client-category.update')
     @include('admin.client-category.delete')
     @include('admin.assistance.filter')
+    @include('admin.assistance.subfund')
 
     <nav class="pt-0" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" data-aos="fade-down">
         <ol class="pb-0 mb-0 breadcrumb">
@@ -196,6 +197,7 @@
     <script src="{{ asset('js/assistance/index.js') }}"></script>
     <script src="{{ asset('js/assistance/remove.js') }}"></script>
     <script src="{{ asset('js/assistance/edit.js') }}"></script>
+    <script src="{{ asset('js/assistance/subfund.js') }}"></script>
     {{-- Custom Scripts --}}
     <script src="{{ asset('js/client-category/index.js') }}"></script>
     <script src="{{ asset('js/client-category/edit.js') }}"></script>
