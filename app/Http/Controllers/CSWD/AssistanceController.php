@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\CSWD;
 
 use App\Models\Barangay;
+use App\Models\SubFund;
 use Illuminate\Http\Request;
 use App\Models\AssistanceFund;
 use App\Models\ClientCategory;
@@ -23,7 +24,16 @@ class AssistanceController extends Controller
             $data = AssistanceFund::all();
             return DataTables::of($data)
                 ->addColumn('action', function ($assistance) {
-                    return '<a id="editAssitance" href="' . route('admin.assistance.edit', $assistance->id) . '"
+                    return '
+                     <a id="editAssitance" href="' . route('sub-fund.history', $assistance->id) . '"
+                                class="btn btn-light-secondary rounded-pill btn-sm">
+                                <i class="bi bi-info-circle"></i>
+                            </a>
+                        <a id="editAssitance" href="' . route('sub-fund.history', $assistance->id) . '"
+                                class="btn btn-light-secondary rounded-pill btn-sm">
+                                <i class="bi bi-info-circle"></i>
+                            </a>
+                    <a id="editAssitance" href="' . route('admin.assistance.edit', $assistance->id) . '"
                                 class="btn btn-light-secondary rounded-pill btn-sm">
                                 <i class="bi bi-list"></i>
                             </a>
@@ -61,6 +71,8 @@ class AssistanceController extends Controller
             'barangays' => $barangays
         ]);
     }
+
+
 
     /**
      * Store a newly created resource in storage.

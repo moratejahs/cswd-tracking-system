@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SubFund;
 use App\Models\Barangay;
 use App\Models\Category;
 use App\Models\Assistance;
@@ -9,8 +10,9 @@ use Illuminate\Http\Request;
 use App\Models\ClientCategory;
 use App\Models\BarangayAssitant;
 use Illuminate\Support\Facades\DB;
-use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Log;
+use Yajra\DataTables\Facades\DataTables;
+
 class AssitanceController extends Controller
 {
     /**
@@ -41,7 +43,12 @@ class AssitanceController extends Controller
             }
             return DataTables::of($query)
                 ->addColumn('action', function ($assistance) {
-                    return ' <a id="addSubfund" href="javascript:void(0)" data-url="' . route('admin.service.show', $assistance->id) . '"
+                    return '
+                     <a id="editAssitance" href="' . route('sub-fund.history', $assistance->id) . '"
+                                class="btn btn-light-secondary rounded-pill btn-sm">
+                                <i class="bi bi-info-circle"></i>
+                            </a>
+                    <a id="addSubfund" href="javascript:void(0)" data-url="' . route('admin.service.show', $assistance->id) . '"
                                 class="btn btn-success rounded-pill btn-sm" data-toggle="tooltip" data-placement="top" title="Add Subfund">
                                 <i class="bi bi-plus-circle"></i>
                             </a>
@@ -191,6 +198,18 @@ class AssitanceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
+
+    public function history($id){
+
+        $histories = SubFund::query()
+        ->with(['assistance', 'category'])
+        ->where('assistance_id', $id)
+        ->get();
+
+        return view('admin.assistance.assistance-info', [
+            'histories' => $histories,
+        ]);
+    }
     public function edit(string $id)
     {
         $assistance = Assistance::where('id', $id)->first();
