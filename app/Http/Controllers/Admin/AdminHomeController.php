@@ -43,27 +43,27 @@ class AdminHomeController extends Controller
         // $barangays = Barangay::all();
         $categories = ClientCategory::all();
         $populationMapping = [
-            'Awasian' => 50,
-            'Bagong Lungsod (Poblacion)' => 100,
-            'Bioto' => 40,
-            'Bongtud Poblacion (East West)' => 120,
-            'Buenavista' => 70,
-            'Dagocdoc (Poblacion)' => 80,
-            'Mabua' => 170,
-            'Mabuhay' => 20,
-            'Maitum' => 40,
-            'Maticdum' => 20,
-            'Pandanon' => 40,
-            'Pangi' => 20,
-            'Quezon' => 40,
-            'Rosario' => 90,
-            'Salvacion' => 20,
-            'San Agustin Norte' => 50,
-            'San Agustin' => 120,
-            'San Antonio' => 20,
-            'San Isidro' => 20,
-            'San Jose' => 20,
-            'Telaje' => 160,
+            'Awasian' => 2040,
+            'Bagong Lungsod (Poblacion)' => 5419,
+            'Bioto' => 1706,
+            'Bongtud Poblacion (East West)' => 6059,
+            'Buenavista' => 3256,
+            'Dagocdoc (Poblacion)' => 3754,
+            'Mabua' => 8475,
+            'Mabuhay' => 813,
+            'Maitum' => 1911,
+            'Maticdum' => 844,
+            'Pandanon' => 1030,
+            'Pangi' => 1028,
+            'Quezon' => 1985,
+            'Rosario' => 4385,
+            'Salvacion' => 896,
+            'San Agustin Norte' => 2404,
+            'San Agustin' => 5921,
+            'San Antonio' => 909,
+            'San Isidro' => 1051,
+            'San Jose' => 893,
+            'Telaje' => 7881,
         ];
 
         $barangays = DB::table('barangays as b')
@@ -181,45 +181,23 @@ class AdminHomeController extends Controller
     }
 
 
-    /**
-     * Get assistance details for a specific barangay
-     *
-     * @param string $outlet_name
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getBarangayAssistance($outlet_name)
+
+    public function getBarangayAssistance(string $outlet_name)
     {
-        try {
-            // Decode URL-encoded outlet name
-            $outlet_name = urldecode($outlet_name);
-
-            // Query to get assistance details for the barangay
-            // Group by client to count visits and sum amounts
-            $assistanceDetails = DB::table('assistances')
-                ->select(
-                    'first_name',
-                    'middle_name',
-                    'last_name',
-                    'category as assistance',
-                    DB::raw('COUNT(*) as visit_count'),
-                    DB::raw('SUM(CAST(amount as DECIMAL(10,2))) as total_amount')
-                )
-                ->where('outlet_name', $outlet_name)
-                ->groupBy('first_name', 'middle_name', 'last_name', 'category')
-                ->orderBy('total_amount', 'desc')
-                ->get();
-
-            return response()->json($assistanceDetails);
-        } catch (\Exception $e) {
-            // Log the error
-            \Log::error('Error fetching barangay details: ' . $e->getMessage());
-
-            // Return a proper JSON error response
-            return response()->json([
-                'error' => 'Failed to fetch barangay details',
-                'message' => $e->getMessage()
-            ], 500);
-        }
+        $barangayAssistance = DB::table('assistances')
+            ->select(
+                'category as assistance',
+                'first_name',
+                'middle_name',
+                'last_name',
+                DB::raw('COUNT(*) AS visit_count'),
+                DB::raw('SUM(CAST(amount AS DECIMAL(10,2))) AS total_amount')
+            )
+            ->where('outlet_name', $outlet_name)
+            ->groupBy('category', 'first_name', 'middle_name', 'last_name')
+            ->orderByDesc('total_amount')
+            ->get();
+        return response()->json($barangayAssistance);
     }
 
 

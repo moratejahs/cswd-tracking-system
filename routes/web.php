@@ -61,7 +61,7 @@ Route::middleware('auth')->group(function () {
     // Auth Routes
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
-    Route::get('/admin/get-assistance-data', [AssitanceController::class, 'getAssistanceData'])
+    Route::get('/admin/get-assistance-data/{id}', [AssitanceController::class, 'getAssistanceData'])
     ->name('get.assistance.data');
     //Admin Routes
     Route::prefix('admin')->group(function () {
@@ -69,7 +69,7 @@ Route::middleware('auth')->group(function () {
         Route::get('dashboard', [AdminHomeController::class, 'index'])->name('index.home');
         Route::get('/category-data', [AdminHomeController::class, 'getCategoryData'])->name('getCategoryData.index');
 
-        Route::get('barangay/{address}', [AdminHomeController::class, 'getBarangayAssistance'])->name('barangay.show');
+        Route::get('barangay/{outlet_name}', [AdminHomeController::class, 'getBarangayAssistance'])->name('barangay.show');
 
         Route::get('sales-overview', AdminSalesOverviewController::class)
             ->name('sales-overview.index');

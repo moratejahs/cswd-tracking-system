@@ -55,7 +55,21 @@
                     <p><strong>Longitude:</strong> <span id="modalBarangayLong"></span></p>
 
                     <h5 class="mt-3">Monthly Data Overview</h5>
+                    <div id="monthlyDataOverview">
+                        <table class="table">
+                            <thead>
+                                <tr>
 
+                                    <th>First Names</th>
+                                    <th>Middle Names</th>
+                                    <th>Last Names</th>
+                                </tr>
+                            </thead>
+                            <tbody id="barangayAssistanceData">
+                                <!-- Data will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -66,7 +80,12 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5> Client Category Report</h5>
+                        <div>
+                            Demographic Analysis
+                        </div>
+                        <div>
+                            <h5> Client Category Report</h5>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="col-2">
@@ -156,8 +175,48 @@
 
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('assets/vendors/apexcharts/apexcharts.min.js') }}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Function to fetch barangay assistance details
+            function fetchBarangayDetails(address) {
+                fetch(`admin/barangay/${}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data); // This will print the fetched data to the browser console
+                        // Fill modal fields
+                        document.getElementById('modalBarangayName').textContent = data.outlet_name || 'N/A';
+                        document.getElementById('modalBarangayStatus').textContent = data.assistance_level ||
+                            'N/A';
+                        document.getElementById('modalBarangayLat').textContent = data.latitude || 'N/A';
+                        document.getElementById('modalBarangayLong').textContent = data.longitude || 'N/A';
+
+                        // Fill table
+                        const tbody = document.getElementById('barangayAssistanceData');
+                        tbody.innerHTML = '';
+                        data.assistance.forEach(item => {
+                            const row = `<tr>
+                                <td>${item.first_name}</td>
+                                <td>${item.middle_name}</td>
+                                <td>${item.last_name}</td>
+                            </tr>`;
+                            tbody.innerHTML += row;
+                        });
+
+                        // Show modal
+                        var barangayModal = new bootstrap.Modal(document.getElementById('barangayModal'));
+                        barangayModal.show();
+                    })
+                    .catch(error => {
+                        console.error('Error fetching barangay assistance:', error);
+                    });
+            }
+
+            // Example usage: Call this function with the outlet name when needed
+            // fetchBarangayDetails('Example Outlet Name');
+        });
+    </script>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var chart; // Declare the chart variable
@@ -361,22 +420,98 @@
                                 offset: [0, -10]
                             });
 
-                    // Add click event listener to the marker
-                    marker.on('click', function() {
-                        // Populate modal with barangay data
-                        document.getElementById('modalBarangayName').textContent = barangay
-                            .outlet_name || 'N/A';
-                        document.getElementById('modalBarangayStatus').textContent = barangay
-                            .assistance_level || 'N/A';
-                        document.getElementById('modalBarangayLat').textContent = barangay
-                            .latitude || 'N/A';
-                        document.getElementById('modalBarangayLong').textContent = barangay
-                            .longtitude || 'N/A';
+                    // When a marker is clicked, set the outlet_name to a global variable
+                    let currentOutletName = null;
 
-                        // Show the modal
-                        var barangayModal = new bootstrap.Modal(document.getElementById(
-                            'barangayModal'));
-                        barangayModal.show();
+                    // Add click event listener to the marker
+                    marker.on("click", function() {
+                        fetch(`/admin/barangay/${encodeURIComponent(barangay.outlet_name)}`)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error(`HTTP error! Status: ${response.status}`);
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                let modalBody = document.querySelector(
+                                    "#barangayModal .modal-body");
+                                modalBody.innerHTML = ""; // Clear previous data
+
+                                if (data.length > 0) {
+                                    let table = `
+                <div><h6>Barangay: ${barangay.outlet_name} has (${barangay.assistance_percentage}%) of its ${barangay.total_population.toLocaleString()} total data poverty population received assistance.</h6></div>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Full Name</th>
+                            <th>Visit Count</th>
+                            <th>Total Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+
+                                    data.forEach(item => {
+                                        table += `
+                        <tr>
+                            <td>${item.first_name} ${item.middle_name} ${item.last_name}</td>
+                            <td>${item.visit_count}</td>
+                            <td>₱${parseFloat(item.total_amount).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                        </tr>`;
+                                    });
+
+                                    table += `</tbody></table>`;
+                                    modalBody.innerHTML = table;
+                                } else {
+                                    modalBody.innerHTML =
+                                        `<p class="text-danger">No assistance records found for this barangay.</p>`;
+                                }
+
+                                // Create and show the modal
+                                var modal = new bootstrap.Modal(document.getElementById(
+                                    'barangayModal'));
+                                modal.show();
+                            })
+                            .catch(error => {
+                                console.error("Error fetching barangay details:", error);
+                                alert(`Error loading barangay details: ${error.message}`);
+                            });
+                    });
+
+                    // Fetch assistance data when the modal is shown
+                    $('#barangayModal').on('show.bs.modal', function() {
+                        if (!currentOutletName) return;
+                        $('#assistanceData').html('<tr><td colspan="6">Loading...</td></tr>');
+                        $.ajax({
+                            url: `/admin/barangay/${encodeURIComponent(currentOutletName)}`,
+                            method: 'GET',
+                            success: function(data) {
+                                var assistanceData = $('#assistanceData');
+                                assistanceData.empty();
+                                if (data.length > 0) {
+                                    data.forEach(function(assistance) {
+                                        assistanceData.append(
+                                            `<tr>
+                            <td>${assistance.first_name}</td>
+                            <td>${assistance.middle_name}</td>
+                            <td>${assistance.last_name}</td>
+                            <td>${assistance.assistance}</td>
+                            <td>${assistance.visit_count}</td>
+                            <td>${assistance.total_amount}</td>
+                        </tr>`
+                                        );
+                                    });
+                                } else {
+                                    assistanceData.append(
+                                        '<tr><td colspan="6" class="text-center">No records found</td></tr>'
+                                    );
+                                }
+                            },
+                            error: function() {
+                                $('#assistanceData').html(
+                                    '<tr><td colspan="6" class="text-danger">Failed to load data</td></tr>'
+                                );
+                            }
+                        });
                     });
 
                     // Hide tooltips when zoomed out, show when zoomed in

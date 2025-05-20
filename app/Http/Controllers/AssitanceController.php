@@ -249,10 +249,11 @@ class AssitanceController extends Controller
         return redirect()->back()->with('message', 'Beneficiary deleted successfully');
     }
 
-    public function getAssistanceData()
+    public function getAssistanceData($id)
     {
         $assistances = Assistance::select('first_name', 'last_name', DB::raw('COUNT(*) as total_visited'), DB::raw('SUM(amount) as total_amount'))
             ->groupBy('first_name', 'last_name')
+            ->where('id', $id)
             ->get();
 
         return response()->json($assistances);
