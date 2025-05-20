@@ -61,6 +61,8 @@ Route::middleware('auth')->group(function () {
     // Auth Routes
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
+    Route::get('/admin/get-assistance-data', [AssitanceController::class, 'getAssistanceData'])
+    ->name('get.assistance.data');
     //Admin Routes
     Route::prefix('admin')->group(function () {
 
@@ -141,8 +143,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/import', [AdminImportController::class, 'store'])->name('admin.import.store');
 
     Route::post('save/assistance', [AssistanceController::class, 'store'])->name('store.save.assistance');
-    Route::get('/admin/get-assistance-data', [AssitanceController::class, 'getAssistanceData'])
-    ->name('get.assistance.data');
+
     Route::controller(AssistanceController::class)->group(function(){
         Route::get('assistances', 'index')->name('admin.assistance.index');
         Route::get('assistance/create', 'create')->name('admin.assistance.create');
