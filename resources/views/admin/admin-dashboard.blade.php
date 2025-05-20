@@ -356,6 +356,24 @@
                                 offset: [0, -10]
                             });
 
+                    // Add click event listener to the marker
+                    marker.on('click', function() {
+                        // Populate modal with barangay data
+                        document.getElementById('modalBarangayName').textContent = barangay
+                            .outlet_name || 'N/A';
+                        document.getElementById('modalBarangayStatus').textContent = barangay
+                            .assistance_level || 'N/A';
+                        document.getElementById('modalBarangayLat').textContent = barangay
+                            .latitude || 'N/A';
+                        document.getElementById('modalBarangayLong').textContent = barangay
+                            .longtitude || 'N/A';
+
+                        // Show the modal
+                        var barangayModal = new bootstrap.Modal(document.getElementById(
+                            'barangayModal'));
+                        barangayModal.show();
+                    });
+
                     // Hide tooltips when zoomed out, show when zoomed in
                     map.on('zoomend', function() {
                         var currentZoom = map.getZoom();

@@ -35,6 +35,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             @endif
+
             {{-- @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul class="list-disc list-inside text-red-600">
