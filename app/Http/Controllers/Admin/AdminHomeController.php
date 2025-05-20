@@ -48,7 +48,7 @@ class AdminHomeController extends Controller
             'Bioto' => 1706,
             'Bongtud' => 6059,
             'Buenavista' => 3256,
-            'Dagocdoc (Poblacion)' => 3754,
+            'Dagocdoc' => 3754,
             'Mabua' => 8475,
             'Mabuhay' => 813,
             'Maitum' => 1911,
