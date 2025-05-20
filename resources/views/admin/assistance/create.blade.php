@@ -35,7 +35,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             @endif
-            @if ($errors->any())
+            {{-- @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul class="list-disc list-inside text-red-600">
                         @foreach ($errors->all() as $error)
@@ -43,7 +43,7 @@
                         @endforeach
                     </ul>
                 </div>
-            @endif
+            @endif --}}
 
         </div>
 
@@ -63,7 +63,7 @@
                             </div>
                             <div class="col-4">
                                 <label>Middle Name</label>
-                                <input type="text" class="form-control" name="middle_name" required>
+                                <input type="text" class="form-control" name="middle_name">
                             </div>
                             <div class="col-4">
                                 <label>Last Name</label>
@@ -108,7 +108,7 @@
                             </div>
                             <div class="col-4">
                                 <label>Amount</label>
-                                <input type="text" class="form-control" name="amount" required>
+                                <input type="number" class="form-control" name="amount" required>
                             </div>
                             <div class="col-4">
                                 <label>Responsible Person</label>

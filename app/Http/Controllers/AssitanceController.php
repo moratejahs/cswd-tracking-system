@@ -94,7 +94,7 @@ class AssitanceController extends Controller
         try {
             $validated = $request->validate([
                 'first_name' => 'required',
-                'middle_name' => 'required',
+                'middle_name' => 'nullable',
                 'last_name' => 'required',
                 'birth_date' => 'required',
                 'age' => 'required',
@@ -119,7 +119,7 @@ class AssitanceController extends Controller
 
             if ($existingBeneficiary) {
                 return back()->withErrors([
-                    'error' => 'A beneficiary with this name already exists in the system.'
+                    'duplicate' => 'A beneficiary with this name already exists in the system.'
                 ])->withInput();
             }
 
