@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\CSWD;
 
+use App\Models\Assistance;
 use App\Models\Barangay;
 use App\Models\SubFund;
 use Illuminate\Http\Request;
@@ -127,16 +128,13 @@ class AssistanceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Request $request, string $id)
+    public function edit(string $id)
     {
         $navTitle = AssistanceFund::where('id',$id)->first();
-        $barangays = DB::table('barangay_assitances')
-            ->leftJoin('barangays', 'barangays.id', '=', 'barangay_assitances.barangay_id')
-            ->where('barangay_assitances.assistance_id', $id)
-            ->select('barangays.*', 'barangay_assitances.status', 'barangay_assitances.id as barangay_assitances_id')
-            ->get();
+
+        $assistance = Assistance::find($id);
             // dd($barangays);
-        return view('admin.assistancefund.list-barangays', compact( 'navTitle', 'barangays'));
+        return view('admin.assistancefund.list-barangays', compact( 'navTitle', 'assistance'));
     }
 
     public function getBarangayId(string $id){

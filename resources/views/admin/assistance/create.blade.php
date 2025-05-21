@@ -342,7 +342,7 @@
                 });
 
             // Add satellite layer to map by default
-            satellite.addTo(map);
+            streets.addTo(map);
 
             // Function to get address details from coordinates
             async function getLocationDetails(lat, lng) {

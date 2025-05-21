@@ -65,6 +65,8 @@ Route::middleware('auth')->group(function () {
     Route::get('sub-fund/{id}', [SubFundController::class, 'show'])->name('sub-fund.show');
 
     Route::get('histories/{id}', [AssitanceController::class, 'history'])->name('sub-fund.history');
+    // Route::get('assistance/{id}', [AssitanceController::class, 'edit'])->name('sub-fund.history');
+
 
     // Auth Routes
     Route::post('logout', [LoginController::class, 'logout'])->name('logout');
