@@ -208,9 +208,10 @@ class AssitanceController extends Controller
         ->with(['assistance', 'category'])
         ->where('assistance_id', $id)
         ->get();
-
+        $assitance = Assistance::findOrFail($id);
         return view('admin.assistance.assistance-info', [
             'histories' => $histories,
+            'assitance' => $assitance,
         ]);
     }
     public function edit(string $id)

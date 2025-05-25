@@ -74,6 +74,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/admin/get-assistance-data/{id}', [AssitanceController::class, 'getAssistanceData'])
     ->name('get.assistance.data');
+
+    Route::get('/admin/category-filter', [AdminHomeController::class, 'getCategoryFilter'])->name('admin.category-data');
+
+
     //Admin Routes
     Route::prefix('admin')->group(function () {
 
@@ -91,7 +95,7 @@ Route::middleware('auth')->group(function () {
 
 
 
-    Route::get('/admin/dashboard/filter', [AdminHomeController::class, 'filterByPeriod'])->name('admin.dashboard.filter');
+    Route::get('/admin/dashboard/filter', [AdminHomeController::class, 'getFilter'])->name('admin.dashboard.filter');
     Route::prefix('inventory')->group(function () {
         Route::get('records', [AdminInventoryController::class, 'index'])->name('index.inventory');
         Route::post('records/store', [AdminInventoryController::class, 'store'])->name('store.inventory');
@@ -196,4 +200,5 @@ Route::middleware('auth')->group(function () {
         Route::delete('/qualification', 'destroy')->name('qualification.destroy');
     });
 
+    Route::get('/admin/barangay-map-data', [AdminHomeController::class, 'getBarangayMapData']);
 });

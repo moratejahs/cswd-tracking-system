@@ -220,6 +220,29 @@ class AdminHomeController extends Controller
     public function getBarangayMapData(Request $request)
     {
         $period = $request->query('period', 'all');
+        $query = Barangay::query();
+
+        // Example: Adjust this logic to match your actual data structure and date fields
+        if ($period === 'week') {
+            $query->where('created_at', '>=', now()->startOfWeek());
+        } elseif ($period === 'month') {
+            $query->where('created_at', '>=', now()->startOfMonth());
+        } elseif ($period === 'year') {
+            $query->where('created_at', '>=', now()->startOfYear());
+        }
+        // else 'all' returns all records
+
+        $barangays = $query->get();
+
+        // Optionally, format the data as needed for the frontend
+        return response()->json($barangays);
+    }
+
+
+    public function getFilter(Request $request)
+    {
+        $timeFilter = $request->query('timeFilter');
+
         $populationMapping = [
             'Awasian' => 2040,
             'Bagong Lungsod (Poblacion)' => 5419,
@@ -243,18 +266,9 @@ class AdminHomeController extends Controller
             'San Jose' => 893,
             'Telaje' => 7881,
         ];
-        $assistances = DB::table('assistances');
-        if ($period === 'week') {
-            $assistances->where('a.created_at', '>=', now()->startOfWeek());
-        } elseif ($period === 'month') {
-            $assistances->where('a.created_at', '>=', now()->startOfMonth());
-        } elseif ($period === 'year') {
-            $assistances->where('a.created_at', '>=', now()->startOfYear());
-        }
-        $barangays = DB::table('barangays as b')
-            ->leftJoinSub($assistances, 'a', function($join) {
-                $join->on('b.outlet_name', '=', 'a.outlet_name');
-            })
+
+        $assistancesQuery = DB::table('barangays as b')
+            ->leftJoin('assistances as a', 'b.outlet_name', '=', 'a.outlet_name')
             ->select(
                 'b.id as barangay_id',
                 'b.outlet_address',
@@ -262,38 +276,57 @@ class AdminHomeController extends Controller
                 'b.latitude',
                 'b.longtitude',
                 DB::raw('COUNT(a.id) as total_assistance_requests'),
-                DB::raw("CASE ".
+                DB::raw("CASE " .
                     implode(" ", array_map(function ($population, $address) {
-                        return "WHEN b.outlet_address = '".$address."' THEN ".$population;
-                    }, $populationMapping, array_keys($populationMapping))).
+                        return "WHEN b.outlet_name = \"{$address}\" THEN {$population}";
+                    }, $populationMapping, array_keys($populationMapping))) .
                     " ELSE 10 END as total_population"),
                 DB::raw("ROUND((COUNT(a.id) / " .
                     "CASE " .
                     implode(" ", array_map(function ($population, $address) {
-                        return "WHEN b.outlet_address = '".$address."' THEN ".$population;
+                        return "WHEN b.outlet_name = \"{$address}\" THEN {$population}";
                     }, $populationMapping, array_keys($populationMapping))) .
                     " ELSE 10 END) * 100, 2) as assistance_percentage"),
-                DB::raw("CASE ".
-                    "WHEN (COUNT(a.id) / ".
-                    "CASE ".
+                DB::raw("CASE " .
+                    "WHEN (COUNT(a.id) / " .
+                    "CASE " .
                     implode(" ", array_map(function ($population, $address) {
-                        return "WHEN b.outlet_address = '".$address."' THEN ".$population;
-                    }, $populationMapping, array_keys($populationMapping))).
+                        return "WHEN b.outlet_name = \"{$address}\" THEN {$population}";
+                    }, $populationMapping, array_keys($populationMapping))) .
                     " ELSE 10 END) * 100 >= 75 THEN 'High Assistance (75-100%)' " .
-                    "WHEN (COUNT(a.id) / ".
-                    "CASE ".
+                    "WHEN (COUNT(a.id) / " .
+                    "CASE " .
                     implode(" ", array_map(function ($population, $address) {
-                        return "WHEN b.outlet_address = '".$address."' THEN ".$population;
-                    }, $populationMapping, array_keys($populationMapping))).
+                        return "WHEN b.outlet_name = \"{$address}\" THEN {$population}";
+                    }, $populationMapping, array_keys($populationMapping))) .
                     " ELSE 10 END) * 100 >= 45 THEN 'Medium Assistance (45-74%)' " .
                     "ELSE 'Low Assistance (0-44%)' END as assistance_level"
                 )
             )
-            ->groupBy('b.id', 'b.outlet_address', 'b.outlet_name', 'b.latitude', 'b.longtitude')
-            ->orderBy('b.outlet_address')
-            ->get();
-        return response()->json($barangays);
-    }
+            ->when($timeFilter, function ($query) use ($timeFilter) {
+                switch ($timeFilter) {
+                    case 'week':
+                        $query->whereBetween('a.created_at', [now()->startOfWeek(), now()->endOfWeek()]);
+                        break;
+                    case 'month':
+                        $query->whereMonth('a.created_at', now()->month)
+                            ->whereYear('a.created_at', now()->year);
+                        break;
+                    case 'year':
+                        $query->whereYear('a.created_at', now()->year);
+                        break;
+                    case 'all':
+                    default:
+                        // No time filter
+                        break;
+                }
+            })
+            ->groupBy('b.id', 'b.outlet_name', 'b.outlet_address', 'b.latitude', 'b.longtitude')
+            ->orderBy('b.outlet_name');
 
+        $result = $assistancesQuery->get();
+
+        return response()->json(['values' => $result]);
+    }
 
 }

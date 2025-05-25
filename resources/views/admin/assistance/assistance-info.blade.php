@@ -103,6 +103,19 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <tr>
+                            <tr>
+                                <td>
+                                    <span class="badge bg-primary">{{ $assitance->category }}</span>
+                                </td>
+                                <td class="amount-cell">
+                                    ₱{{ number_format($assitance->amount, 2) }}
+                                </td>
+                                <td class="purpose-cell" title="{{ $assitance->purpose }}">
+                                    {{ $assitance->purpose }}
+                                </td>
+                            </tr>
+                            </tr>
                             @foreach ($histories as $history)
                                 <tr>
                                     <td>

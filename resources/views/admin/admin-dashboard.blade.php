@@ -91,11 +91,11 @@
                         <div class="col-2">
                             <div class="dropdown">
                                 <button class="btn btn-primary dropdown-toggle btn-sm me-1" type="button"
-                                    id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true"
+                                    id="dropdownMenuButtonCategory" data-bs-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false">
                                     Filter
                                 </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonCategory">
                                     @foreach ($categories as $category)
                                         <a class="dropdown-item" href="#"
                                             data-category="{{ $category->description }}">
@@ -127,10 +127,15 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header">
+                    {{-- <div class="card-header d-flex justify-content-between align-items-center">
                         <h4>Tandag Map Statistics</h4>
-                    </div>
-
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-outline-primary btn-sm" id="btnFilterWeek">This Week</button>
+                            <button class="btn btn-outline-primary btn-sm" id="btnFilterMonth">This Month</button>
+                            <button class="btn btn-outline-primary btn-sm" id="btnFilterYear">This Year</button>
+                            <button class="btn btn-outline-primary btn-sm" id="btnFilterAll">All Records</button>
+                        </div>
+                    </div> --}}
                     <div class="card-body">
                         <div class="row">
                             <center>
@@ -174,6 +179,45 @@
 @section('scripts')
     {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> --}}
     <script src="{{ asset('assets/vendors/apexcharts/apexcharts.min.js') }}"></script>
+
+    <script>
+        let selectedTimeFilter = 'all'; // default value
+
+        // Time Filter Dropdown
+        document.querySelectorAll('.dropdown-item[data-filter]').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                selectedTimeFilter = this.getAttribute('data-filter');
+                document.getElementById('timeFilterDropdown').textContent = this.textContent;
+                fetchAndRenderChart();
+            });
+        });
+
+        // Fetch and render chart based on selectedTimeFilter only
+        function fetchAndRenderChart() {
+            const params = new URLSearchParams();
+            if (selectedTimeFilter) {
+                params.append('timeFilter', selectedTimeFilter);
+            }
+
+            fetch(`/admin/category-filter?${params.toString()}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Filtered data:', data);
+                    if (data && data.values) {
+                        renderChart(data.values);
+                    } else {
+                        console.error('Invalid data format:', data);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Initial chart render on load
+        fetchAndRenderChart();
+    </script>
+
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Function to fetch barangay assistance details
@@ -216,10 +260,89 @@
     </script>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Button elements
+            const btnWeek = document.getElementById('btnFilterWeek');
+            const btnMonth = document.getElementById('btnFilterMonth');
+            const btnYear = document.getElementById('btnFilterYear');
+            const btnAll = document.getElementById('btnFilterAll');
+            const allBtns = [btnWeek, btnMonth, btnYear, btnAll];
+            let map = window.map; // Use the global map if already defined
+            window.barangayMarkers = window.barangayMarkers || [];
+
+            function fetchAndUpdateMap(period) {
+                fetch(`/admin/barangay-map-data?period=${period}`)
+                    .then(response => response.json())
+                    .then(barangays => {
+                        // Remove all existing markers from the map
+                        if (window.barangayMarkers) {
+                            window.barangayMarkers.forEach(marker => marker.remove());
+                        }
+                        window.barangayMarkers = [];
+                        barangays.forEach(function(barangay) {
+                            if (barangay.latitude && barangay.longtitude) {
+                                var iconUrl;
+                                if (barangay.assistance_level === "Low Assistance (0-44%)") {
+                                    iconUrl = "{{ asset('assets/images/yellow.png') }}";
+                                } else if (barangay.assistance_level === "Medium Assistance (45-74%)") {
+                                    iconUrl = "{{ asset('assets/images/green.png') }}";
+                                } else if (barangay.assistance_level === "High Assistance (75-100%)") {
+                                    iconUrl = "{{ asset('assets/images/location.png') }}";
+                                } else {
+                                    iconUrl = "{{ asset('assets/images/location.png') }}";
+                                }
+                                var customIcon = L.icon({
+                                    iconUrl: iconUrl,
+                                    iconSize: [20, 20]
+                                });
+                                var marker = L.marker([barangay.latitude, barangay.longtitude], {
+                                        icon: customIcon
+                                    }).addTo(map)
+                                    .bindTooltip(
+                                        `${barangay.outlet_name} (${barangay.assistance_percentage}%)`, {
+                                            permanent: true,
+                                            direction: "top",
+                                            offset: [0, -10]
+                                        });
+                                window.barangayMarkers.push(marker);
+                            }
+                        });
+                    });
+            }
+
+            function setActiveButton(activeBtn) {
+                allBtns.forEach(btn => btn.classList.remove('active'));
+                activeBtn.classList.add('active');
+            }
+
+            btnWeek.addEventListener('click', function() {
+                setActiveButton(btnWeek);
+                fetchAndUpdateMap('week');
+            });
+            btnMonth.addEventListener('click', function() {
+                setActiveButton(btnMonth);
+                fetchAndUpdateMap('month');
+            });
+            btnYear.addEventListener('click', function() {
+                setActiveButton(btnYear);
+                fetchAndUpdateMap('year');
+            });
+            btnAll.addEventListener('click', function() {
+                setActiveButton(btnAll);
+                fetchAndUpdateMap('all');
+            });
+
+            // Set default (all records) on load
+            setActiveButton(btnAll);
+            fetchAndUpdateMap('all');
+        });
+    </script>
+
+    <script>
         document.addEventListener("DOMContentLoaded", function() {
             var chart; // Declare the chart variable
 
-            // This function will render or update the chart
+            // This function will render or update the <chart></chart>
             function renderChart(data) {
                 var options = {
                     chart: {
@@ -268,7 +391,7 @@
                 item.addEventListener('click', function(e) {
                     e.preventDefault();
                     var category = this.getAttribute('data-category');
-                    document.getElementById('dropdownMenuButton').textContent = category;
+                    document.getElementById('dropdownMenuButtonCategory').textContent = category;
 
                     fetch(`/admin/category-data?category=${encodeURIComponent(category)}`)
                         .then(response => {

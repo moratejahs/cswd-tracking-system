@@ -115,27 +115,27 @@
                             <thead class="bg-primary">
                                 <tr>
                                     <th class="text-white"
-                                        style="font-style: normal; font-weight: 200; width: 160px; max-width: 160px; min-width: 160px;">
+                                        style="font-style: normal; font-weight: 200; width: 100px; max-width: 100px; min-width: 100px;">
                                         First Name
                                     </th>
                                     <th class="text-white"
-                                        style="font-style: normal; font-weight: 200; width: 160px; max-width: 160px; min-width: 160px;">
+                                        style="font-style: normal; font-weight: 200; width: 100px; max-width: 100px; min-width: 100px;">
                                         Middle Name
                                     </th>
                                     <th class="text-white"
-                                        style="font-style: normal; font-weight: 200; width: 160px; max-width: 160px; min-width: 160px;">
+                                        style="font-style: normal; font-weight: 200; width: 100px; max-width: 100px; min-width: 100px;">
                                         Last Name
                                     </th>
                                     <th class="text-white"
-                                        style="font-style: normal; font-weight: 200; width: 160px; max-width: 160px; min-width: 160px;">
+                                        style="font-style: normal; font-weight: 200; width: 140px; max-width: 140px; min-width: 140px;">
                                         Birth Date
                                     </th>
                                     <th class="text-white"
-                                        style="font-style: normal; font-weight: 200; width: 160px; max-width: 160px; min-width: 160px;">
+                                        style="font-style: normal; font-weight: 200; width: 50px; max-width: 50px; min-width: 50px;">
                                         Age
                                     </th>
                                     <th class="text-white"
-                                        style="font-style: normal; font-weight: 200; width: 160px; max-width: 160px; min-width: 160px;">
+                                        style="font-style: normal; font-weight: 200; width: 69px; max-width: 69px; min-width: 69px;">
                                         Gender
                                     </th>
                                     <th class="text-white"
@@ -143,24 +143,24 @@
                                         Barangay Address
                                     </th>
                                     <th class=" text-white"
-                                        style="font-style: normal; font-weight: 200; width: 160px; max-width: 160px; min-width: 160px;">
+                                        style="font-style: normal; font-weight: 200; width: 100px; max-width: 100px; min-width: 100px;">
                                         Contact No
                                     </th>
 
                                     <th class=" text-white"
-                                        style="font-style: normal; font-weight: 200; width: 160px; max-width: 160px; min-width: 160px;">
+                                        style="font-style: normal; font-weight: 200; width: 100px; max-width: 100px; min-width: 100px;">
                                         Occupation
                                     </th>
                                     <th class=" text-white"
-                                        style="font-style: normal; font-weight: 200; width: 160px; max-width: 160px; min-width: 160px;">
+                                        style="font-style: normal; font-weight: 200; width: 100px; max-width: 100px; min-width: 100px;">
                                         Purpose
                                     </th>
                                     <th class=" text-white"
-                                        style="font-style: normal; font-weight: 200; width: 160px; max-width: 160px; min-width: 160px;">
+                                        style="font-style: normal; font-weight: 200; width: 100px; max-width: 100px; min-width: 100px;">
                                         Category
                                     </th>
                                     <th class=" text-white"
-                                        style="font-style: normal; font-weight: 200; width: 160px; max-width: 160px; min-width: 160px;">
+                                        style="font-style: normal; font-weight: 200; width: 100px; max-width: 100px; min-width: 100px;">
                                         Amount
                                     </th>
                                     <th class=" text-white"
