@@ -115,22 +115,6 @@
                 <div class="card">
                     <div class="card-header">
                         <h4>Tandag Map Statistics</h4>
-                        <div class="time-filters mt-2">
-                            <div class="btn-group" role="group" aria-label="Time Period Filters">
-                                <button type="button" class="btn btn-outline-primary btn-sm" id="filterWeek">
-                                    <i class="bi bi-calendar-week"></i> This Week
-                                </button>
-                                <button type="button" class="btn btn-outline-primary btn-sm" id="filterMonth">
-                                    <i class="bi bi-calendar-month"></i> This Month
-                                </button>
-                                <button type="button" class="btn btn-outline-primary btn-sm" id="filterYear">
-                                    <i class="bi bi-calendar"></i> This Year
-                                </button>
-                                <button type="button" class="btn btn-outline-secondary btn-sm" id="filterAll">
-                                    <i class="bi bi-calendar-x"></i> All Time
-                                </button>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="card-body">
@@ -174,7 +158,7 @@
 @endsection
 
 @section('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> --}}
     <script src="{{ asset('assets/vendors/apexcharts/apexcharts.min.js') }}"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -265,6 +249,35 @@
                 }
             }
 
+            // Event listener for filter dropdown items
+            document.querySelectorAll('.dropdown-item').forEach(function(item) {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    var category = this.getAttribute('data-category');
+                    document.getElementById('dropdownMenuButton').textContent = category;
+                    
+                    fetch(`/admin/category-data?category=${encodeURIComponent(category)}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log('Filter response:', data);
+                            if (data && data.values) {
+                                renderChart(data.values);
+                            } else {
+                                console.error('Invalid data format:', data);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            // Optionally show error to user
+                        });
+                });
+            });
+
             // Initial chart render with default data
             renderChart([
                 {{ $sanIsidro }},
@@ -289,19 +302,6 @@
                 {{ $sanJose }},
                 {{ $telaje }}
             ]);
-
-            // Event listener for filter dropdown
-            document.querySelectorAll('.dropdown-item').forEach(function(item) {
-                item.addEventListener('click', function() {
-                    var category = this.getAttribute('data-category');
-                    fetch(`/admin/category-data?category=${category}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            renderChart(data.values); // Update the chart with new data
-                        })
-                        .catch(error => console.error('Error fetching data:', error));
-                });
-            });
         });
     </script>
 

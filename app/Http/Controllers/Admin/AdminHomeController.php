@@ -142,44 +142,49 @@ class AdminHomeController extends Controller
     }
     public function getCategoryData(Request $request)
     {
-        $category = $request->query('category'); // Get the selected category
+        $category = $request->query('category');
 
-        // List of barangays
+        // Debug output
+        \Log::info('Filtering by category:', ['category' => $category]);
+
         $barangays = [
-            'San Isidro Tandag, Surigao del Sur',
-            'Awasian Tandag, Surigao del Sur',
-            'Bagong Lungsod (Poblacion) Tandag, Surigao del Sur',
-            'Bioto Tandag, Surigao del Sur',
-            'Bongtud Tandag, Surigao del Sur',
-            'Buenavista Tandag, Surigao del Sur',
-            'Dagocdoc (Poblacion) Tandag, Surigao del Sur',
-            'Mabua Tandag, Surigao del Sur',
-            'Mabuhay Tandag, Surigao del Sur',
-            'Maitum Tandag, Surigao del Sur',
-            'Maticdum Tandag, Surigao del Sur',
-            'Pandanon Tandag, Surigao del Sur',
-            'Pangi Tandag, Surigao del Sur',
-            'Quezon Tandag, Surigao del Sur',
-            'Rosario Tandag, Surigao del Sur',
-            'Salvacion Tandag, Surigao del Sur',
-            'San Agustin Norte Tandag, Surigao del Sur',
-            'San Agustin Sur Tandag, Surigao del Sur',
-            'San Antonio Tandag, Surigao del Sur',
-            'San Jose Tandag, Surigao del Sur',
-            'Telaje Tandag, Surigao del Sur',
+            'San Isidro',
+            'Awasian',
+            'Bagong Lungsod (Poblacion)',
+            'Bioto',
+            'Bongtud',
+            'Buenavista',
+            'Dagocdoc (Poblacion)',
+            'Mabua',
+            'Mabuhay',
+            'Maitum',
+            'Maticdum',
+            'Pandanon',
+            'Pangi',
+            'Quezon',
+            'Rosario',
+            'Salvacion',
+            'San Agustin Norte',
+            'San Agustin Sur',
+            'San Antonio',
+            'San Jose',
+            'Telaje',
         ];
 
         // Fetch counts dynamically based on category and barangay
         $data = [];
         foreach ($barangays as $barangay) {
-            $data[] = Assistance::where('address', $barangay)
-                ->when($category, fn($query) => $query->where('assistance', $category)) // Filter by category if set
+            $count = Assistance::where('outlet_name', $barangay)
+                ->when($category, function($query) use ($category) {
+                    return $query->where('category', $category);
+                })
                 ->count();
+
+            $data[] = $count;
         }
 
         return response()->json(['values' => $data]);
     }
-
 
 
     public function getBarangayAssistance(string $outlet_name)
