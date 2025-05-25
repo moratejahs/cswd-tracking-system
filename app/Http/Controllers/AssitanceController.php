@@ -68,8 +68,11 @@ class AssitanceController extends Controller
                 ->make(true);
         }
 
+
+
         return view('admin.assistance.index', [
             'getcategories' => ClientCategory::all(),
+
         ]);
     }
 

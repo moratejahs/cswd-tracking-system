@@ -113,6 +113,18 @@ class AdminHomeController extends Controller
         // dd($barangays);
 
         // dd($barangays);
+
+        $assistances = DB::table('assistances')
+        ->select('category', DB::raw('COUNT(*) as total_per_category'))
+        ->groupBy('category')
+        ->get();
+
+        $totalCount = DB::table('assistances')->count();
+
+        $assistancesWithPercentage = $assistances->map(function ($item) use ($totalCount) {
+            $item->percentage = round(($item->total_per_category / $totalCount) * 100, 2);
+            return $item;
+        });
         return view('admin.admin-dashboard', [
             'categories' => $categories,
             'sanIsidro' => $sanIsidro,
@@ -137,7 +149,7 @@ class AdminHomeController extends Controller
             'sanJose' => $sanJose,
             'telaje' => $telaje,
             'barangays' => $barangays,
-
+            'assistances' => $assistancesWithPercentage,
         ]);
     }
     public function getCategoryData(Request $request)

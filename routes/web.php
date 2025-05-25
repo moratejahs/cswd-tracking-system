@@ -19,6 +19,7 @@ use App\Http\Controllers\CSWD\ClientCategoryController;
 use App\Http\Controllers\Admin\AdminInventoryController;
 use App\Http\Controllers\Admin\AdminQuickSaleController;
 use App\Http\Controllers\Admin\AdminSaleRestoreController;
+use App\Http\Controllers\CSWD\AdminChartCategoryController;
 use App\Http\Controllers\Admin\AdminSalesOverviewController;
 use App\Http\Controllers\Admin\AdminRevenueVsProfitController;
 use App\Http\Controllers\Admin\AdminQuickSaleRestoreController;
@@ -87,6 +88,9 @@ Route::middleware('auth')->group(function () {
             ->name('revenue-vs-profit.index');
 
     });
+
+
+
     Route::get('/admin/dashboard/filter', [AdminHomeController::class, 'filterByPeriod'])->name('admin.dashboard.filter');
     Route::prefix('inventory')->group(function () {
         Route::get('records', [AdminInventoryController::class, 'index'])->name('index.inventory');

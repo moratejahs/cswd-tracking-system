@@ -110,6 +110,20 @@
                 </div>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Assistance Category Distribution</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="categoryPieChart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -255,7 +269,7 @@
                     e.preventDefault();
                     var category = this.getAttribute('data-category');
                     document.getElementById('dropdownMenuButton').textContent = category;
-                    
+
                     fetch(`/admin/category-data?category=${encodeURIComponent(category)}`)
                         .then(response => {
                             if (!response.ok) {
@@ -666,5 +680,50 @@
 
             printWindow.document.close();
         }
+    </script>
+
+
+
+
+
+
+
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Prepare data for pie chart
+            const categories = @json($assistances->pluck('category'));
+            const percentages = @json($assistances->pluck('percentage'));
+
+            const series = percentages;
+            const labels = categories.map((category, index) =>
+                `${category} (${percentages[index]}%)`);
+
+            // Create pie chart
+            var options = {
+                series: series,
+                chart: {
+                    type: 'pie',
+                    height: 350
+                },
+                labels: labels,
+                colors: ['#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0'],
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        chart: {
+                            width: 200
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }]
+            };
+
+            var chart = new ApexCharts(document.querySelector("#categoryPieChart"), options);
+            chart.render();
+        });
     </script>
 @endsection
