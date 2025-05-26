@@ -34,7 +34,7 @@ class AssistanceController extends Controller
                                 class="btn btn-light-secondary rounded-pill btn-sm">
                                 <i class="bi bi-info-circle"></i>
                             </a>
-                    <a id="editAssitance" href="' . route('admin.assistance.edit', $assistance->id) . '"
+                    <a id="editAssitanceEDIT" href="' . route('admin.assistance.edit', $assistance->id) . '"
                                 class="btn btn-light-secondary rounded-pill btn-sm">
                                 <i class="bi bi-list"></i>
                             </a>
@@ -134,7 +134,7 @@ class AssistanceController extends Controller
 
         $assistance = Assistance::find($id);
             // dd($barangays);
-        return view('admin.assistancefund.list-barangays', compact( 'navTitle', 'assistance'));
+        return view('admin.assistance.edit', compact( 'navTitle', 'assistance'));
     }
 
     public function getBarangayId(string $id){
@@ -179,9 +179,40 @@ class AssistanceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        // Validate the request data
+        $validated = $request->validate([
+            'code' => 'required|string',
+            'id' => 'required',
+            'assistance_name' => 'required|string',
+            'description' => 'required|string',
+            'barangaysid' => 'required|array',
+        ]);
+
+        // Find the AssistanceFund record
+        $assistance = AssistanceFund::findOrFail($validated['id']);
+
+        // Update AssistanceFund fields
+        $assistance->update([
+            'code' => $validated['code'],
+            'assistance_name' => $validated['assistance_name'],
+            'description' => $validated['description'],
+        ]);
+
+        // Remove existing barangay relationships
+        BarangayAssitance::where('assistance_id', $assistance->id)->delete();
+
+        // Store the new relationships in BarangayAssitance
+        foreach ($validated['barangaysid'] as $barangayId) {
+            BarangayAssitance::create([
+                'barangay_id' => $barangayId,
+                'assistance_id' => $assistance->id,
+            ]);
+        }
+
+        return to_route('admin.assistance.index')
+            ->with('message', 'Assistance updated successfully.');
     }
 
     /**

@@ -52,7 +52,7 @@ class AssitanceController extends Controller
                                 class="btn btn-success rounded-pill btn-sm" data-toggle="tooltip" data-placement="top" title="Add Subfund">
                                 <i class="bi bi-plus-circle"></i>
                             </a>
-                            <a id="edit-user" href="javascript:void(0)" data-url="' . route('admin.service.edit', $assistance->id) . '"
+                            <a id="edit-user" href="' . route('admin.service.edit', $assistance->id) . '"
                                 class="btn btn-light-secondary rounded-pill btn-sm">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
@@ -231,36 +231,80 @@ class AssitanceController extends Controller
      */
     public function update(Request $request)
     {
-        $validated = $request->validate([
-            // 'id' => 'required',
+        try {
+            $validated = $request->validate([
+            'id' => 'required',
             'first_name' => 'required',
-            'middle_name' => 'required',
+            'middle_name' => 'nullable',
             'last_name' => 'required',
             'birth_date' => 'required|date',
             'age' => 'required',
             'gender' => 'required',
-            'address' => 'required',
-            'contact_no' => 'required',
             'occupation' => 'required',
-        ]);
+            'contact_no' => 'required',
+            'lat' => 'required',
+            'long' => 'required',
+            'outlet_name' => 'nullable',
+            // 'outlet_address' => 'nullable',
+            'purpose' => 'required',
+            'category' => 'required',
+            'amount' => 'required',
+            'responsible_person' => 'required',
+            ]);
 
-        $assistance = Assistance::findOrFail($validated['id']);
-        $assistance->update([
-            'first_name' => $validated['first_name'],
-            'middle_name' => $validated['middle_name'],
-            'last_name' => $validated['last_name'],
-            'birth_date' => $validated['birth_date'],
-            'address' => $validated['address'],
-            'contact_no' => $validated['contact_no'],
-            'status' => $validated['status'],
-            'occupation' => $validated['occupation'],
-            'assistance' => $validated['assistance'],
-            'quantity' => $validated['quantity'],
-            'person_of_responsible' => $validated['person_of_responsible'],
-        ]);
+            // Check for duplicate (excluding current record)
+            $existingBeneficiary = Assistance::where('first_name', $validated['first_name'])
+            ->where('middle_name', $validated['middle_name'])
+            ->where('last_name', $validated['last_name'])
+            ->where('id', '!=', $validated['id'])
+            ->first();
 
-        return to_route('admin.service.index')
-            ->with('message', 'Beneficiary updated successfully');
+            if ($existingBeneficiary) {
+            return back()->withErrors([
+                'duplicate' => 'A beneficiary with this name already exists in the system.'
+            ])->withInput();
+            }
+
+            Log::info('Validated Data for Update:', $validated);
+
+            DB::beginTransaction();
+
+            try {
+            $assistance = Assistance::findOrFail($validated['id']);
+            $assistance->update([
+                'first_name' => $validated['first_name'],
+                'middle_name' => $validated['middle_name'],
+                'last_name' => $validated['last_name'],
+                'birth_date' => $validated['birth_date'],
+                'age' => $validated['age'],
+                'gender' => $validated['gender'],
+                'contact_no' => $validated['contact_no'],
+                'occupation' => $validated['occupation'],
+                'lat' => $validated['lat'],
+                'long' => $validated['long'],
+                'outlet_name' => $validated['outlet_name'],
+                // 'outlet_address' => $validated['outlet_address'],
+                'purpose' => $validated['purpose'],
+                'category' => $validated['category'],
+                'amount' => $validated['amount'],
+                'responsible_person' => $validated['responsible_person'],
+            ]);
+
+            // Optionally update BarangayAssitant if needed (not shown here)
+
+            DB::commit();
+
+            return to_route('admin.service.index')
+                ->with('message', 'Beneficiary updated successfully');
+            } catch (\Exception $e) {
+            DB::rollback();
+            Log::error('Error updating beneficiary:', ['error' => $e->getMessage()]);
+            throw $e;
+            }
+        } catch (\Exception $e) {
+            Log::error('An error occurred while updating the beneficiary:', ['error' => $e->getMessage()]);
+            return back()->withErrors(['error' => 'An error occurred while updating the beneficiary. Please try again.'])->withInput();
+        }
     }
 
     /**
