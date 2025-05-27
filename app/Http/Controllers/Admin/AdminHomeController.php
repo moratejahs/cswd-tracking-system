@@ -17,33 +17,43 @@ use App\Models\ClientCategory;
 
 class AdminHomeController extends Controller
 {
+    function getBarangayTotal($barangay)
+{
+    $assistancesCount = Assistance::where('address', 'like', "%{$barangay}%")->count();
+
+    $subFundsCount = DB::table('sub_funds')
+        ->whereIn('assistance_id', function ($query) use ($barangay) {
+            $query->select('id')
+                  ->from('assistances')
+                  ->where('address', 'like', "%{$barangay}%");
+        })
+        ->count();
+
+    return $assistancesCount + $subFundsCount;
+}
     public function index()
     {
-        $buenavistaV1 = SubFund::with('category', 'assistance')
-            ->where('assistance.address', 'like', '%Buenavista%')
-            ->count();
-        $sanIsidro = Assistance::where('address', 'like', '%San Isidro%')->count();
-        $awasian = Assistance::where('address', 'like','%Awasian%')->count();
-        $bagongLungsod = Assistance::where('address', 'like','%Bagong Lungsod%')->count();
-        $bioto = Assistance::where('address', 'like','%Bioto%')->count();
-        $bongtod = Assistance::where('address', 'like','%Bongtud%')->count();
-        $buenavista = Assistance::where('address','like', '%Buenavista%')->count();
-        $dagocdoc = Assistance::where('address','like', '%Dagocdoc (Poblacion)%')->count();
-        $mabua = Assistance::where('address','like', '%Mabua%')->count();
-        $mabuhay = Assistance::where('address','like', '%Mabuhay%')->count();
-        $maitum = Assistance::where('address','like', '%Maitum%')->count();
-        $maticdum = Assistance::where('address','like', '%Maticdum%')->count();
-        $pandanon = Assistance::where('address','like', '%Pandanon%')->count();
-        $pangi = Assistance::where('address','like', '%Pangi%')->count();
-        $quezon = Assistance::where('address','like', '%Quezon%')->count();
-        $rosario = Assistance::where('address','like', '%Rosario%')->count();
-        $salvacion = Assistance::where('address','like', '%Salvacion%')->count();
-        $sanAgustinNorte = Assistance::where('address','like', '%San Agustin Norte%')->count();
-        $sanAgustinSur = Assistance::where('address','like', '%San Agustin%')->count();
-        $sanAntonio = Assistance::where('address','like', '%San Antonio%')->count();
-        $sanJose = Assistance::where('address','like', '%San Jose%')->count();
-        $telaje = Assistance::where('address','like', '%Telaje%')->count();
-
+        $sanIsidro = $this->getBarangayTotal('San Isidro');
+        $awasian = $this->getBarangayTotal('Awasian');
+        $bagongLungsod = $this->getBarangayTotal('Bagong Lungsod');
+        $bioto = $this->getBarangayTotal('Bioto');
+        $bongtod = $this->getBarangayTotal('Bongtud');
+        $buenavista = $this->getBarangayTotal('Buenavista');
+        $dagocdoc = $this->getBarangayTotal('Dagocdoc (Poblacion)');
+        $mabua = $this->getBarangayTotal('Mabua');
+        $mabuhay = $this->getBarangayTotal('Mabuhay');
+        $maitum = $this->getBarangayTotal('Maitum');
+        $maticdum = $this->getBarangayTotal('Maticdum');
+        $pandanon = $this->getBarangayTotal('Pandanon');
+        $pangi = $this->getBarangayTotal('Pangi');
+        $quezon = $this->getBarangayTotal('Quezon');
+        $rosario = $this->getBarangayTotal('Rosario');
+        $salvacion = $this->getBarangayTotal('Salvacion');
+        $sanAgustinNorte = $this->getBarangayTotal('San Agustin Norte');
+        $sanAgustinSur = $this->getBarangayTotal('San Agustin'); // Note: May overlap with Norte
+        $sanAntonio = $this->getBarangayTotal('San Antonio');
+        $sanJose = $this->getBarangayTotal('San Jose');
+        $telaje = $this->getBarangayTotal('Telaje');
         // $barangays = Barangay::all();
         $categories = ClientCategory::all();
         $populationMapping = [
