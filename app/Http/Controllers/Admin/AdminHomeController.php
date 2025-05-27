@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\SubFund;
 use Carbon\Carbon;
 use App\Models\Sale;
 use App\Models\Product;
@@ -18,6 +19,9 @@ class AdminHomeController extends Controller
 {
     public function index()
     {
+        $buenavistaV1 = SubFund::with('category', 'assistance')
+            ->where('assistance.address', 'like', '%Buenavista%')
+            ->count();
         $sanIsidro = Assistance::where('address', 'like', '%San Isidro%')->count();
         $awasian = Assistance::where('address', 'like','%Awasian%')->count();
         $bagongLungsod = Assistance::where('address', 'like','%Bagong Lungsod%')->count();
@@ -68,13 +72,17 @@ class AdminHomeController extends Controller
 
         $barangays = DB::table('barangays as b')
             ->leftJoin('assistances as a', 'b.outlet_name', '=', 'a.outlet_name')
+            ->leftJoin('sub_funds as sf', 'a.id', '=', 'sf.assistance_id')
             ->select(
                 'b.id as barangay_id',
                 'b.outlet_address',
                 'b.outlet_name',
                 'b.latitude',
                 'b.longtitude',
-                DB::raw('COUNT(a.id) as total_assistance_requests'),
+                // Count of assistance requests + sub_funds
+                DB::raw('COUNT(DISTINCT a.id) + COUNT(DISTINCT sf.id) as total_assistance_requests'),
+                // Sum of amounts from assistances and sub_funds
+                DB::raw('COALESCE(SUM(CAST(a.amount AS DECIMAL(10,2))),0) + COALESCE(SUM(CAST(sf.amount AS DECIMAL(10,2))),0) as total_amount'),
                 DB::raw("CASE ".
                     implode(" ", array_map(function ($population, $address) {
                         return "WHEN b.outlet_name = \"{$address}\" THEN {$population}";
@@ -105,19 +113,11 @@ class AdminHomeController extends Controller
             ->groupBy('b.id', 'b.outlet_name', 'b.outlet_name', 'b.latitude', 'b.longtitude')
             ->orderBy('b.outlet_name')
             ->get();
-            // foreach ($barangays as $barangay) {
-            //     if ($barangay->outlet_name === "Bongtud Poblacion (East West)") {
-            //         $barangay->outlet_name = "Bongtud Poblacion (East West)";
-            //     }
-            // }
-        // dd($barangays);
-
-        // dd($barangays);
 
         $assistances = DB::table('assistances')
-        ->select('category', DB::raw('COUNT(*) as total_per_category'))
-        ->groupBy('category')
-        ->get();
+            ->select('category', DB::raw('COUNT(*) as total_per_category'))
+            ->groupBy('category')
+            ->get();
 
         $totalCount = DB::table('assistances')->count();
 
@@ -201,17 +201,20 @@ class AdminHomeController extends Controller
 
     public function getBarangayAssistance(string $outlet_name)
     {
-        $barangayAssistance = DB::table('assistances')
+        $barangayAssistance = DB::table('assistances as a')
+            ->leftJoin('sub_funds as sf', 'a.id', '=', 'sf.assistance_id')
             ->select(
-                'category as assistance',
-                'first_name',
-                'middle_name',
-                'last_name',
-                DB::raw('COUNT(*) AS visit_count'),
-                DB::raw('SUM(CAST(amount AS DECIMAL(10,2))) AS total_amount')
+                'a.category as assistance',
+                'a.first_name',
+                'a.middle_name',
+                'a.last_name',
+                // Count visits from both assistances and sub_funds
+                DB::raw('COUNT(DISTINCT a.id) + COUNT(DISTINCT sf.id) AS visit_count'),
+                // Sum amounts from both assistances and sub_funds
+                DB::raw('COALESCE(SUM(CAST(a.amount AS DECIMAL(10,2))),0) + COALESCE(SUM(CAST(sf.amount AS DECIMAL(10,2))),0) AS total_amount')
             )
-            ->where('outlet_name', $outlet_name)
-            ->groupBy('category', 'first_name', 'middle_name', 'last_name')
+            ->where('a.outlet_name', $outlet_name)
+            ->groupBy('a.category', 'a.first_name', 'a.middle_name', 'a.last_name')
             ->orderByDesc('total_amount')
             ->get();
         return response()->json($barangayAssistance);
