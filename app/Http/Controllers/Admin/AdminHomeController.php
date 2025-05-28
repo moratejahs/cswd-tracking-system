@@ -35,11 +35,11 @@ class AdminHomeController extends Controller
     {
         $sanIsidro = $this->getBarangayTotal('San Isidro');
         $awasian = $this->getBarangayTotal('Awasian');
-        $bagongLungsod = $this->getBarangayTotal('Bagong Lungsod');
+        $bagongLungsod = $this->getBarangayTotal('Bag-ong Lungsod');
         $bioto = $this->getBarangayTotal('Bioto');
         $bongtod = $this->getBarangayTotal('Bongtud');
         $buenavista = $this->getBarangayTotal('Buenavista');
-        $dagocdoc = $this->getBarangayTotal('Dagocdoc (Poblacion)');
+        $dagocdoc = $this->getBarangayTotal('Dagocdoc');
         $mabua = $this->getBarangayTotal('Mabua');
         $mabuhay = $this->getBarangayTotal('Mabuhay');
         $maitum = $this->getBarangayTotal('Maitum');
@@ -58,7 +58,7 @@ class AdminHomeController extends Controller
         $categories = ClientCategory::all();
         $populationMapping = [
             'Awasian' => 2040,
-            'Bagong Lungsod' => 5419,
+            'Bag-ong Lungsod' => 5419,
             'Bioto' => 1706,
             'Bongtud' => 6059,
             'Buenavista' => 3256,
@@ -172,11 +172,11 @@ class AdminHomeController extends Controller
         $barangays = [
             'San Isidro',
             'Awasian',
-            'Bagong Lungsod (Poblacion)',
+            'Bag-ong Lungsod',
             'Bioto',
             'Bongtud',
             'Buenavista',
-            'Dagocdoc (Poblacion)',
+            'Dagocdoc',
             'Mabua',
             'Mabuhay',
             'Maitum',
@@ -258,11 +258,11 @@ class AdminHomeController extends Controller
 
         $populationMapping = [
             'Awasian' => 2040,
-            'Bagong Lungsod (Poblacion)' => 5419,
+            'Bag-ong Lungsod' => 5419,
             'Bioto' => 1706,
             'Bongtud' => 6059,
             'Buenavista' => 3256,
-            'Dagocdoc (Poblacion)' => 3754,
+            'Dagocdoc' => 3754,
             'Mabua' => 8475,
             'Mabuhay' => 813,
             'Maitum' => 1911,
