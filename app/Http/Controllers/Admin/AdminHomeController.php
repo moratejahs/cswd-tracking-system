@@ -58,7 +58,7 @@ class AdminHomeController extends Controller
         $categories = ClientCategory::all();
         $populationMapping = [
             'Awasian' => 2040,
-            'Bagong Lungsod (Poblacion)' => 5419,
+            'Bagong Lungsod' => 5419,
             'Bioto' => 1706,
             'Bongtud' => 6059,
             'Buenavista' => 3256,
